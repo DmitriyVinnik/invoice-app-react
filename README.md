@@ -1,14 +1,10 @@
-# MOCK Company Invoice App (Angular 2+)
-
-Please note Angular CLI was used to complete this task because it’s recommended by Angular team way to create Angular apps.
-It generates build folder in /public to keep all assets in it (as it was described in task description)
+# MOCK Company Invoice App (React)
 
 # Dependencies
 
 - sqlite3
 - node
 - npm
-- angular-cli
 
 # Getting Started
 
@@ -16,7 +12,7 @@ It generates build folder in /public to keep all assets in it (as it was describ
 `npm install`
 
 ###### Run the node server
-`node app.js`
+`npm run start`
 
 ###### Viewing the application in your browser
 `http://localhost:8000`
