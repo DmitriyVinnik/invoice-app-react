@@ -1,4 +1,4 @@
-import {LOAD_ALL_CUSTOMERS, START, SUCCESS, FAIL, ACTIVE_CUSTOMER, RESET_ACTIVE_CUSTOMER} from '../constants';
+import {LOAD_ALL_CUSTOMERS, LOAD_ALL_CUSTOMERS_SUCCESS, LOAD_ALL_CUSTOMERS_FAIL, ACTIVE_CUSTOMER, RESET_ACTIVE_CUSTOMER} from '../constants';
 
 const defaultCustomersState = {
     data: [],
@@ -13,14 +13,14 @@ export default (state = defaultCustomersState, action) => {
     
     switch (type) {
 
-        case LOAD_ALL_CUSTOMERS + START: {
+        case LOAD_ALL_CUSTOMERS: {
             return {
                 ...state,
                 isLoading: true,
             };
         }
 
-        case LOAD_ALL_CUSTOMERS + SUCCESS: {
+        case LOAD_ALL_CUSTOMERS_SUCCESS: {
             return {
                 ...state,
                 data: payload,
@@ -29,7 +29,7 @@ export default (state = defaultCustomersState, action) => {
             };
         }
 
-        case LOAD_ALL_CUSTOMERS + FAIL: {
+        case LOAD_ALL_CUSTOMERS_FAIL: {
             return {
                 ...state,
                 errorLoadMessage: payload,

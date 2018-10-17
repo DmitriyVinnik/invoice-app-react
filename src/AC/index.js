@@ -1,21 +1,21 @@
-import {LOAD_ALL_CUSTOMERS, START, SUCCESS, FAIL, ACTIVE_CUSTOMER, RESET_ACTIVE_CUSTOMER} from '../constants';
+import {LOAD_ALL_CUSTOMERS, LOAD_ALL_CUSTOMERS_SUCCESS, LOAD_ALL_CUSTOMERS_FAIL, ACTIVE_CUSTOMER, RESET_ACTIVE_CUSTOMER} from '../constants';
 
 export function loadAllCustomersStart() {
     return {
-        type: LOAD_ALL_CUSTOMERS + START,
+        type: LOAD_ALL_CUSTOMERS,
     };
 }
 
 export function loadAllCustomersSuccess(response) {
     return {
-        type: LOAD_ALL_CUSTOMERS + SUCCESS,
+        type: LOAD_ALL_CUSTOMERS_SUCCESS,
         payload: response,
     };
 }
 
 export function loadAllCustomersFail(error) {
     return {
-        type: LOAD_ALL_CUSTOMERS + FAIL,
+        type: LOAD_ALL_CUSTOMERS_FAIL,
         payload: error,
     };
 }
