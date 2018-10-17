@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import CustomerPanel from './CustomerPanel';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div>
+        <CustomerPanel />
       </div>
     );
   }
