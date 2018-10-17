@@ -20,11 +20,14 @@
     "lodash": "latest",
     "mongoose": "^4.10.4",
     "morgan": "^1.8.2",
+    "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
     "redux": "^4.0.1",
+    "redux-observable": "^1.0.0",
+    "rxjs": "^6.3.3",
     "sequelize": "^3.20.0",
     "sqlite3": "latest"
   }
