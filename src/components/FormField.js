@@ -23,4 +23,5 @@ FormField.propTypes = {
     labelText: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     type: PropTypes.string.isRequired,
+    value: PropTypes.string,
 };
