@@ -69,6 +69,14 @@ export default (state = defaultCustomersState, action) => {
             return {
                 ...state,
                 activeCustomerId: null,
+                customerChangeForm: {
+                    ...state.customerChangeForm,
+                    isVisible: false,
+                },
+                customerDeleteForm: {
+                    ...state.customerDeleteForm,
+                    isVisible: false,
+              },
             };
         }
 

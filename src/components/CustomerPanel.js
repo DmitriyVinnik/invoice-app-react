@@ -57,7 +57,7 @@ function CustomerPanel(props) {
                     type="button"
                     onClick={handleButtonCustomerDeleteClick}
                 >
-                    {customerChangeForm.isVisible ? 'Close' : 'Delete customer'}
+                    {customerDeleteForm.isVisible ? 'Close' : 'Delete customer'}
                 </button>}
             </div>
             <CustomerAddForm

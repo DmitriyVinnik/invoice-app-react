@@ -4,14 +4,14 @@ import {connect} from 'react-redux';
 import {activeCustomer, resetActiveCustomer} from '../AC'
 
 function Customer(props) {
-    const { id, name, address, phone, selectCustomer, activeCustomerId, resetSelectionCustomer } = props;
+    const { id, name, address, phone, selectCustomer, activeCustomerId, resetSelectionCustomer, customersData } = props;
     const onClickCustomer = () => {
-        selectCustomer(id);
+      selectCustomer(id, customersData);
     };
+    const isCustomerActive = (activeCustomerId === id);
     const onReClickCustomer = () => {
         resetSelectionCustomer();
     };
-    const isCustomerActive = (activeCustomerId === id);
     const customerStyle = isCustomerActive ?
         {color: 'green', paddingBottom: '20px', cursor: 'pointer'} :
         {paddingBottom: '20px', cursor: 'pointer'};
@@ -35,16 +35,18 @@ Customer.propTypes = {
     selectCustomer: PropTypes.func.isRequired,
     activeCustomerId: PropTypes.number,
     resetSelectionCustomer: PropTypes.func,
+    customersData: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
     activeCustomerId: state.customers.activeCustomerId,
+    customersData: state.customers.data,
 });
 
 const mapDispatchToProps = dispatch => (
     {
-        selectCustomer: (id) => {
-            dispatch(activeCustomer(id));
+        selectCustomer: (id, data) => {
+            dispatch(activeCustomer(id, data));
         },
         resetSelectionCustomer: () => {
             dispatch(resetActiveCustomer());

@@ -26,10 +26,11 @@ export function loadAllCustomersFail(error) {
     };
 }
 
-export function activeCustomer(id) {
+export function activeCustomer(id, data) {
     return {
         type: ACTIVE_CUSTOMER,
         payload: id,
+        data
     }
 }
 
