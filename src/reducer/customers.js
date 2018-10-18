@@ -217,6 +217,7 @@ export default (state = defaultCustomersState, action) => {
         case DELETE_CUSTOMER_SUCCESS: {
             return {
                 ...state,
+                activeCustomerId: null,
                 data: state.data.filter(elem => elem.id !== payload.id),
                 customerDeleteForm: {
                     ...state.customerDeleteForm,
