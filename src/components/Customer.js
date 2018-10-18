@@ -29,9 +29,9 @@ function Customer(props) {
 
 Customer.propTypes = {
     id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    address: PropTypes.string,
+    phone: PropTypes.string,
     selectCustomer: PropTypes.func.isRequired,
     activeCustomerId: PropTypes.number,
     resetSelectionCustomer: PropTypes.func,
