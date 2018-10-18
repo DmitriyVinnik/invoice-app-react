@@ -1,6 +1,8 @@
 import {combineEpics} from 'redux-observable';
-import {loadAllCustomersEpic} from './customers';
+import {loadAllCustomersEpic, postCustomerAddFormEpic, putCustomerChangeFormEpic} from './customers';
 
 export default combineEpics(
     loadAllCustomersEpic,
+    postCustomerAddFormEpic,
+    putCustomerChangeFormEpic,
 )
