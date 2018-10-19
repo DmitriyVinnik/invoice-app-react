@@ -1,6 +1,6 @@
 import { reducer } from 'redux-form';
 import { POST_CUSTOMER_ADD_FORM_SUCCESS, PUT_CUSTOMER_CHANGE_FORM_SUCCESS,
- ACTIVE_CUSTOMER} from '../constants';
+ ACTIVE_CUSTOMER} from '../../../constants';
 
 const form = reducer.plugin({
     customerAdd: (state, action) => {

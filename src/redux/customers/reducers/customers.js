@@ -4,33 +4,10 @@ import {
     POST_CUSTOMER_ADD_FORM_SUCCESS, TOGGLE_CUSTOMER_CHANGE_FORM, PUT_CUSTOMER_CHANGE_FORM,
     PUT_CUSTOMER_CHANGE_FORM_SUCCESS, PUT_CUSTOMER_CHANGE_FORM_FAIL, TOGGLE_CUSTOMER_DELETE_FORM,
     DELETE_CUSTOMER, DELETE_CUSTOMER_SUCCESS, DELETE_CUSTOMER_FAIL,
-} from '../constants';
+} from '../../../constants';
+import customerState from '../states';
 
-const defaultCustomersState = {
-    data: [],
-    isLoading: false,
-    isLoaded: false,
-    errorLoadMessage: '',
-    activeCustomerId: null,
-    customerAddForm: {
-        isVisible: false,
-        isLoading: false,
-        errorMessage: '',
-    },
-    customerChangeForm: {
-        isVisible: false,
-        isLoading: false,
-        errorMessage: '',
-    },
-    customerDeleteForm: {
-        isVisible: false,
-        isLoading: false,
-        errorMessage: '',
-    },
-
-};
-
-export default (state = defaultCustomersState, action) => {
+export default (state = customerState, action) => {
     const {type, payload} = action;
     
     switch (type) {
@@ -111,7 +88,10 @@ export default (state = defaultCustomersState, action) => {
         case POST_CUSTOMER_ADD_FORM_SUCCESS: {
             return {
                 ...state,
-                data: state.data.concat([payload]),
+                data: [
+                    ...state.data,
+                    payload
+                ],
                 customerAddForm: {
                     ...state.customerAddForm,
                     isLoading: false,
@@ -161,7 +141,7 @@ export default (state = defaultCustomersState, action) => {
 
         case PUT_CUSTOMER_CHANGE_FORM_SUCCESS: {
             const index = state.data.findIndex(elem => elem.id === action.payload.id);
-            const newState = [].concat(state.data);
+            const newState = [...state.data];
             newState.splice(index, 1, payload);
 
             return {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {activeCustomer, resetActiveCustomer} from '../AC'
+import {activeCustomer, resetActiveCustomer} from '../redux/customers/AC'
 
 function Customer(props) {
     const { id, name, address, phone, selectCustomer, activeCustomerId, resetSelectionCustomer, customersData } = props;

@@ -1,11 +1,11 @@
 import {ajax} from 'rxjs/ajax';
 import {ofType} from 'redux-observable';
 import {switchMap, map, catchError} from  'rxjs/operators';
-import {LOAD_ALL_CUSTOMERS, URL, POST_CUSTOMER_ADD_FORM, PUT_CUSTOMER_CHANGE_FORM, DELETE_CUSTOMER} from '../constants';
+import {LOAD_ALL_CUSTOMERS, URL, POST_CUSTOMER_ADD_FORM, PUT_CUSTOMER_CHANGE_FORM, DELETE_CUSTOMER} from '../../../constants';
 import {
     loadAllCustomersSuccess, loadAllCustomersFail, postCustomerAddFormSuccess,
     postCustomerAddFormFail, putCustomerChangeFormSuccess, putCustomerChangeFormFail, deleteCustomerSuccess, deleteCustomerFail,
-} from '../AC'
+} from '../AC/index'
 
 export const loadAllCustomersEpic = action$ => action$.pipe(
     ofType(LOAD_ALL_CUSTOMERS),
