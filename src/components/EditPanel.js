@@ -20,7 +20,7 @@ const EditPanel = props => {
                     type="button"
                     onClick={onChangeButtonClick}
                 >
-                {formsState.isVisibleChangeForm ? 'Close' : 'Change customer'}
+                    {formsState.isVisibleChangeForm ? 'Close' : 'Change customer'}
                 </button>
             }
             {
@@ -29,7 +29,7 @@ const EditPanel = props => {
                     type="button"
                     onClick={onDeleteButtonClick}
                 >
-                {formsState.isVisibleDeleteForm ? 'Close' : 'Delete customer'}
+                    {formsState.isVisibleDeleteForm ? 'Close' : 'Delete customer'}
                 </button>
             }
         </div>

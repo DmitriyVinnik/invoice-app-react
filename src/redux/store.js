@@ -1,12 +1,12 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { combineEpics, createEpicMiddleware } from 'redux-observable';
+import {createStore, applyMiddleware, combineReducers} from 'redux';
+import {combineEpics, createEpicMiddleware} from 'redux-observable';
 
 import formReducer from './form/reducers';
-import { reducer as customersReducer} from './customers/reducers';
-import { requestReducer } from './request/reducers';
+import {reducer as customersReducer} from './customers/reducers';
+import {requestReducer} from './request/reducers';
 
-import { requestEpics } from './request/epics';
-import { customersEpics } from './customers/epics';
+import {requestEpics} from './request/epics';
+import {customersEpics} from './customers/epics';
 
 
 const rootReducer = combineReducers({

@@ -9,8 +9,6 @@ const InvoicesPage = props => {
     );
 };
 
-InvoicesPage.propTypes = {
-
-};
+InvoicesPage.propTypes = {};
 
 export default InvoicesPage;

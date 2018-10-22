@@ -8,7 +8,7 @@ function Customer(props) {
         id, name, address, phone, selectActiveCustomer, activeCustomerId, resetSelectionActiveCustomer, customersData
     } = props;
     const onClickCustomer = () => {
-      selectActiveCustomer(customersData, id);
+        selectActiveCustomer(customersData, id);
     };
     const isCustomerActive = (activeCustomerId === id);
     const onReClickCustomer = () => {
@@ -42,7 +42,7 @@ Customer.propTypes = {
 
 const mapStateToProps = state => ({
     activeCustomerId: state.customers.activeCustomerId,
-    customersData: state.request.customers.customersGet.data,
+    customersData: state.customers.data,
 });
 
 const mapDispatchToProps = dispatch => (

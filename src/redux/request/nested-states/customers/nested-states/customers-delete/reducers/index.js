@@ -1,5 +1,5 @@
-import { actionTypes } from '../AC';
-import { initialState } from '../states';
+import {actionTypes} from '../AC';
+import {initialState} from '../states';
 
 
 export function reducer(state = initialState, action) {
@@ -7,7 +7,7 @@ export function reducer(state = initialState, action) {
 
     switch (type) {
         case actionTypes.CUSTOMERS_DELETE:
-            console.log('-------------------')
+
             return {
                 ...state,
                 loading: true,

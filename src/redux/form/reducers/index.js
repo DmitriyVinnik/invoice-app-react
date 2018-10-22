@@ -1,4 +1,4 @@
-import { reducer } from 'redux-form';
+import {reducer} from 'redux-form';
 import {customersRequestAC} from '../../request/nested-states/customers/AC';
 import * as customersAC from '../../customers/AC';
 

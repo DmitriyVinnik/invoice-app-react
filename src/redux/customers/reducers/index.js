@@ -18,12 +18,8 @@ export function reducer(state = initialState, action) {
                 ...state,
                 data: [
                     ...state.data,
-                    payload.data
+                    payload.data,
                 ],
-                isVisible: {
-                    ...state.isVisible,
-                    addForm: false,
-                }
             };
         }
 
@@ -35,10 +31,6 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 data: newData,
-                isVisible: {
-                    ...state.isVisible,
-                    changeForm: false,
-                }
             };
         }
 
@@ -47,10 +39,6 @@ export function reducer(state = initialState, action) {
                 ...state,
                 data: state.data.filter(elem => elem.id !== action.payload.data.id),
                 activeCustomerId: null,
-                isVisible: {
-                    ...state.isVisible,
-                    deleteForm: false,
-                }
             };
         }
 
@@ -77,7 +65,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 isVisible: {
-                    addFrom: !state.isVisible.addForm,
+                    addForm: !state.isVisible.addForm,
                     changeForm: false,
                     deleteForm: false,
                 },
@@ -88,7 +76,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 isVisible: {
-                    addFrom: false,
+                    addForm: false,
                     changeForm: !state.isVisible.changeForm,
                     deleteForm: false,
                 },
@@ -99,7 +87,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 isVisible: {
-                    addFrom: false,
+                    addForm: false,
                     changeForm: false,
                     deleteForm: !state.isVisible.deleteForm,
                 },

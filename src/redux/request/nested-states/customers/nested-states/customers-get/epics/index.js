@@ -1,6 +1,6 @@
-import { ofType } from 'redux-observable';
-import { switchMap, map, catchError } from  'rxjs/operators';
-import { actionTypes, customersGetSuccess, customersGetFail } from '../AC';
+import {ofType} from 'redux-observable';
+import {switchMap, map, catchError} from 'rxjs/operators';
+import {actionTypes, customersGetSuccess, customersGetFail} from '../AC';
 import customersService from '../../../../../../../shared/services/customers.service'
 
 export const customersGetEpic = action$ => action$.pipe(

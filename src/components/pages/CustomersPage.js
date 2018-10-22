@@ -15,11 +15,11 @@ import {
 } from '../../redux/customers/AC'
 
 function CustomersPage(props) {
-    const { state,
+    const {
         customersRequests, loadCustomers,
         toggleDeleteForm, toggleAddForm, toggleChangeForm,
         submitAddForm, submitDeleteForm, submitChangeForm,
-        customers: {activeCustomerId, isVisible, data }
+        customers: {activeCustomerId, isVisible, data}
     } = props;
     const handleSubmitCustomerAddForm = (values) => {
         submitAddForm(values);
@@ -29,7 +29,11 @@ function CustomersPage(props) {
     };
     const handleSubmitCustomerDeleteForm = (evt) => {
         evt.preventDefault();
-        submitDeleteForm(activeCustomerId);
+        if (activeCustomerId) {
+            submitDeleteForm(activeCustomerId);
+        } else {
+            toggleDeleteForm();
+        }
     };
     const handleButtonCustomerAddClick = () => {
         toggleAddForm();
@@ -40,7 +44,6 @@ function CustomersPage(props) {
     const handleButtonCustomerDeleteClick = () => {
         toggleDeleteForm();
     };
-console.log(state)
     return (
         <section>
             <EditPanel
@@ -55,7 +58,7 @@ console.log(state)
                 }}
             />
             <CustomerAddForm
-                isVisible={isVisible.addFrom}
+                isVisible={isVisible.addForm}
                 isLoading={customersRequests.customersPost.loading}
                 errors={customersRequests.customersPost.errors}
                 onSubmit={handleSubmitCustomerAddForm}
@@ -126,7 +129,6 @@ CustomersPage.propTypes = {
 const mapStateToProps = state => ({
     customers: state.customers,
     customersRequests: state.request.customers,
-    state,
 });
 
 const mapDispatchToProps = dispatch => (

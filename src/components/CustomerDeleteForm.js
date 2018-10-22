@@ -15,7 +15,7 @@ const CustomerDeleteForm = props => {
                         type='submit'
                         disabled={isLoading}
                     >
-                        Delete
+                        {name === null ? 'Close' : 'Delete'}
                     </button>
                 </div>
             </form>

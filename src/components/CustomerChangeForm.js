@@ -4,7 +4,7 @@ import {reduxForm, Field} from 'redux-form';
 import FormField from './FormField';
 
 const CustomerChangeForm = props => {
-    const {isVisible, handleSubmit, isLoading, errors, } = props;
+    const {isVisible, handleSubmit, isLoading, errors,} = props;
 
     return (
         <div style={isVisible ? {display: 'block'} : {display: 'none'}}>

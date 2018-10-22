@@ -1,5 +1,5 @@
-import { actionTypes } from '../AC';
-import { initialState } from '../states';
+import {actionTypes} from '../AC';
+import {initialState} from '../states';
 
 
 export function reducer(state = initialState, action) {

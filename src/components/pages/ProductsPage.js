@@ -9,8 +9,6 @@ const ProductsPage = props => {
     );
 };
 
-ProductsPage.propTypes = {
-
-};
+ProductsPage.propTypes = {};
 
 export default ProductsPage;

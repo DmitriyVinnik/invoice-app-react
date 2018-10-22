@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, NavLink } from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, NavLink} from "react-router-dom";
 import CustomersPage from './pages/CustomersPage';
 import ProductsPage from './pages/ProductsPage';
 import InvoicesPage from './pages/InvoicesPage';
@@ -24,9 +24,9 @@ export default function App() {
                 </nav>
                 <main>
                     <Switch>
-                        <Route exact path="/" component={CustomersPage} />
-                        <Route path="/products" component={ProductsPage} />
-                        <Route path="/invoices" component={InvoicesPage} />
+                        <Route exact path="/" component={CustomersPage}/>
+                        <Route path="/products" component={ProductsPage}/>
+                        <Route path="/invoices" component={InvoicesPage}/>
                         <Route component={NotFoundPage}/>
                     </Switch>
                 </main>
