@@ -1,124 +1,107 @@
-import {
-    LOAD_ALL_CUSTOMERS, LOAD_ALL_CUSTOMERS_SUCCESS, LOAD_ALL_CUSTOMERS_FAIL, ACTIVE_CUSTOMER,
-    RESET_ACTIVE_CUSTOMER, TOGGLE_CUSTOMER_ADD_FORM, POST_CUSTOMER_ADD_FORM, POST_CUSTOMER_ADD_FORM_SUCCESS,
-    POST_CUSTOMER_ADD_FORM_FAIL, TOGGLE_CUSTOMER_CHANGE_FORM, PUT_CUSTOMER_CHANGE_FORM,
-    PUT_CUSTOMER_CHANGE_FORM_SUCCESS, PUT_CUSTOMER_CHANGE_FORM_FAIL, TOGGLE_CUSTOMER_DELETE_FORM,
-    DELETE_CUSTOMER, DELETE_CUSTOMER_FAIL, DELETE_CUSTOMER_SUCCESS,
-} from '../../../constants';
+export const actionTypes = {
+    CUSTOMERS_LOAD_ALL: 'CUSTOMERS_LOAD_ALL',
+    CUSTOMERS_SET_DATA: 'CUSTOMERS_SET_DATA',
+    CUSTOMERS_UPDATE_DATA_AFTER_POST_REQUEST: 'CUSTOMERS_UPDATE_DATA_AFTER_POST_REQUEST',
+    CUSTOMERS_UPDATE_DATA_AFTER_PUT_REQUEST: 'CUSTOMERS_UPDATE_DATA_AFTER_PUT_REQUEST',
+    CUSTOMERS_UPDATE_DATA_AFTER_DELETE_REQUEST: 'CUSTOMERS_UPDATE_DATA_AFTER_DELETE_REQUEST',
+    CUSTOMERS_SUBMIT_ADD_FORM: 'CUSTOMERS_SUBMIT_ADD_FORM',
+    CUSTOMERS_SUBMIT_CHANGE_FORM: 'CUSTOMERS_SUBMIT_CHANGE_FORM',
+    CUSTOMERS_SUBMIT_DELETE_FORM: 'CUSTOMERS_SUBMIT_DELETE_FORM',
+    CUSTOMERS_TOGGLE_CHANGE_FORM: 'CUSTOMERS_TOGGLE_CHANGE_FORM',
+    CUSTOMERS_TOGGLE_ADD_FORM: 'CUSTOMERS_TOGGLE_ADD_FORM',
+    CUSTOMERS_TOGGLE_DELETE_FORM: 'CUSTOMERS_TOGGLE_DELETE_FORM',
+    CUSTOMERS_SELECT_ACTIVE: 'CUSTOMERS_SELECT_ACTIVE',
+    CUSTOMERS_RESET_SELECTION_ACTIVE: 'CUSTOMERS_RESET_SELECTION_ACTIVE',
+};
 
-export function loadAllCustomersStart() {
+export function setCustomersData(data) {
     return {
-        type: LOAD_ALL_CUSTOMERS,
-    };
-}
-
-export function loadAllCustomersSuccess(response) {
-    return {
-        type: LOAD_ALL_CUSTOMERS_SUCCESS,
-        payload: response,
-    };
-}
-
-export function loadAllCustomersFail(error) {
-    return {
-        type: LOAD_ALL_CUSTOMERS_FAIL,
-        payload: error,
-    };
-}
-
-export function activeCustomer(id, data) {
-    return {
-        type: ACTIVE_CUSTOMER,
-        payload: id,
-        data
+        type: actionTypes.CUSTOMERS_SET_DATA,
+        payload: {data},
     }
 }
 
-export function resetActiveCustomer() {
+export function updateCustomersDataAfterPostRequest(data) {
     return {
-        type: RESET_ACTIVE_CUSTOMER,
+        type: actionTypes.CUSTOMERS_UPDATE_DATA_AFTER_POST_REQUEST,
+        payload: {data},
+    }
+}
+
+export function updateCustomersDataAfterPutRequest(data) {
+    return {
+        type: actionTypes.CUSTOMERS_UPDATE_DATA_AFTER_PUT_REQUEST,
+        payload: {data},
+    }
+}
+
+export function updateCustomersDataAfterDeleteRequest(data) {
+    return {
+        type: actionTypes.CUSTOMERS_UPDATE_DATA_AFTER_DELETE_REQUEST,
+        payload: {data},
+    }
+}
+
+export function loadAllCustomers() {
+    return {
+        type: actionTypes.CUSTOMERS_LOAD_ALL,
+    };
+}
+
+export function selectCustomer(data, id) {
+    return {
+        type: actionTypes.CUSTOMERS_SELECT_ACTIVE,
+        payload: {
+            data,
+            id,
+        }
+    }
+}
+
+export function resetSelectionCustomer() {
+    return {
+        type: actionTypes.CUSTOMERS_RESET_SELECTION_ACTIVE,
     }
 }
 
 export function toggleCustomerAddForm() {
     return {
-        type: TOGGLE_CUSTOMER_ADD_FORM,
+        type: actionTypes.CUSTOMERS_TOGGLE_ADD_FORM,
     }
 }
 
-export function postCustomerAddForm(data) {
+export function submitCustomerAddForm(data) {
     return {
-        type: POST_CUSTOMER_ADD_FORM,
-        payload: data,
-    };
-}
-
-export function postCustomerAddFormSuccess(response) {
-    console.log(response)
-    return {
-        type: POST_CUSTOMER_ADD_FORM_SUCCESS,
-        payload: response,
-    };
-}
-
-export function postCustomerAddFormFail(error) {
-    return {
-        type: POST_CUSTOMER_ADD_FORM_FAIL,
-        payload: error,
+        type: actionTypes.CUSTOMERS_SUBMIT_ADD_FORM,
+        payload: {data},
     };
 }
 
 export function toggleCustomerChangeForm() {
     return {
-        type: TOGGLE_CUSTOMER_CHANGE_FORM,
+        type: actionTypes.CUSTOMERS_TOGGLE_CHANGE_FORM,
     }
 }
 
-export function putCustomerChangeForm(data, id) {
+export function submitCustomerChangeForm(data, id) {
     return {
-        type: PUT_CUSTOMER_CHANGE_FORM,
-        payload: data,
-        id,
-    };
-}
-
-export function putCustomerChangeFormSuccess(response) {
-    return {
-        type: PUT_CUSTOMER_CHANGE_FORM_SUCCESS,
-        payload: response,
-    };
-}
-
-export function putCustomerChangeFormFail(error) {
-    return {
-        type: PUT_CUSTOMER_CHANGE_FORM_FAIL,
-        payload: error,
+        type: actionTypes.CUSTOMERS_SUBMIT_CHANGE_FORM,
+        payload: {
+            data,
+            id,
+        }
     };
 }
 
 export function toggleCustomerDeleteForm() {
     return {
-        type: TOGGLE_CUSTOMER_DELETE_FORM,
+        type: actionTypes.CUSTOMERS_TOGGLE_DELETE_FORM,
     }
 }
 
-export function deleteCustomer(id) {
+export function submitCustomerDeleteForm(id) {
     return {
-        type: DELETE_CUSTOMER,
-        payload: id,
-    };
-}
-
-export function deleteCustomerSuccess(response) {
-    return {
-        type: DELETE_CUSTOMER_SUCCESS,
-        payload: response,
-    };
-}
-
-export function deleteCustomerFail(error) {
-    return {
-        type: DELETE_CUSTOMER_FAIL,
-        payload: error,
+        type: actionTypes.CUSTOMERS_SUBMIT_DELETE_FORM,
+        payload: {id},
     };
 }

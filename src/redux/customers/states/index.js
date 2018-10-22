@@ -1,24 +1,11 @@
-const customersState = {
+const initialState = {
     data: [],
-    isLoading: false,
-    isLoaded: false,
-    errorLoadMessage: '',
     activeCustomerId: null,
-    customerAddForm: {
-        isVisible: false,
-        isLoading: false,
-        errorMessage: '',
-    },
-    customerChangeForm: {
-        isVisible: false,
-        isLoading: false,
-        errorMessage: '',
-    },
-    customerDeleteForm: {
-        isVisible: false,
-        isLoading: false,
-        errorMessage: '',
+    isVisible: {
+        addForm: false,
+        changeForm: false,
+        deleteForm: false,
     },
 };
 
-export default customersState;
+export default initialState;

@@ -30,12 +30,6 @@ export function reducer(state = initialState, action) {
                 errors: payload.errors,
             };
 
-        case actionTypes.CUSTOMERS_UPDATE_DATA:
-            return {
-                ...state,
-                data: payload.data,
-            };
-
         default:
             return state;
     }

@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {activeCustomer, resetActiveCustomer} from '../redux/customers/AC'
+import {selectCustomer, resetSelectionCustomer} from '../redux/customers/AC'
 
 function Customer(props) {
-    const { id, name, address, phone, selectCustomer, activeCustomerId, resetSelectionCustomer, customersData } = props;
+    const {
+        id, name, address, phone, selectActiveCustomer, activeCustomerId, resetSelectionActiveCustomer, customersData
+    } = props;
     const onClickCustomer = () => {
-      selectCustomer(id, customersData);
+      selectActiveCustomer(customersData, id);
     };
     const isCustomerActive = (activeCustomerId === id);
     const onReClickCustomer = () => {
-        resetSelectionCustomer();
+        resetSelectionActiveCustomer();
     };
     const customerStyle = isCustomerActive ?
         {color: 'green', paddingBottom: '20px', cursor: 'pointer'} :
@@ -32,24 +34,24 @@ Customer.propTypes = {
     name: PropTypes.string,
     address: PropTypes.string,
     phone: PropTypes.string,
-    selectCustomer: PropTypes.func.isRequired,
+    selectActiveCustomer: PropTypes.func.isRequired,
     activeCustomerId: PropTypes.number,
-    resetSelectionCustomer: PropTypes.func,
+    resetSelectionActiveCustomer: PropTypes.func,
     customersData: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
     activeCustomerId: state.customers.activeCustomerId,
-    customersData: state.customers.data,
+    customersData: state.request.customers.customersGet.data,
 });
 
 const mapDispatchToProps = dispatch => (
     {
-        selectCustomer: (id, data) => {
-            dispatch(activeCustomer(id, data));
+        selectActiveCustomer: (data, id) => {
+            dispatch(selectCustomer(data, id));
         },
-        resetSelectionCustomer: () => {
-            dispatch(resetActiveCustomer());
+        resetSelectionActiveCustomer: () => {
+            dispatch(resetSelectionCustomer());
         },
     }
 );

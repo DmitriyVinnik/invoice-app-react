@@ -4,7 +4,7 @@ import {reduxForm, Field} from 'redux-form';
 import FormField from './FormField';
 
 const CustomerChangeForm = props => {
-    const {isVisible, handleSubmit, isLoading, errorMessage, } = props;
+    const {isVisible, handleSubmit, isLoading, errors, } = props;
 
     return (
         <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
@@ -34,7 +34,7 @@ const CustomerChangeForm = props => {
                     labelText="Customer's phone: "
                 />
                 <div>
-                    {errorMessage && (<span>Error: {errorMessage}</span>)}
+                    {errors && (<span>Error: {errors}</span>)}
                     <button
                         type='submit'
                         disabled={isLoading}
@@ -50,7 +50,7 @@ const CustomerChangeForm = props => {
 CustomerChangeForm.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    errorMessage: PropTypes.string.isRequired,
+    errors: PropTypes.object,
     handleSubmit: PropTypes.func.isRequired,
 };
 

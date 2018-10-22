@@ -1,31 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+
 import CustomerList from '../CustomerList';
 import CustomerAddForm from '../CustomerAddForm';
 import CustomerChangeForm from '../CustomerChangeForm';
 import CustomerDeleteForm from '../CustomerDeleteForm';
 import EditPanel from '../EditPanel';
+
 import {
-    loadAllCustomersStart, toggleCustomerAddForm, postCustomerAddForm, toggleCustomerChangeForm,
-    putCustomerChangeForm, toggleCustomerDeleteForm, deleteCustomer,
-} from "../../redux/customers/AC/index";
+    toggleCustomerAddForm, toggleCustomerChangeForm, toggleCustomerDeleteForm,
+    submitCustomerAddForm, submitCustomerChangeForm, submitCustomerDeleteForm,
+    loadAllCustomers,
+} from '../../redux/customers/AC'
 
 function CustomersPage(props) {
-    const {
-        customers, loadCustomers, postAddForm, toggleAddForm, toggleChangeForm, putChangeForm,
-        toggleDeleteForm, deleteActiveCustomer,
-        customers: {activeCustomerId, customerAddForm, customerChangeForm, customerDeleteForm}
+    const { state,
+        customersRequests, loadCustomers,
+        toggleDeleteForm, toggleAddForm, toggleChangeForm,
+        submitAddForm, submitDeleteForm, submitChangeForm,
+        customers: {activeCustomerId, isVisible, data }
     } = props;
     const handleSubmitCustomerAddForm = (values) => {
-        postAddForm(values);
+        submitAddForm(values);
     };
     const handleSubmitCustomerChangeForm = (values) => {
-        putChangeForm(values, activeCustomerId);
+        submitChangeForm(values, activeCustomerId);
     };
     const handleSubmitCustomerDeleteForm = (evt) => {
         evt.preventDefault();
-        deleteActiveCustomer(activeCustomerId);
+        submitDeleteForm(activeCustomerId);
     };
     const handleButtonCustomerAddClick = () => {
         toggleAddForm();
@@ -36,7 +40,7 @@ function CustomersPage(props) {
     const handleButtonCustomerDeleteClick = () => {
         toggleDeleteForm();
     };
-
+console.log(state)
     return (
         <section>
             <EditPanel
@@ -45,31 +49,39 @@ function CustomersPage(props) {
                 onDeleteButtonClick={handleButtonCustomerDeleteClick}
                 activeId={activeCustomerId}
                 formsState={{
-                    isVisibleAddForm: customerAddForm.isVisible,
-                    isVisibleChangeForm: customerChangeForm.isVisible,
-                    isVisibleDeleteForm: customerDeleteForm.isVisible,
+                    isVisibleAddForm: isVisible.addForm,
+                    isVisibleChangeForm: isVisible.changeForm,
+                    isVisibleDeleteForm: isVisible.deleteForm,
                 }}
             />
             <CustomerAddForm
-                isVisible={customerAddForm.isVisible}
-                isLoading={customerAddForm.isLoading}
-                errorMessage={customerAddForm.errorMessage}
+                isVisible={isVisible.addFrom}
+                isLoading={customersRequests.customersPost.loading}
+                errors={customersRequests.customersPost.errors}
                 onSubmit={handleSubmitCustomerAddForm}
             />
             <CustomerChangeForm
-                isVisible={customerChangeForm.isVisible}
-                isLoading={customerChangeForm.isLoading}
-                errorMessage={customerChangeForm.errorMessage}
+                isVisible={isVisible.changeForm}
+                isLoading={customersRequests.customersPut.loading}
+                errors={customersRequests.customersPut.errors}
                 onSubmit={handleSubmitCustomerChangeForm}
             />
             <CustomerDeleteForm
-                isVisible={customerDeleteForm.isVisible}
-                isLoading={customerDeleteForm.isLoading}
-                errorMessage={customerDeleteForm.errorMessage}
-                name={activeCustomerId ? customers.data.find(elem => elem.id === activeCustomerId).name : null}
+                isVisible={isVisible.deleteForm}
+                isLoading={customersRequests.customersDelete.loading}
+                errors={customersRequests.customersDelete.errors}
+                name={
+                    activeCustomerId ?
+                        data.find(elem => elem.id === activeCustomerId).name :
+                        null
+                }
                 onSubmit={handleSubmitCustomerDeleteForm}
             />
-            <CustomerList customers={customers} loadCustomers={loadCustomers}/>
+            <CustomerList
+                customersRequest={customersRequests.customersGet}
+                customersData={data}
+                loadCustomers={loadCustomers}
+            />
         </section>
     )
 }
@@ -77,61 +89,68 @@ function CustomersPage(props) {
 CustomersPage.propTypes = {
     loadCustomers: PropTypes.func.isRequired,
     toggleAddForm: PropTypes.func.isRequired,
-    postAddForm: PropTypes.func.isRequired,
     toggleChangeForm: PropTypes.func.isRequired,
-    putChangeForm: PropTypes.func.isRequired,
     toggleDeleteForm: PropTypes.func.isRequired,
-    deleteActiveCustomer: PropTypes.func.isRequired,
+    submitAddForm: PropTypes.func.isRequired,
+    submitChangeForm: PropTypes.func.isRequired,
+    submitDeleteForm: PropTypes.func.isRequired,
+    customersRequests: PropTypes.shape({
+        customersGet: PropTypes.shape({
+            loading: PropTypes.bool,
+            loaded: PropTypes.bool,
+            errors: PropTypes.object,
+        }),
+        customersPost: PropTypes.shape({
+            loading: PropTypes.bool,
+            loaded: PropTypes.bool,
+            errors: PropTypes.object,
+        }),
+        customersPut: PropTypes.shape({
+            loading: PropTypes.bool,
+            loaded: PropTypes.bool,
+            errors: PropTypes.object,
+        }),
+        customersDelete: PropTypes.shape({
+            loading: PropTypes.bool,
+            loaded: PropTypes.bool,
+            errors: PropTypes.object,
+        }),
+    }),
     customers: PropTypes.shape({
-        data: PropTypes.array.isRequired,
-        isLoading: PropTypes.bool.isRequired,
-        isLoaded: PropTypes.bool.isRequired,
-        errorLoadMessage: PropTypes.string.isRequired,
         activeCustomerId: PropTypes.number,
-        customerAddForm: PropTypes.shape({
-            isLoading: PropTypes.bool,
-            isVisible: PropTypes.bool,
-            errorMessage: PropTypes.string,
-        }),
-        customerChangeForm: PropTypes.shape({
-            isLoading: PropTypes.bool,
-            isVisible: PropTypes.bool,
-            errorMessage: PropTypes.string,
-        }),
-        customerDeleteForm: PropTypes.shape({
-            isLoading: PropTypes.bool,
-            isVisible: PropTypes.bool,
-            errorMessage: PropTypes.string,
-        })
-    })
+        isVisible: PropTypes.objectOf(PropTypes.bool),
+        data: PropTypes.array,
+    }),
 };
 
 const mapStateToProps = state => ({
     customers: state.customers,
+    customersRequests: state.request.customers,
+    state,
 });
 
 const mapDispatchToProps = dispatch => (
     {
         loadCustomers: () => {
-            dispatch(loadAllCustomersStart());
+            dispatch(loadAllCustomers());
         },
         toggleAddForm: () => {
             dispatch(toggleCustomerAddForm());
         },
-        postAddForm: (data) => {
-            dispatch(postCustomerAddForm(data));
-        },
         toggleChangeForm: () => {
             dispatch(toggleCustomerChangeForm());
-        },
-        putChangeForm: (data, id) => {
-            dispatch(putCustomerChangeForm(data, id));
         },
         toggleDeleteForm: () => {
             dispatch(toggleCustomerDeleteForm());
         },
-        deleteActiveCustomer: (id) => {
-            dispatch(deleteCustomer(id));
+        submitAddForm: (data) => {
+            dispatch(submitCustomerAddForm(data));
+        },
+        submitChangeForm: (data, id) => {
+            dispatch(submitCustomerChangeForm(data, id));
+        },
+        submitDeleteForm: (id) => {
+            dispatch(submitCustomerDeleteForm(id));
         },
 
     }

@@ -7,7 +7,9 @@ export function reducer(state = initialState, action) {
 
     switch (type) {
         case actionTypes.CUSTOMERS_DELETE:
+            console.log('-------------------')
             return {
+                ...state,
                 loading: true,
                 loaded: false,
                 errors: null,

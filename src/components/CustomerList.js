@@ -2,33 +2,36 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Customer from './Customer';
 
-
 export default class CustomerList extends Component {
     static propTypes = {
         loadCustomers: PropTypes.func.isRequired,
-        customers: PropTypes.shape({
-            data: PropTypes.array.isRequired,
-            isLoading: PropTypes.bool.isRequired,
-            isLoaded: PropTypes.bool.isRequired,
-            errorLoadMessage: PropTypes.string.isRequired,
-            activeCustomerId: PropTypes.number,
+        customersData: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.number,
+            name: PropTypes.string,
+            address: PropTypes.string,
+            phone: PropTypes.string,
+        })),
+        customersRequest: PropTypes.shape({
+            loading: PropTypes.bool.isRequired,
+            loaded: PropTypes.bool.isRequired,
+            errors: PropTypes.object,
         })
     };
 
     componentDidMount() {
-        const {loadCustomers, customers: {isLoaded, isLoading}} = this.props;
+        const {loadCustomers, customersRequest: {loaded, loading}} = this.props;
 
-        if (!isLoaded && !isLoading) {
+        if (!loaded && !loading) {
             loadCustomers();
         }
     }
 
     render() {
-        const {customers: {data, errorLoadMessage, isLoading}} = this.props;
+        const {customersRequest: {errors, loading}, customersData} = this.props;
         let customerItems;
 
-        if (data) {
-            customerItems = data.map(customer => (
+        if (customersData) {
+            customerItems = customersData.map(customer => (
                 <Customer
                     id={customer.id}
                     name={customer.name}
@@ -41,11 +44,11 @@ export default class CustomerList extends Component {
             customerItems = null;
         }
 
-        if (errorLoadMessage) {
+        if (errors) {
             return (
-                <p>Error: {errorLoadMessage}</p>
+                <p>Error: {errors}</p>
             );
-        } else if (isLoading) {
+        } else if (loading) {
             return (
                 <p>Wait a second, loading..."</p>
             );

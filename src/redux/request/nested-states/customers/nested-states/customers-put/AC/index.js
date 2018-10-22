@@ -17,7 +17,9 @@ export function customersPut(data, id) {
 export function customerPutSuccess(data) {
     return {
         type: actionTypes.CUSTOMERS_PUT_SUCCESS,
-        payload: {data},
+        payload: {
+            data,
+        },
     };
 }
 

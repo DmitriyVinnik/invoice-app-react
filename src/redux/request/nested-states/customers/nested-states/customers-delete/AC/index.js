@@ -4,7 +4,7 @@ export const actionTypes = {
     CUSTOMERS_DELETE_FAIL: 'CUSTOMERS_DELETE_FAIL',
 };
 
-export function customersDelete(id) {
+export function customerDelete(id) {
     return {
         type: actionTypes.CUSTOMERS_DELETE,
         payload: {id},

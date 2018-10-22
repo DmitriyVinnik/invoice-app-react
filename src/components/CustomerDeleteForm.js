@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const CustomerDeleteForm = props => {
-    const {name, isVisible, isLoading, errorMessage, onSubmit} = props;
+    const {name, isVisible, isLoading, errors, onSubmit} = props;
 
     return (
         <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
@@ -10,7 +10,7 @@ const CustomerDeleteForm = props => {
             <form onSubmit={onSubmit}>
                 <p>You really want to delete the customer: {name}</p>
                 <div>
-                    {errorMessage && (<span>Error: {errorMessage}</span>)}
+                    {errors && (<span>Error: {errors}</span>)}
                     <button
                         type='submit'
                         disabled={isLoading}
@@ -27,7 +27,7 @@ CustomerDeleteForm.propTypes = {
     name: PropTypes.string,
     isVisible: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    errorMessage: PropTypes.string.isRequired,
+    errors: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
 };
 
