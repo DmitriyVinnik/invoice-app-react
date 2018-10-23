@@ -103,6 +103,7 @@ class Toast extends Component {
                     }
                     onSubmit={this.handleSubmitCustomerDeleteForm}
                 />
+                <h1>Customers: </h1>
                 <CustomerList
                     customersRequest={customersRequests.customersGet}
                     customersData={data}
