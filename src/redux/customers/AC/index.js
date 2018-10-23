@@ -7,9 +7,6 @@ export const actionTypes = {
     CUSTOMERS_SUBMIT_ADD_FORM: 'CUSTOMERS_SUBMIT_ADD_FORM',
     CUSTOMERS_SUBMIT_CHANGE_FORM: 'CUSTOMERS_SUBMIT_CHANGE_FORM',
     CUSTOMERS_SUBMIT_DELETE_FORM: 'CUSTOMERS_SUBMIT_DELETE_FORM',
-    CUSTOMERS_TOGGLE_CHANGE_FORM: 'CUSTOMERS_TOGGLE_CHANGE_FORM',
-    CUSTOMERS_TOGGLE_ADD_FORM: 'CUSTOMERS_TOGGLE_ADD_FORM',
-    CUSTOMERS_TOGGLE_DELETE_FORM: 'CUSTOMERS_TOGGLE_DELETE_FORM',
     CUSTOMERS_SELECT_ACTIVE: 'CUSTOMERS_SELECT_ACTIVE',
     CUSTOMERS_RESET_SELECTION_ACTIVE: 'CUSTOMERS_RESET_SELECTION_ACTIVE',
 };
@@ -64,23 +61,11 @@ export function resetSelectionCustomer() {
     }
 }
 
-export function toggleCustomerAddForm() {
-    return {
-        type: actionTypes.CUSTOMERS_TOGGLE_ADD_FORM,
-    }
-}
-
 export function submitCustomerAddForm(data) {
     return {
         type: actionTypes.CUSTOMERS_SUBMIT_ADD_FORM,
         payload: {data},
     };
-}
-
-export function toggleCustomerChangeForm() {
-    return {
-        type: actionTypes.CUSTOMERS_TOGGLE_CHANGE_FORM,
-    }
 }
 
 export function submitCustomerChangeForm(data, id) {
@@ -91,12 +76,6 @@ export function submitCustomerChangeForm(data, id) {
             id,
         }
     };
-}
-
-export function toggleCustomerDeleteForm() {
-    return {
-        type: actionTypes.CUSTOMERS_TOGGLE_DELETE_FORM,
-    }
 }
 
 export function submitCustomerDeleteForm(id) {

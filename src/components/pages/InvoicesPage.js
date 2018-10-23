@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const InvoicesPage = props => {
     return (
@@ -9,6 +9,6 @@ const InvoicesPage = props => {
     );
 };
 
-InvoicesPage.propTypes = {};
+// InvoicesPage.propTypes = {};
 
 export default InvoicesPage;

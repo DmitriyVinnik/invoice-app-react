@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
@@ -9,122 +9,142 @@ import CustomerDeleteForm from '../CustomerDeleteForm';
 import EditPanel from '../EditPanel';
 
 import {
-    toggleCustomerAddForm, toggleCustomerChangeForm, toggleCustomerDeleteForm,
     submitCustomerAddForm, submitCustomerChangeForm, submitCustomerDeleteForm,
     loadAllCustomers,
 } from '../../redux/customers/AC'
 
-function CustomersPage(props) {
-    const {
-        customersRequests, loadCustomers,
-        toggleDeleteForm, toggleAddForm, toggleChangeForm,
-        submitAddForm, submitDeleteForm, submitChangeForm,
-        customers: {activeCustomerId, isVisible, data}
-    } = props;
-    const handleSubmitCustomerAddForm = (values) => {
-        submitAddForm(values);
+class CustomersPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isVisibleAddForm: false,
+            isVisibleChangeForm: false,
+            isVisibleDeleteForm: false,
+        };
+    }
+
+    handleSubmitCustomerAddForm = (values) => {
+        this.props.submitAddForm(values);
     };
-    const handleSubmitCustomerChangeForm = (values) => {
+    handleSubmitCustomerChangeForm = (values) => {
+        const {customers: {activeCustomerId}, submitChangeForm} = this.props;
+
         submitChangeForm(values, activeCustomerId);
     };
-    const handleSubmitCustomerDeleteForm = (evt) => {
+    handleSubmitCustomerDeleteForm = (evt) => {
+        const {customers: {activeCustomerId}, submitDeleteForm} = this.props;
+
         evt.preventDefault();
         if (activeCustomerId) {
             submitDeleteForm(activeCustomerId);
         } else {
-            toggleDeleteForm();
+            this.handleButtonCustomerDeleteClick();
         }
     };
-    const handleButtonCustomerAddClick = () => {
-        toggleAddForm();
+    handleButtonCustomerAddClick = () => {
+        this.setState({
+            isVisibleAddForm: !this.state.isVisibleAddForm,
+            isVisibleChangeForm: false,
+            isVisibleDeleteForm: false,
+        });
     };
-    const handleButtonCustomerChangeClick = () => {
-        toggleChangeForm();
+    handleButtonCustomerChangeClick = () => {
+        this.setState({
+            isVisibleChangeForm: !this.state.isVisibleChangeForm,
+            isVisibleAddForm: false,
+            isVisibleDeleteForm: false,
+        });
     };
-    const handleButtonCustomerDeleteClick = () => {
-        toggleDeleteForm();
+    handleButtonCustomerDeleteClick = () => {
+        this.setState({
+            isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
+            isVisibleAddForm: false,
+            isVisibleChangeForm: false,
+        });
     };
-    return (
-        <section>
-            <EditPanel
-                onAddButtonClick={handleButtonCustomerAddClick}
-                onChangeButtonClick={handleButtonCustomerChangeClick}
-                onDeleteButtonClick={handleButtonCustomerDeleteClick}
-                activeId={activeCustomerId}
-                formsState={{
-                    isVisibleAddForm: isVisible.addForm,
-                    isVisibleChangeForm: isVisible.changeForm,
-                    isVisibleDeleteForm: isVisible.deleteForm,
-                }}
-            />
-            <CustomerAddForm
-                isVisible={isVisible.addForm}
-                isLoading={customersRequests.customersPost.loading}
-                errors={customersRequests.customersPost.errors}
-                onSubmit={handleSubmitCustomerAddForm}
-            />
-            <CustomerChangeForm
-                isVisible={isVisible.changeForm}
-                isLoading={customersRequests.customersPut.loading}
-                errors={customersRequests.customersPut.errors}
-                onSubmit={handleSubmitCustomerChangeForm}
-            />
-            <CustomerDeleteForm
-                isVisible={isVisible.deleteForm}
-                isLoading={customersRequests.customersDelete.loading}
-                errors={customersRequests.customersDelete.errors}
-                name={
-                    activeCustomerId ?
-                        data.find(elem => elem.id === activeCustomerId).name :
-                        null
-                }
-                onSubmit={handleSubmitCustomerDeleteForm}
-            />
-            <CustomerList
-                customersRequest={customersRequests.customersGet}
-                customersData={data}
-                loadCustomers={loadCustomers}
-            />
-        </section>
-    )
-}
 
-CustomersPage.propTypes = {
-    loadCustomers: PropTypes.func.isRequired,
-    toggleAddForm: PropTypes.func.isRequired,
-    toggleChangeForm: PropTypes.func.isRequired,
-    toggleDeleteForm: PropTypes.func.isRequired,
-    submitAddForm: PropTypes.func.isRequired,
-    submitChangeForm: PropTypes.func.isRequired,
-    submitDeleteForm: PropTypes.func.isRequired,
-    customersRequests: PropTypes.shape({
-        customersGet: PropTypes.shape({
-            loading: PropTypes.bool,
-            loaded: PropTypes.bool,
-            errors: PropTypes.object,
+    render() {
+        const {customers: {activeCustomerId, data}, customersRequests, loadCustomers} = this.props;
+        const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
+
+        return (
+            <section>
+                <EditPanel
+                    onAddButtonClick={this.handleButtonCustomerAddClick}
+                    onChangeButtonClick={this.handleButtonCustomerChangeClick}
+                    onDeleteButtonClick={this.handleButtonCustomerDeleteClick}
+                    activeId={activeCustomerId}
+                    formsState={{
+                        isVisibleAddForm: isVisibleAddForm,
+                        isVisibleChangeForm: isVisibleChangeForm,
+                        isVisibleDeleteForm: isVisibleDeleteForm,
+                    }}
+                />
+                <CustomerAddForm
+                    isVisible={isVisibleAddForm}
+                    isLoading={customersRequests.customersPost.loading}
+                    errors={customersRequests.customersPost.errors}
+                    onSubmit={this.handleSubmitCustomerAddForm}
+                />
+                <CustomerChangeForm
+                    isVisible={isVisibleChangeForm}
+                    isLoading={customersRequests.customersPut.loading}
+                    errors={customersRequests.customersPut.errors}
+                    onSubmit={this.handleSubmitCustomerChangeForm}
+                />
+                <CustomerDeleteForm
+                    isVisible={isVisibleDeleteForm}
+                    isLoading={customersRequests.customersDelete.loading}
+                    errors={customersRequests.customersDelete.errors}
+                    name={
+                        activeCustomerId ?
+                            data.find(elem => elem.id === activeCustomerId).name :
+                            null
+                    }
+                    onSubmit={this.handleSubmitCustomerDeleteForm}
+                />
+                <CustomerList
+                    customersRequest={customersRequests.customersGet}
+                    customersData={data}
+                    loadCustomers={loadCustomers}
+                />
+            </section>
+        )
+    }
+
+    static propTypes = {
+        loadCustomers: PropTypes.func.isRequired,
+        submitAddForm: PropTypes.func.isRequired,
+        submitChangeForm: PropTypes.func.isRequired,
+        submitDeleteForm: PropTypes.func.isRequired,
+        customersRequests: PropTypes.shape({
+            customersGet: PropTypes.shape({
+                loading: PropTypes.bool,
+                loaded: PropTypes.bool,
+                errors: PropTypes.object,
+            }),
+            customersPost: PropTypes.shape({
+                loading: PropTypes.bool,
+                loaded: PropTypes.bool,
+                errors: PropTypes.object,
+            }),
+            customersPut: PropTypes.shape({
+                loading: PropTypes.bool,
+                loaded: PropTypes.bool,
+                errors: PropTypes.object,
+            }),
+            customersDelete: PropTypes.shape({
+                loading: PropTypes.bool,
+                loaded: PropTypes.bool,
+                errors: PropTypes.object,
+            }),
         }),
-        customersPost: PropTypes.shape({
-            loading: PropTypes.bool,
-            loaded: PropTypes.bool,
-            errors: PropTypes.object,
+        customers: PropTypes.shape({
+            activeCustomerId: PropTypes.number,
+            data: PropTypes.array,
         }),
-        customersPut: PropTypes.shape({
-            loading: PropTypes.bool,
-            loaded: PropTypes.bool,
-            errors: PropTypes.object,
-        }),
-        customersDelete: PropTypes.shape({
-            loading: PropTypes.bool,
-            loaded: PropTypes.bool,
-            errors: PropTypes.object,
-        }),
-    }),
-    customers: PropTypes.shape({
-        activeCustomerId: PropTypes.number,
-        isVisible: PropTypes.objectOf(PropTypes.bool),
-        data: PropTypes.array,
-    }),
-};
+    };
+}
 
 const mapStateToProps = state => ({
     customers: state.customers,
@@ -135,15 +155,6 @@ const mapDispatchToProps = dispatch => (
     {
         loadCustomers: () => {
             dispatch(loadAllCustomers());
-        },
-        toggleAddForm: () => {
-            dispatch(toggleCustomerAddForm());
-        },
-        toggleChangeForm: () => {
-            dispatch(toggleCustomerChangeForm());
-        },
-        toggleDeleteForm: () => {
-            dispatch(toggleCustomerDeleteForm());
         },
         submitAddForm: (data) => {
             dispatch(submitCustomerAddForm(data));

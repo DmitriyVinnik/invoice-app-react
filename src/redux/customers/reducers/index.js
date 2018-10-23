@@ -53,44 +53,6 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 activeCustomerId: null,
-                isVisible: {
-                    ...state.isVisible,
-                    changeForm: false,
-                    deleteForm: false,
-                },
-            };
-        }
-
-        case actionTypes.CUSTOMERS_TOGGLE_ADD_FORM: {
-            return {
-                ...state,
-                isVisible: {
-                    addForm: !state.isVisible.addForm,
-                    changeForm: false,
-                    deleteForm: false,
-                },
-            };
-        }
-
-        case actionTypes.CUSTOMERS_TOGGLE_CHANGE_FORM: {
-            return {
-                ...state,
-                isVisible: {
-                    addForm: false,
-                    changeForm: !state.isVisible.changeForm,
-                    deleteForm: false,
-                },
-            };
-        }
-
-        case actionTypes.CUSTOMERS_TOGGLE_DELETE_FORM: {
-            return {
-                ...state,
-                isVisible: {
-                    addForm: false,
-                    changeForm: false,
-                    deleteForm: !state.isVisible.deleteForm,
-                },
             };
         }
 

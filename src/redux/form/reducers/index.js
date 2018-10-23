@@ -19,7 +19,8 @@ const formReducer = reducer.plugin({
         const {type, payload} = action;
 
         switch (type) {
-            case customersRequestAC.customersPut.actionTypes.CUSTOMERS_PUT_SUCCESS:
+
+            case customersAC.actionTypes.CUSTOMERS_RESET_SELECTION_ACTIVE:
                 return undefined;
 
             case customersAC.actionTypes.CUSTOMERS_SELECT_ACTIVE:
