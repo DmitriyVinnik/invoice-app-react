@@ -1,12 +1,16 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import App from './App';
 import store from '../redux/store';
+import CssBaseLine from '@material-ui/core/CssBaseline';
+import App from './App';
 
 export default function Root() {
     return (
-        <Provider store={store}>
-            <App/>
-        </Provider>
+        <React.Fragment>
+            <CssBaseLine/>
+            <Provider store={store}>
+                <App/>
+            </Provider>
+        </React.Fragment>
     );
 }

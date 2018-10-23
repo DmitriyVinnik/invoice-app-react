@@ -13,7 +13,7 @@ import {
     loadAllCustomers,
 } from '../../redux/customers/AC'
 
-class CustomersPage extends Component {
+class Toast extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -169,4 +169,4 @@ const mapDispatchToProps = dispatch => (
     }
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomersPage);
+export default connect(mapStateToProps, mapDispatchToProps)(Toast);

@@ -1,5 +1,6 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch, NavLink} from "react-router-dom";
+import Toast from './Toast';
 import CustomersPage from './pages/CustomersPage';
 import ProductsPage from './pages/ProductsPage';
 import InvoicesPage from './pages/InvoicesPage';
@@ -10,6 +11,7 @@ export default function App() {
         <Router>
             <div>
                 <nav>
+                    <Toast/>
                     <ul>
                         <li>
                             <NavLink exact to="/" activeStyle={{backgroundColor: 'red'}}>Customer</NavLink>
