@@ -17,6 +17,7 @@ export function reducer(state = initialState, action) {
             return {
                 isOpen: false,
                 message: null,
+                error: null,
             };
         }
 

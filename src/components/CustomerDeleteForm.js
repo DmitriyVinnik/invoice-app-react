@@ -8,7 +8,7 @@ const CustomerDeleteForm = props => {
         <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
             <h2>Delete customer</h2>
             <form onSubmit={onSubmit}>
-                <p>You really want to delete the customer: {name}</p>
+                {name && <p>You really want to delete the customer: {name}</p>}
                 <div>
                     {errors && (<span>Error: {errors}</span>)}
                     <button

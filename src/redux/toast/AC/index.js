@@ -3,7 +3,7 @@ export const actionTypes = {
     TOAST_HIDE: 'TOAST_HIDE',
 };
 
-export function showToast(message, error) {
+export function showToast(message, error = null) {
     return {
         type: actionTypes.TOAST_SHOW,
         payload: {
