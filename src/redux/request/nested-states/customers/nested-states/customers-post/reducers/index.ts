@@ -1,36 +1,41 @@
-import {actionTypes} from '../AC';
+import * as fromActions from '../AC';
 import {initialState} from '../states';
+import {RequestNestedState} from  '../../../states'
 
+export function reducer(state = initialState, action: fromActions.Actions): RequestNestedState {
 
-export function reducer(state = initialState, action) {
-    const {type, payload} = action;
-
-    switch (type) {
-        case actionTypes.CUSTOMERS_DELETE:
-
+    switch (action.type) {
+        case fromActions.ActionTypes.CUSTOMERS_POST: {
             return {
-                ...state,
                 loading: true,
                 loaded: false,
                 errors: null,
                 data: null,
             };
+        }
 
-        case actionTypes.CUSTOMERS_DELETE_SUCCESS:
+        case fromActions.ActionTypes.CUSTOMERS_POST_SUCCESS: {
+            const {payload} = action;
+
             return {
                 ...state,
                 loading: false,
                 loaded: true,
                 data: payload.data,
             };
+        }
 
 
-        case actionTypes.CUSTOMERS_DELETE_FAIL:
+
+        case fromActions.ActionTypes.CUSTOMERS_POST_FAIL: {
+            const {payload} = action;
+
             return {
                 ...state,
                 loading: false,
                 errors: payload.errors,
             };
+        }
 
         default:
             return state;

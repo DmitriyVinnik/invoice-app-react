@@ -4,7 +4,7 @@ import {
     actionTypes, setCustomersData, updateCustomersDataAfterPostRequest,
     updateCustomersDataAfterPutRequest, updateCustomersDataAfterDeleteRequest,
 } from '../AC';
-import {customersRequestAC} from '../../request/nested-states/customers/AC';
+import {customersRequestAC} from '../../request/nested-states/customers/AC/index';
 
 const loadAllCustomersEpic = action$ => action$.pipe(
     ofType(actionTypes.CUSTOMERS_LOAD_ALL),

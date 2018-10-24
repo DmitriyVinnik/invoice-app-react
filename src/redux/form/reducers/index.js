@@ -1,5 +1,5 @@
 import {reducer} from 'redux-form';
-import {customersRequestAC} from '../../request/nested-states/customers/AC';
+import {customersRequestAC} from '../../request/nested-states/customers/AC/index';
 import * as customersAC from '../../customers/AC';
 
 const formReducer = reducer.plugin({

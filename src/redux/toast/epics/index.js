@@ -1,7 +1,7 @@
 import {ofType} from 'redux-observable';
 import {map} from 'rxjs/operators';
 import {showToast} from '../AC';
-import {customersRequestAC} from '../../request/nested-states/customers/AC';
+import {customersRequestAC} from '../../request/nested-states/customers/AC/index';
 
 const showCustomerSuccessRequestToastEpic = action$ => action$.pipe(
     ofType(
