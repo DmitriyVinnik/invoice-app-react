@@ -8,6 +8,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
+window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
+
 const styles = theme => ({
     close: {
         padding: theme.spacing.unit / 2,
@@ -37,7 +39,6 @@ let Toast = (props) => {
             <span>{message}</span>
         )
     };
-    window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
     return (
         <div>

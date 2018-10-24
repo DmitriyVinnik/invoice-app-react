@@ -3,22 +3,35 @@ import {map} from 'rxjs/operators';
 import {showToast} from '../AC';
 import {customersRequestAC} from '../../request/nested-states/customers/AC';
 
-const showCustomerAddFormToastEpic = action$ => action$.pipe(
-    ofType(customersRequestAC.customersPost.actionTypes.CUSTOMERS_POST_SUCCESS),
-    map((action) => showToast(`Customer: ${action.payload.data.name} created successfully`))
+const showCustomerSuccessRequestToastEpic = action$ => action$.pipe(
+    ofType(
+        customersRequestAC.customersPost.actionTypes.CUSTOMERS_POST_SUCCESS,
+        customersRequestAC.customersPut.actionTypes.CUSTOMERS_PUT_SUCCESS,
+        customersRequestAC.customersDelete.actionTypes.CUSTOMERS_DELETE_SUCCESS,
+    ),
+    map((action) => {
+        const {type, payload} = action;
+
+        switch (type) {
+            case customersRequestAC.customersPost.actionTypes.CUSTOMERS_POST_SUCCESS: {
+               return showToast(`Customer: ${payload.data.name} created successfully`)
+            }
+
+            case customersRequestAC.customersPut.actionTypes.CUSTOMERS_PUT_SUCCESS: {
+                return showToast(`Customer: ${payload.data.name} updated successfully`)
+            }
+
+            case customersRequestAC.customersDelete.actionTypes.CUSTOMERS_DELETE_SUCCESS: {
+                return showToast(`Customer: ${payload.data.name} deleted successfully`)
+            }
+
+            default:
+                return null;
+        }
+    })
 );
 
-const showCustomerChangeFormToastEpic = action$ => action$.pipe(
-    ofType(customersRequestAC.customersPut.actionTypes.CUSTOMERS_PUT_SUCCESS),
-    map((action) => showToast(`Customer: ${action.payload.data.name} updated successfully`))
-);
-
-const showCustomerDeleteFormToastEpic = action$ => action$.pipe(
-    ofType(customersRequestAC.customersDelete.actionTypes.CUSTOMERS_DELETE_SUCCESS),
-    map((action) => showToast(`Customer: ${action.payload.data.name} deleted successfully`))
-);
-
-const showCustomerErrorToastEpic = action$ => action$.pipe(
+const showCustomerErrorRequestToastEpic = action$ => action$.pipe(
     ofType(
         customersRequestAC.customersGet.actionTypes.CUSTOMERS_GET_FAIL,
         customersRequestAC.customersPost.actionTypes.CUSTOMERS_POST_FAIL,
@@ -28,10 +41,7 @@ const showCustomerErrorToastEpic = action$ => action$.pipe(
     map((action) => showToast(null, `Something went wrong! Error: ${action.payload.errors}`))
 );
 
-
 export const toastEpics = [
-    showCustomerAddFormToastEpic,
-    showCustomerChangeFormToastEpic,
-    showCustomerDeleteFormToastEpic,
-    showCustomerErrorToastEpic,
+    showCustomerSuccessRequestToastEpic,
+    showCustomerErrorRequestToastEpic,
 ];
