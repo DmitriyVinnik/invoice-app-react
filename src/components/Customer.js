@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {selectCustomer, resetSelectionCustomer} from '../redux/customers/AC'
+import {selectCustomer, resetSelectionCustomer} from '../redux/customers/AC/index'
 
 function Customer(props) {
     const {

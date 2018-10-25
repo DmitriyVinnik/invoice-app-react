@@ -11,7 +11,7 @@ import EditPanel from '../EditPanel';
 import {
     submitCustomerAddForm, submitCustomerChangeForm, submitCustomerDeleteForm,
     loadAllCustomers,
-} from '../../redux/customers/AC'
+} from '../../redux/customers/AC/index'
 
 class Toast extends Component {
     constructor(props) {

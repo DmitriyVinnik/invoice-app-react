@@ -1,13 +1,23 @@
-import * as customersDelete from '../nested-states/customers-delete/AC/index';
-import * as customersGet from '../nested-states/customers-get/AC/index';
-import * as customersPost from '../nested-states/customers-post/AC/index';
-import * as customersPut from '../nested-states/customers-put/AC/index';
+import * as customersDelete from '../nested-states/customers-delete/AC';
+import * as customersGet from '../nested-states/customers-get/AC';
+import * as customersPost from '../nested-states/customers-post/AC';
+import * as customersPut from '../nested-states/customers-put/AC';
+import {ActionsUnion} from '../../../../../shared/types/ActionsUnion';
+export {Customer} from '../../../../customers/states'
 
-export interface RequestPayload {
-    data?: any,
-    id?: number,
-    errors?: string,
-}
+const requestActionsFail = {
+    get: customersGet.Actions.customersGetFail,
+    post: customersPost.Actions.customersPostFail,
+    put: customersPut.Actions.customersPutFail,
+    delete: customersDelete.Actions.customersDeleteFail,
+};
+
+const requestActionsSuccess = {
+    get: customersGet.Actions.customersGetSuccess,
+    post: customersPost.Actions.customersPostSuccess,
+    put: customersPut.Actions.customersPutSuccess,
+    delete: customersDelete.Actions.customersDeleteSuccess,
+};
 
 export const customersRequestAC = {
     customersDelete,
@@ -15,3 +25,7 @@ export const customersRequestAC = {
     customersPost,
     customersPut,
 };
+
+
+export type RequestActionsFail = ActionsUnion<typeof requestActionsFail>
+export type RequestActionsSuccess = ActionsUnion<typeof requestActionsSuccess>

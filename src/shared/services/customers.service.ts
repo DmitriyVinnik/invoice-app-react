@@ -1,10 +1,12 @@
-import {ajax} from 'rxjs/ajax';
+import {ajax, AjaxResponse} from 'rxjs/ajax';
+import {Observable} from 'rxjs';
+import {RequestPayload} from '../../redux/request/nested-states/customers/AC';
 
 const CUSTOMERS_URL = 'http://localhost:8000/api/customers/';
 
 class CustomersService {
 
-    postCustomer(payload) {
+    public postCustomer(payload: RequestPayload): Observable<AjaxResponse> {
         return ajax.post(
             CUSTOMERS_URL,
             JSON.stringify(payload.data),
@@ -14,11 +16,11 @@ class CustomersService {
         )
     }
 
-    getCustomer() {
-        return ajax.getJSON(CUSTOMERS_URL)
+    public getCustomer(): Observable<AjaxResponse> {
+        return ajax.get(CUSTOMERS_URL)
     }
 
-    putCustomer(payload) {
+    public putCustomer(payload: RequestPayload): Observable<AjaxResponse> {
         return ajax.put(
             CUSTOMERS_URL + payload.id,
             JSON.stringify(payload.data),
@@ -28,7 +30,7 @@ class CustomersService {
         )
     }
 
-    deleteCustomer(payload) {
+    public deleteCustomer(payload: RequestPayload): Observable<AjaxResponse> {
         return ajax.delete(CUSTOMERS_URL + payload.id)
     }
 }

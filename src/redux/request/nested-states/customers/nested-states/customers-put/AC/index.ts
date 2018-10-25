@@ -1,6 +1,6 @@
 import {ActionsUnion} from '../../../../../../../shared/types/ActionsUnion';
 import {createAction} from '../../../../../../../shared/helpers/createAction'
-import {RequestPayload} from '../../../AC'
+import {Customer} from '../../../AC'
 
 export enum ActionTypes {
     CUSTOMERS_PUT = 'CUSTOMERS_PUT',
@@ -9,9 +9,15 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    customersPut: ({data, id}: RequestPayload) => createAction(ActionTypes.CUSTOMERS_PUT, {data, id}),
-    customersPutSuccess: ({data}: RequestPayload) => createAction(ActionTypes.CUSTOMERS_PUT_SUCCESS, {data}),
-    customersPutFail: ({errors}: RequestPayload) => createAction(ActionTypes.CUSTOMERS_PUT_FAIL, {errors}),
+    customersPut: (data: Customer[], id: number) => {
+        return createAction(ActionTypes.CUSTOMERS_PUT, {data, id})
+    },
+    customersPutSuccess: (data: Customer) => {
+        return createAction(ActionTypes.CUSTOMERS_PUT_SUCCESS, {data})
+    },
+    customersPutFail: (errors: string) => {
+        return createAction(ActionTypes.CUSTOMERS_PUT_FAIL, {errors})
+    },
 };
 
 export type Actions = ActionsUnion<typeof Actions>

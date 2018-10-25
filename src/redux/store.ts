@@ -1,15 +1,24 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {combineEpics, createEpicMiddleware} from 'redux-observable';
 
-import formReducer from './form/reducers';
-import {reducer as customersReducer} from './customers/reducers';
+import formReducer from './form/reducers/index';
+import {reducer as customersReducer} from './customers/reducers/index';
 import {reducer as toastReducer} from './toast/reducers';
 import {requestReducer} from './request/reducers';
 
 import {requestEpics} from './request/epics';
-import {customersEpics} from './customers/epics';
+import {customersEpics} from './customers/epics/index';
 import {toastEpics} from './toast/epics';
 
+import {RequestState} from './request/states';
+import {ToastState} from './toast/states';
+
+declare var window: any;
+
+export interface Rootstate {
+    request?: RequestState,
+    toast?: ToastState,
+}
 
 const rootReducer = combineReducers({
     customers: customersReducer,
@@ -28,6 +37,7 @@ const epicMiddleware = createEpicMiddleware();
 
 const store = createStore(
     rootReducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     applyMiddleware(epicMiddleware),
 );
 

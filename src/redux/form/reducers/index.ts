@@ -1,5 +1,5 @@
 import {reducer} from 'redux-form';
-import {customersRequestAC} from '../../request/nested-states/customers/AC/index';
+import {customersRequestAC} from '../../request/nested-states/customers/AC';
 import * as customersAC from '../../customers/AC';
 
 const formReducer = reducer.plugin({
@@ -7,7 +7,7 @@ const formReducer = reducer.plugin({
         const {type} = action;
 
         switch (type) {
-            case customersRequestAC.customersPost.actionTypes.CUSTOMERS_POST_SUCCESS:
+            case customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_SUCCESS:
                 return undefined;
 
             default:
@@ -20,11 +20,11 @@ const formReducer = reducer.plugin({
 
         switch (type) {
 
-            case customersAC.actionTypes.CUSTOMERS_RESET_SELECTION_ACTIVE:
+            case customersAC.ActionTypes.CUSTOMERS_RESET_SELECTION_ACTIVE:
                 return undefined;
 
-            case customersAC.actionTypes.CUSTOMERS_SELECT_ACTIVE:
-                const activeCustomer = payload.data.find(customer => customer.id === payload.id);
+            case customersAC.ActionTypes.CUSTOMERS_SELECT_ACTIVE:
+                const activeCustomer = payload.data.find((customer: any) => customer.id === payload.id);
 
                 return {
                     ...state,
