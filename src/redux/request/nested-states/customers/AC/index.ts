@@ -3,7 +3,13 @@ import * as customersGet from '../nested-states/customers-get/AC';
 import * as customersPost from '../nested-states/customers-post/AC';
 import * as customersPut from '../nested-states/customers-put/AC';
 import {ActionsUnion} from '../../../../../shared/types/ActionsUnion';
-export {Customer} from '../../../../customers/states'
+import {Customer} from "../../../../customers/states";
+
+export interface RequestPayload {
+    data?: Customer,
+    errors?: string,
+    id?: number
+}
 
 const requestActionsFail = {
     get: customersGet.Actions.customersGetFail,

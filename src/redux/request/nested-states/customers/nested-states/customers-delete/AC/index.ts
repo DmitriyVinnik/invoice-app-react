@@ -1,6 +1,6 @@
 import {ActionsUnion} from '../../../../../../../shared/types/ActionsUnion';
 import {createAction} from '../../../../../../../shared/helpers/createAction';
-import {Customer} from '../../../AC';
+import {Customer} from '../../../../../../customers/states';
 
 export enum ActionTypes {
     CUSTOMERS_DELETE = 'CUSTOMERS_DELETE',

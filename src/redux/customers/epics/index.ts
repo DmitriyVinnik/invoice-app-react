@@ -63,19 +63,19 @@ const submitCustomerFormsEpic = (action$: Observable<Action>) => action$.pipe(
             case fromActions.ActionTypes.CUSTOMERS_SUBMIT_ADD_FORM: {
                 const {data} = action.payload;
 
-                return customersRequestAC.customersPost.Actions.customersPost({data})
+                return customersRequestAC.customersPost.Actions.customersPost(data)
             }
 
             case fromActions.ActionTypes.CUSTOMERS_SUBMIT_CHANGE_FORM: {
                 const {data, id} = action.payload;
 
-                return customersRequestAC.customersPut.Actions.customersPut({data, id})
+                return customersRequestAC.customersPut.Actions.customersPut(data, id)
             }
 
             case fromActions.ActionTypes.CUSTOMERS_SUBMIT_DELETE_FORM: {
                 const {id} = action.payload;
 
-                return customersRequestAC.customersDelete.Actions.customersDelete({id})
+                return customersRequestAC.customersDelete.Actions.customersDelete(id)
             }
 
             default:

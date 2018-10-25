@@ -18,21 +18,21 @@ const showCustomerSuccessRequestToastEpic = (action$: Observable<Action>) => act
                 const name = action.payload.data.name;
                 const message = `Customer: ${name} created successfully`;
 
-                return fromActions.Actions.showToast({message})
+                return fromActions.Actions.showToast(message)
             }
 
             case customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_SUCCESS: {
                 const name = action.payload.data.name;
                 const message = `Customer: ${name} updated successfully`;
 
-                return fromActions.Actions.showToast({message})
+                return fromActions.Actions.showToast(message)
             }
 
             case customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_SUCCESS: {
                 const name = action.payload.data.name;
                 const message = `Customer: ${name} deleted successfully`;
 
-                return fromActions.Actions.showToast({message})
+                return fromActions.Actions.showToast(message)
             }
 
             default:
@@ -52,7 +52,7 @@ const showCustomerErrorRequestToastEpic = (action$: Observable<Action>) => actio
         const requestError = action.payload.errors;
         const error = `Something went wrong! Error: ${requestError}`;
 
-        return fromActions.Actions.showToast({error})
+        return fromActions.Actions.showToast(null, error)
     })
 );
 

@@ -7,15 +7,19 @@ import {reducer as toastReducer} from './toast/reducers';
 import {requestReducer} from './request/reducers';
 
 import {requestEpics} from './request/epics';
-import {customersEpics} from './customers/epics/index';
+import {customersEpics} from './customers/epics';
 import {toastEpics} from './toast/epics';
 
 import {RequestState} from './request/states';
 import {ToastState} from './toast/states';
+import {CustomersState} from './customers/states';
+import {FormState} from 'redux-form';
 
 declare var window: any;
 
 export interface Rootstate {
+    customers: CustomersState,
+    form: FormState,
     request?: RequestState,
     toast?: ToastState,
 }
