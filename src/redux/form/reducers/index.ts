@@ -1,43 +1,37 @@
 import {reducer, FormState} from 'redux-form';
 import {customersRequestAC, RequestActionsSuccess} from '../../request/nested-states/customers/AC';
 import * as customersAC from '../../customers/AC';
-import {Customer} from '../../customers/states';
+import {CustomerDataForServer} from '../../customers/states';
 
 const formReducer = reducer.plugin({
-    customerAdd: (state, action: RequestActionsSuccess): FormState => {
+    customerAdd: (state, action: RequestActionsSuccess): FormState | undefined => {
         const {type} = action;
 
         switch (type) {
             case customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_SUCCESS:
-                return {
-                    ...state,
-                    values: undefined
-                };
+                return undefined;
 
             default:
                 return state;
         }
     },
 
-    customerChange: (state, action: customersAC.Actions): FormState => {
+    customerChange: (state, action: customersAC.Actions): FormState | undefined => {
 
         switch (action.type) {
 
             case customersAC.ActionTypes.CUSTOMERS_RESET_SELECTION_ACTIVE:
-                return {
-                    ...state,
-                    values: undefined,
-                };
+                return undefined;
 
             case customersAC.ActionTypes.CUSTOMERS_SELECT_ACTIVE:
                 const {payload} = action;
                 const customer = payload.data.find((customer) => customer.id === payload.id);
-                const emptyCustomer: Customer = {
+                const emptyCustomer: CustomerDataForServer = {
                     name: '',
                     address: '',
                     phone: '',
                 };
-                const activeCustomer: Customer = !!customer ? customer : emptyCustomer;
+                const activeCustomer = !!customer ? customer : emptyCustomer;
 
 
                 return {

@@ -13,15 +13,15 @@ import {toastEpics} from './toast/epics';
 import {RequestState} from './request/states';
 import {ToastState} from './toast/states';
 import {CustomersState} from './customers/states';
-import {FormState} from 'redux-form';
+import {FormsState} from './form/states';
 
 declare var window: any;
 
-export interface Rootstate {
+export interface RootState {
     customers: CustomersState,
-    form: FormState,
-    request?: RequestState,
-    toast?: ToastState,
+    form: FormsState,
+    request: RequestState,
+    toast: ToastState,
 }
 
 const rootReducer = combineReducers({

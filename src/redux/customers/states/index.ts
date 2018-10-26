@@ -1,8 +1,11 @@
-export interface Customer {
-    id?: number,
+export interface CustomerDataForServer {
     name: string,
     address: string,
     phone: string,
+}
+
+export interface Customer extends CustomerDataForServer{
+    id: number,
 }
 
 export interface CustomersState {

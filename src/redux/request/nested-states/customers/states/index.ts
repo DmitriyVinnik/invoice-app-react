@@ -5,10 +5,10 @@ import {initialState as customersDeleteState} from '../nested-states/customers-d
 import {Customer} from '../../../../customers/states';
 
 export interface RequestNestedState {
-    loading?: boolean;
-    loaded?: boolean;
-    errors?: any;
-    data?: Customer[] | Customer | null;
+    loading: boolean;
+    loaded: boolean;
+    errors: string | null;
+    data: Customer[] | Customer | null;
 }
 
 export interface CustomersRequestState {

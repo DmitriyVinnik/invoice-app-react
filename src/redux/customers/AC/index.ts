@@ -1,6 +1,6 @@
 import {ActionsUnion} from '../../../shared/types/ActionsUnion';
 import {createAction} from '../../../shared/helpers/createAction';
-import {Customer} from '../states'
+import {Customer, CustomerDataForServer} from '../states'
 
 export enum ActionTypes {
     CUSTOMERS_LOAD_ALL = 'CUSTOMERS_LOAD_ALL',
@@ -37,10 +37,10 @@ export const Actions = {
     resetSelectionCustomer: () => {
         return createAction(ActionTypes.CUSTOMERS_RESET_SELECTION_ACTIVE)
     },
-    submitCustomerAddForm: (data: Customer) => {
+    submitCustomerAddForm: (data: CustomerDataForServer) => {
         return createAction(ActionTypes.CUSTOMERS_SUBMIT_ADD_FORM, {data})
     },
-    submitCustomerChangeForm: (data: Customer, id: number) => {
+    submitCustomerChangeForm: (data: CustomerDataForServer, id: number) => {
         return createAction(ActionTypes.CUSTOMERS_SUBMIT_CHANGE_FORM, {data, id})
     },
     submitCustomerDeleteForm: (id: number) => {

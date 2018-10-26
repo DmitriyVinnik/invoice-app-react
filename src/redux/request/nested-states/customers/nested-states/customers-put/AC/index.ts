@@ -1,6 +1,6 @@
 import {ActionsUnion} from '../../../../../../../shared/types/ActionsUnion';
 import {createAction} from '../../../../../../../shared/helpers/createAction';
-import {Customer} from '../../../../../../customers/states';
+import {CustomerDataForServer, Customer} from '../../../../../../customers/states';
 
 export enum ActionTypes {
     CUSTOMERS_PUT = 'CUSTOMERS_PUT',
@@ -9,7 +9,7 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    customersPut: (data: Customer, id: number) => {
+    customersPut: (data: CustomerDataForServer, id: number) => {
         return createAction(ActionTypes.CUSTOMERS_PUT, {data, id})
     },
     customersPutSuccess: (data: Customer) => {
