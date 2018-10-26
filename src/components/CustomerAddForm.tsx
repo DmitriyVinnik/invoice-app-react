@@ -1,9 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {reduxForm, Field} from 'redux-form';
+import {reduxForm, Field, InjectedFormProps, FormErrors} from 'redux-form';
 import FormField from './FormField';
+import {CustomerDataForServer} from '../redux/customers/states';
 
-const CustomerAddForm = props => {
+export interface OwnProps {
+    isVisible: boolean,
+    isLoading: boolean,
+    errors: string | null,
+}
+
+interface ReduxFormProps extends InjectedFormProps{
+
+}
+
+type Props = OwnProps & ReduxFormProps
+
+const CustomerAddForm:React.SFC<Props> = (props: Props) => {
     const {isVisible, handleSubmit, isLoading, errors} = props;
 
     return (
@@ -47,15 +59,12 @@ const CustomerAddForm = props => {
     );
 };
 
-CustomerAddForm.propTypes = {
-    isVisible: PropTypes.bool,
-    isLoading: PropTypes.bool.isRequired,
-    errors: PropTypes.object,
-    handleSubmit: PropTypes.func.isRequired,
-};
-
-const validate = (values) => {
-    const error = {};
+const validate = (values: CustomerDataForServer): FormErrors => {
+    const error: CustomerDataForServer = {
+        name: '',
+        address: '',
+        phone: '',
+    };
 
     if (!values.name) {
         error.name = 'Required';

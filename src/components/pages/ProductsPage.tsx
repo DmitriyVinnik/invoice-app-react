@@ -1,14 +1,11 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 
-const ProductsPage = props => {
+const ProductsPage: React.SFC = () => {
     return (
         <div>
 
         </div>
     );
 };
-
-// ProductsPage.propTypes = {};
 
 export default ProductsPage;

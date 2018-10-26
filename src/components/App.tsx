@@ -6,7 +6,7 @@ import ProductsPage from './pages/ProductsPage';
 import InvoicesPage from './pages/InvoicesPage';
 import NotFoundPage from './pages/NotFoundPage';
 
-export default function App() {
+const App: React.SFC = () => {
     return (
         <Router>
             <div>
@@ -35,4 +35,6 @@ export default function App() {
             </div>
         </Router>
     );
-}
+};
+
+export default App;

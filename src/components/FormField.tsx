@@ -1,7 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import {WrappedFieldProps} from 'redux-form';
 
-export default function FormField(props) {
+export interface OwnProps {
+    id: string,
+    labelText: string,
+    placeholder?: string,
+    type: string,
+}
+
+interface ReduxFormFieldProps extends WrappedFieldProps{
+}
+
+type Props = OwnProps & ReduxFormFieldProps;
+
+export const FormField:React.SFC<Props> = (props: Props) => {
     const {id, placeholder, input, labelText, type, meta: {touched, error}} = props;
 
     return (
@@ -16,12 +28,6 @@ export default function FormField(props) {
             {touched && (error && <span>{error}</span>)}
         </div>
     );
-}
-
-FormField.propTypes = {
-    id: PropTypes.string.isRequired,
-    labelText: PropTypes.string.isRequired,
-    placeholder: PropTypes.string,
-    type: PropTypes.string.isRequired,
-    value: PropTypes.string,
 };
+
+export default FormField;

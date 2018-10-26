@@ -1,22 +1,15 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import Customer from './Customer';
+import {Customer as CustomerInterface} from '../redux/customers/states';
+import {RequestNestedState} from '../redux/request/nested-states/customers/states';
 
-export default class CustomerList extends Component {
-    static propTypes = {
-        loadCustomers: PropTypes.func.isRequired,
-        customersData: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.number,
-            name: PropTypes.string,
-            address: PropTypes.string,
-            phone: PropTypes.string,
-        })),
-        customersRequest: PropTypes.shape({
-            loading: PropTypes.bool.isRequired,
-            loaded: PropTypes.bool.isRequired,
-            errors: PropTypes.object,
-        })
-    };
+export interface OwnProps {
+    loadCustomers(): void,
+    customersData: CustomerInterface[],
+    customersRequest: RequestNestedState;
+}
+
+export default class CustomerList extends Component<OwnProps> {
 
     componentDidMount() {
         const {loadCustomers, customersRequest: {loaded, loading}} = this.props;

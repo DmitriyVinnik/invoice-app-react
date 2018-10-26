@@ -1,7 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const EditPanel = props => {
+export interface OwnProps {
+    onAddButtonClick(): void,
+    onChangeButtonClick(): void,
+    onDeleteButtonClick(): void,
+    activeId: number | null,
+    formsState: {
+        isVisibleAddForm: boolean,
+        isVisibleChangeForm: boolean,
+        isVisibleDeleteForm: boolean,
+    }
+}
+
+const EditPanel:React.SFC<OwnProps> = (props: OwnProps) => {
     const {
         onAddButtonClick, onChangeButtonClick, onDeleteButtonClick, activeId, formsState,
     } = props;
@@ -34,14 +45,6 @@ const EditPanel = props => {
             }
         </div>
     );
-};
-
-EditPanel.propTypes = {
-    onAddButtonClick: PropTypes.func.isRequired,
-    onChangeButtonClick: PropTypes.func.isRequired,
-    onDeleteButtonClick: PropTypes.func.isRequired,
-    activeId: PropTypes.number,
-    formsState: PropTypes.objectOf(PropTypes.bool),
 };
 
 export default EditPanel;

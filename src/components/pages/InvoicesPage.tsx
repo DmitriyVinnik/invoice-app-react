@@ -1,14 +1,11 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
 
-const InvoicesPage = props => {
+const InvoicesPage: React.SFC = () => {
     return (
         <div>
 
         </div>
     );
 };
-
-// InvoicesPage.propTypes = {};
 
 export default InvoicesPage;

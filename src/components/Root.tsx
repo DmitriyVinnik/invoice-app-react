@@ -4,7 +4,7 @@ import store from '../redux/store';
 import CssBaseLine from '@material-ui/core/CssBaseline';
 import App from './App';
 
-export default function Root() {
+const Root:React.SFC = () => {
     return (
         <React.Fragment>
             <CssBaseLine/>
@@ -13,4 +13,6 @@ export default function Root() {
             </Provider>
         </React.Fragment>
     );
-}
+};
+
+export default Root;
