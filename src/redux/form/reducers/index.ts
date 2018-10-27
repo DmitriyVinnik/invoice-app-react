@@ -1,7 +1,7 @@
 import {reducer, FormState} from 'redux-form';
 import {customersRequestAC, RequestActionsSuccess} from '../../request/nested-states/customers/AC';
 import * as customersAC from '../../customers/AC';
-import {CustomerDataForServer} from '../../customers/states';
+import {CustomerDataForServer, Customer} from '../../customers/states';
 
 const formReducer = reducer.plugin({
     customerAdd: (state, action: RequestActionsSuccess): FormState | undefined => {
@@ -25,7 +25,9 @@ const formReducer = reducer.plugin({
 
             case customersAC.ActionTypes.CUSTOMERS_SELECT_ACTIVE:
                 const {payload} = action;
-                const customer = payload.data.find((customer) => customer.id === payload.id);
+                const customer: Customer | undefined = payload.data.find(
+                    (elem: Customer) => elem.id === payload.id
+                );
                 const emptyCustomer: CustomerDataForServer = {
                     name: '',
                     address: '',

@@ -9,8 +9,8 @@ export function reducer(state = initialState, action: fromActions.Actions): Toas
 
             return {
                 isOpen: true,
-                message: message,
-                error: error,
+                message,
+                error,
             };
         }
 

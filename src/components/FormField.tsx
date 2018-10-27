@@ -8,10 +8,7 @@ export interface OwnProps {
     type: string,
 }
 
-interface ReduxFormFieldProps extends WrappedFieldProps{
-}
-
-type Props = OwnProps & ReduxFormFieldProps;
+type Props = OwnProps & WrappedFieldProps;
 
 export const FormField:React.SFC<Props> = (props: Props) => {
     const {id, placeholder, input, labelText, type, meta: {touched, error}} = props;

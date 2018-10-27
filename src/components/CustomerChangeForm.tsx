@@ -3,8 +3,7 @@ import {reduxForm, Field, InjectedFormProps, FormErrors} from 'redux-form';
 import FormField from './FormField';
 import {CustomerDataForServer} from '../redux/customers/states';
 
-interface FormData extends  CustomerDataForServer{
-}
+type FormData = CustomerDataForServer
 
 export interface OwnProps {
     isVisible: boolean,

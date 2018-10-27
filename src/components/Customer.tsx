@@ -6,8 +6,7 @@ import {Dispatch} from 'redux';
 import {Customer as CustomerInterface} from '../redux/customers/states';
 import {RootState} from '../redux/store';
 
-export interface OwnProps extends CustomerInterface {
-}
+type OwnProps = CustomerInterface
 
 interface StateProps {
     activeCustomerId: number | null,

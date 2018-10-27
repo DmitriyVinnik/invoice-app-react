@@ -1,15 +1,15 @@
 import React from 'react';
 
 export interface OwnProps {
-    onAddButtonClick(): void,
-    onChangeButtonClick(): void,
-    onDeleteButtonClick(): void,
     activeId: number | null,
     formsState: {
         isVisibleAddForm: boolean,
         isVisibleChangeForm: boolean,
         isVisibleDeleteForm: boolean,
     }
+    onAddButtonClick(): void,
+    onChangeButtonClick(): void,
+    onDeleteButtonClick(): void,
 }
 
 const EditPanel:React.SFC<OwnProps> = (props: OwnProps) => {

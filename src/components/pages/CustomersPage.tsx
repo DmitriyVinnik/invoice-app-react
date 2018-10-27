@@ -44,15 +44,17 @@ class CustomersPage extends Component<Props, State> {
         };
     }
 
-    handleSubmitCustomerAddForm = (values: CustomerDataForServer) => {
+    public handleSubmitCustomerAddForm = (values: CustomerDataForServer) => {
         this.props.submitAddForm(values);
     };
-    handleSubmitCustomerChangeForm = (values: CustomerDataForServer) => {
+    public handleSubmitCustomerChangeForm = (values: CustomerDataForServer) => {
         const {customers: {activeCustomerId}, submitChangeForm} = this.props;
 
-        activeCustomerId ? submitChangeForm(values, activeCustomerId) : null;
+        if (activeCustomerId) {
+            submitChangeForm(values, activeCustomerId);
+        }
     };
-    handleSubmitCustomerDeleteForm = (evt: React.FormEvent<HTMLFormElement>) => {
+    public handleSubmitCustomerDeleteForm = (evt: React.FormEvent<HTMLFormElement>) => {
         const {customers: {activeCustomerId}, submitDeleteForm} = this.props;
 
         evt.preventDefault();
@@ -62,21 +64,21 @@ class CustomersPage extends Component<Props, State> {
             this.handleButtonCustomerDeleteClick();
         }
     };
-    handleButtonCustomerAddClick = (): void => {
+    public handleButtonCustomerAddClick = (): void => {
         this.setState({
             isVisibleAddForm: !this.state.isVisibleAddForm,
             isVisibleChangeForm: false,
             isVisibleDeleteForm: false,
         });
     };
-    handleButtonCustomerChangeClick = (): void => {
+    public handleButtonCustomerChangeClick = (): void => {
         this.setState({
             isVisibleChangeForm: !this.state.isVisibleChangeForm,
             isVisibleAddForm: false,
             isVisibleDeleteForm: false,
         });
     };
-    handleButtonCustomerDeleteClick = (): void => {
+    public handleButtonCustomerDeleteClick = (): void => {
         this.setState({
             isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
             isVisibleAddForm: false,
@@ -84,7 +86,7 @@ class CustomersPage extends Component<Props, State> {
         });
     };
 
-    render() {
+    public render() {
         const {customers: {activeCustomerId, data}, customersRequests, loadCustomers} = this.props;
         const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
         const activeCustomer: CustomerInterface | undefined = data.find(
@@ -99,9 +101,9 @@ class CustomersPage extends Component<Props, State> {
                     onDeleteButtonClick={this.handleButtonCustomerDeleteClick}
                     activeId={activeCustomerId}
                     formsState={{
-                        isVisibleAddForm: isVisibleAddForm,
-                        isVisibleChangeForm: isVisibleChangeForm,
-                        isVisibleDeleteForm: isVisibleDeleteForm,
+                        isVisibleAddForm,
+                        isVisibleChangeForm,
+                        isVisibleDeleteForm,
                     }}
                 />
                 <CustomerAddForm

@@ -4,14 +4,14 @@ import {Customer as CustomerInterface} from '../redux/customers/states';
 import {RequestNestedState} from '../redux/request/nested-states/customers/states';
 
 export interface OwnProps {
-    loadCustomers(): void,
     customersData: CustomerInterface[],
     customersRequest: RequestNestedState;
+    loadCustomers(): void,
 }
 
 export default class CustomerList extends Component<OwnProps> {
 
-    componentDidMount() {
+    public componentDidMount() {
         const {loadCustomers, customersRequest: {loaded, loading}} = this.props;
 
         if (!loaded && !loading) {
@@ -19,7 +19,7 @@ export default class CustomerList extends Component<OwnProps> {
         }
     }
 
-    render() {
+    public render() {
         const {customersRequest: {errors, loading}, customersData} = this.props;
         let customerItems;
 

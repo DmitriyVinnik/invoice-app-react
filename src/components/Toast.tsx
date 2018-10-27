@@ -21,17 +21,13 @@ const styles = (theme: Theme): StyleRules => createStyles({
     },
 });
 
-interface WithStylesProps extends WithStyles<typeof styles> {
-}
-
-interface StateProps extends ToastState {
-}
+type StateProps = ToastState
 
 interface DispatchProps {
     closeToast: () => void
 }
 
-type Props = StateProps & DispatchProps & WithStylesProps
+type Props = StateProps & DispatchProps & WithStyles<typeof styles>
 
 const Toast = withStyles(styles)((props: Props) => {
     const {message, error, closeToast, isOpen, classes} = props;
