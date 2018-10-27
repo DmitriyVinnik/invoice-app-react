@@ -31,14 +31,14 @@ type Props = StateProps & DispatchProps & WithStyles<typeof styles>
 
 const Toast = withStyles(styles)((props: Props) => {
     const {message, error, closeToast, isOpen, classes} = props;
-    const handleClose = () => {
-        // event, reason
-        // if (reason === 'clickaway') {
-        //     return;
-        // }
+    const handleClose = (event: React.MouseEvent<HTMLElement>, reason?: string): void => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
         closeToast();
     };
-    const getMessageContent = () => {
+    const getMessageContent = ():React.ReactNode => {
         if (error) {
             return (
                 <span>{error}</span>

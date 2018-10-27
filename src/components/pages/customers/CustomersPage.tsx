@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import CustomerList from '../CustomerList';
-import CustomerAddForm from '../CustomerAddForm';
-import CustomerChangeForm from '../CustomerChangeForm';
-import CustomerDeleteForm from '../CustomerDeleteForm';
-import EditPanel from '../EditPanel';
-import {Actions} from '../../redux/customers/AC';
+import CustomerList from './CustomerList';
+import CustomerAddForm from './CustomerAddForm';
+import CustomerChangeForm from './CustomerChangeForm';
+import CustomerDeleteForm from './CustomerDeleteForm';
+import EditPanel from '../../../shared/components/EditPanel';
+import {Actions} from '../../../redux/customers/AC';
 
 import {Dispatch} from 'redux';
-import {RootState} from '../../redux/store';
-import {CustomersState} from '../../redux/customers/states';
-import {CustomersRequestState} from '../../redux/request/nested-states/customers/states';
-import {CustomerDataForServer, Customer as CustomerInterface} from '../../redux/customers/states';
+import {RootState} from '../../../redux/store';
+import {CustomersState} from '../../../redux/customers/states';
+import {CustomersRequestState} from '../../../redux/request/nested-states/customers/states';
+import {CustomerDataForServer, Customer as CustomerInterface} from '../../../redux/customers/states';
 
 interface StateProps {
     customers: CustomersState,
@@ -44,17 +44,17 @@ class CustomersPage extends Component<Props, State> {
         };
     }
 
-    public handleSubmitCustomerAddForm = (values: CustomerDataForServer) => {
+    public handleSubmitCustomerAddForm = (values: CustomerDataForServer): void => {
         this.props.submitAddForm(values);
     };
-    public handleSubmitCustomerChangeForm = (values: CustomerDataForServer) => {
+    public handleSubmitCustomerChangeForm = (values: CustomerDataForServer): void => {
         const {customers: {activeCustomerId}, submitChangeForm} = this.props;
 
         if (activeCustomerId) {
             submitChangeForm(values, activeCustomerId);
         }
     };
-    public handleSubmitCustomerDeleteForm = (evt: React.FormEvent<HTMLFormElement>) => {
+    public handleSubmitCustomerDeleteForm = (evt: React.FormEvent<HTMLFormElement>): void => {
         const {customers: {activeCustomerId}, submitDeleteForm} = this.props;
 
         evt.preventDefault();
@@ -96,6 +96,7 @@ class CustomersPage extends Component<Props, State> {
         return (
             <section>
                 <EditPanel
+                    labelButton='customer'
                     onAddButtonClick={this.handleButtonCustomerAddClick}
                     onChangeButtonClick={this.handleButtonCustomerChangeClick}
                     onDeleteButtonClick={this.handleButtonCustomerDeleteClick}

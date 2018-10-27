@@ -2,9 +2,9 @@ import React from 'react';
 import {BrowserRouter as Router, Route, Switch, NavLink} from "react-router-dom";
 
 import Toast from './Toast';
-import CustomersPage from './pages/CustomersPage';
-import ProductsPage from './pages/ProductsPage';
-import InvoicesPage from './pages/InvoicesPage';
+import CustomersPage from './pages/customers/CustomersPage';
+import ProductsPage from './pages/products/ProductsPage';
+import InvoicesPage from './pages/invoices/InvoicesPage';
 import NotFoundPage from './pages/NotFoundPage';
 import Home from './pages/Home';
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 export interface OwnProps {
+    labelButton: string,
     activeId: number | null,
     formsState: {
         isVisibleAddForm: boolean,
@@ -14,7 +15,8 @@ export interface OwnProps {
 
 const EditPanel:React.SFC<OwnProps> = (props: OwnProps) => {
     const {
-        onAddButtonClick, onChangeButtonClick, onDeleteButtonClick, activeId, formsState,
+        onAddButtonClick, onChangeButtonClick, onDeleteButtonClick,
+        activeId, formsState, labelButton,
     } = props;
 
     return (
@@ -23,7 +25,7 @@ const EditPanel:React.SFC<OwnProps> = (props: OwnProps) => {
                 type="button"
                 onClick={onAddButtonClick}
             >
-                {formsState.isVisibleAddForm ? 'Close' : 'Add new customer'}
+                {formsState.isVisibleAddForm ? `Close` : `Add new ${labelButton}`}
             </button>
             {
                 activeId &&
@@ -31,7 +33,7 @@ const EditPanel:React.SFC<OwnProps> = (props: OwnProps) => {
                     type="button"
                     onClick={onChangeButtonClick}
                 >
-                    {formsState.isVisibleChangeForm ? 'Close' : 'Change customer'}
+                    {formsState.isVisibleChangeForm ? `Close` : `Change ${labelButton}`}
                 </button>
             }
             {
@@ -40,7 +42,7 @@ const EditPanel:React.SFC<OwnProps> = (props: OwnProps) => {
                     type="button"
                     onClick={onDeleteButtonClick}
                 >
-                    {formsState.isVisibleDeleteForm ? 'Close' : 'Delete customer'}
+                    {formsState.isVisibleDeleteForm ? `Close` : `Delete ${labelButton}`}
                 </button>
             }
         </div>

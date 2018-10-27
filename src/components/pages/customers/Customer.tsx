@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Actions} from '../redux/customers/AC';
+import {Actions} from '../../../redux/customers/AC';
 
 import {Dispatch} from 'redux';
-import {Customer as CustomerInterface} from '../redux/customers/states';
-import {RootState} from '../redux/store';
+import {Customer as CustomerInterface} from '../../../redux/customers/states';
+import {RootState} from '../../../redux/store';
 
 type OwnProps = CustomerInterface
 
@@ -25,14 +25,14 @@ const Customer:React.SFC<Props> = (props: Props) => {
         id, name, address, phone, activeCustomerId, customersData,
         resetSelectionActiveCustomer, selectActiveCustomer,
     } = props;
-    const onClickCustomer = () => {
+    const onClickCustomer = (): void => {
         selectActiveCustomer(customersData, id);
     };
-    const isCustomerActive = (activeCustomerId === id);
-    const onReClickCustomer = () => {
+    const isCustomerActive = activeCustomerId === id;
+    const onReClickCustomer = (): void => {
         resetSelectionActiveCustomer();
     };
-    const customerStyle = isCustomerActive ?
+    const customerStyle: React.CSSProperties = isCustomerActive ?
         {color: 'green', paddingBottom: '20px', cursor: 'pointer'} :
         {paddingBottom: '20px', cursor: 'pointer'};
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {reduxForm, Field, InjectedFormProps, FormErrors} from 'redux-form';
-import FormField from './FormField';
-import {CustomerDataForServer} from '../redux/customers/states';
+import FormField from '../../../shared/components/FormField';
+import {CustomerDataForServer} from '../../../redux/customers/states';
 
 type FormData = CustomerDataForServer
 
@@ -13,34 +13,34 @@ export interface OwnProps {
 
 type Props = OwnProps & InjectedFormProps<FormData, OwnProps>
 
-const CustomerChangeForm:React.SFC<Props> = (props: Props) => {
-    const {isVisible, handleSubmit, isLoading, errors,} = props;
+const CustomerAddForm:React.SFC<Props> = (props: Props) => {
+    const {isVisible, handleSubmit, isLoading, errors} = props;
 
     return (
         <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
             <form onSubmit={handleSubmit}>
                 <h2>
-                    Change customer.
+                    Addition new customer.
                 </h2>
                 <Field
                     name='name'
                     component={FormField}
                     type='text'
-                    id='change-customer-name'
+                    id='add-customer-name'
                     labelText="Customer's name: "
                 />
                 <Field
                     name='address'
                     component={FormField}
                     type='text'
-                    id='change-customer-address'
+                    id='add-customer-address'
                     labelText="Customer's address: "
                 />
                 <Field
                     name='phone'
                     component={FormField}
                     type='tel'
-                    id='change-customer-phone'
+                    id='add-customer-phone'
                     labelText="Customer's phone: "
                 />
                 <div>
@@ -57,7 +57,7 @@ const CustomerChangeForm:React.SFC<Props> = (props: Props) => {
     );
 };
 
-const validate = (values: FormData): FormErrors => {
+const validate = (values: FormData) => {
     const error: FormErrors<FormData> = {};
 
     if (!values.name) {
@@ -76,6 +76,6 @@ const validate = (values: FormData): FormErrors => {
 };
 
 export default reduxForm<FormData, OwnProps>({
-    form: 'customerChange',
+    form: 'customerAdd',
     validate,
-})(CustomerChangeForm);
+})(CustomerAddForm);

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Customer from './Customer';
-import {Customer as CustomerInterface} from '../redux/customers/states';
-import {RequestNestedState} from '../redux/request/nested-states/customers/states';
+import {Customer as CustomerInterface} from '../../../redux/customers/states';
+import {RequestNestedState} from '../../../redux/request/nested-states/customers/states';
 
 export interface OwnProps {
     customersData: CustomerInterface[],
@@ -21,7 +21,7 @@ export default class CustomerList extends Component<OwnProps> {
 
     public render() {
         const {customersRequest: {errors, loading}, customersData} = this.props;
-        let customerItems;
+        let customerItems: React.ReactNode | null;
 
         if (customersData) {
             customerItems = customersData.map(customer => (

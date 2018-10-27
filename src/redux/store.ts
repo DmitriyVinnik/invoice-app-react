@@ -1,7 +1,7 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import {combineEpics, createEpicMiddleware} from 'redux-observable';
 
-import formReducer from './form/reducers/index';
+import formReducer from './form/reducers';
 import {reducer as customersReducer} from './customers/reducers';
 import {reducer as toastReducer} from './toast/reducers';
 import {reducer as productsReducer} from './products/reducers';
