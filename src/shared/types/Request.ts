@@ -1,17 +1,31 @@
 import {Observable} from "rxjs";
 import {AjaxResponse} from "rxjs/ajax";
 import {CustomerDataForServer} from "../../redux/customers/states";
+import {ProductDataForServer} from "../../redux/products/states";
 
-export interface RequestPayload {
+export interface RequestPayloadCustomers {
     data?: CustomerDataForServer,
     errors?: string,
     id?: number
 }
 
-export interface RequestService {
-    postCustomer(payload: RequestPayload): Observable<AjaxResponse>;
-    getCustomer(payload?: RequestPayload): Observable<AjaxResponse>;
-    putCustomer(payload: RequestPayload): Observable<AjaxResponse>;
-    deleteCustomer(payload: RequestPayload): Observable<AjaxResponse>;
+export interface RequestPayloadProducts {
+    data?: ProductDataForServer,
+    errors?: string,
+    id?: number
+}
+
+export interface RequestServiceCustomers {
+    postCustomer(payload: RequestPayloadCustomers): Observable<AjaxResponse>;
+    getCustomer(payload?: RequestPayloadCustomers): Observable<AjaxResponse>;
+    putCustomer(payload: RequestPayloadCustomers): Observable<AjaxResponse>;
+    deleteCustomer(payload: RequestPayloadCustomers): Observable<AjaxResponse>;
+}
+
+export interface RequestServiceProducts {
+    postProduct(payload: RequestPayloadProducts): Observable<AjaxResponse>;
+    getProduct(payload?: RequestPayloadProducts): Observable<AjaxResponse>;
+    putProduct(payload: RequestPayloadProducts): Observable<AjaxResponse>;
+    deleteProduct(payload: RequestPayloadProducts): Observable<AjaxResponse>;
 }
 

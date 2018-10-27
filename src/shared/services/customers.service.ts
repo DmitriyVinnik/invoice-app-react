@@ -1,11 +1,11 @@
 import {ajax} from 'rxjs/ajax';
-import {RequestService, RequestPayload} from '../types/Request'
+import {RequestServiceCustomers, RequestPayloadCustomers} from '../types/Request'
 
 const CUSTOMERS_URL = 'http://localhost:8000/api/customers/';
 
-class CustomersService implements RequestService {
+class CustomersService implements RequestServiceCustomers {
 
-    public postCustomer(payload: RequestPayload) {
+    public postCustomer(payload: RequestPayloadCustomers) {
         return ajax.post(
             CUSTOMERS_URL,
             JSON.stringify(payload.data),
@@ -19,7 +19,7 @@ class CustomersService implements RequestService {
         return ajax.get(CUSTOMERS_URL)
     }
 
-    public putCustomer(payload: RequestPayload) {
+    public putCustomer(payload: RequestPayloadCustomers) {
         return ajax.put(
             CUSTOMERS_URL + payload.id,
             JSON.stringify(payload.data),
@@ -29,7 +29,7 @@ class CustomersService implements RequestService {
         )
     }
 
-    public deleteCustomer(payload: RequestPayload) {
+    public deleteCustomer(payload: RequestPayloadCustomers) {
         return ajax.delete(CUSTOMERS_URL + payload.id)
     }
 }
