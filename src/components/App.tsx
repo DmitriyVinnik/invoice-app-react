@@ -1,10 +1,12 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch, NavLink} from "react-router-dom";
+
 import Toast from './Toast';
 import CustomersPage from './pages/CustomersPage';
 import ProductsPage from './pages/ProductsPage';
 import InvoicesPage from './pages/InvoicesPage';
 import NotFoundPage from './pages/NotFoundPage';
+import Home from './pages/Home';
 
 const App: React.SFC = () => {
     return (
@@ -14,7 +16,7 @@ const App: React.SFC = () => {
                     <Toast/>
                     <ul>
                         <li>
-                            <NavLink exact to="/" activeStyle={{backgroundColor: 'red'}}>Customer</NavLink>
+                            <NavLink to="/customers" activeStyle={{backgroundColor: 'red'}}>Customer</NavLink>
                         </li>
                         <li>
                             <NavLink to="/products" activeStyle={{backgroundColor: 'red'}}>Products</NavLink>
@@ -26,7 +28,8 @@ const App: React.SFC = () => {
                 </nav>
                 <main>
                     <Switch>
-                        <Route exact path="/" component={CustomersPage}/>
+                        <Route exact path="/" component={Home}/>
+                        <Route path="/customers" component={CustomersPage}/>
                         <Route path="/products" component={ProductsPage}/>
                         <Route path="/invoices" component={InvoicesPage}/>
                         <Route component={NotFoundPage}/>
