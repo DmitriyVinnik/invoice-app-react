@@ -1,7 +1,8 @@
 import React from 'react';
-import Redux from 'redux';
 import {connect} from 'react-redux';
 import {Actions} from '../redux/toast/AC';
+
+import {Dispatch} from 'redux';
 import {ToastState} from '../redux/toast/states';
 import {RootState} from '../redux/store';
 
@@ -11,11 +12,11 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-// @ts-ignore
+declare var window: any;
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
 const styles = (theme: Theme): StyleRules => createStyles({
-    close: {
+    display1: {
         padding: theme.spacing.unit / 2,
     },
 });
@@ -54,30 +55,28 @@ const Toast = withStyles(styles)((props: Props) => {
     };
 
     return (
-        <Typography classes={classes}>
-            <div>
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    open={isOpen}
-                    autoHideDuration={6000}
-                    onClose={handleClose}
-                    message={getMessageContent()}
-                    action={[
-                        <IconButton
-                            key="close"
-                            aria-label="Close"
-                            color="inherit"
-                            className={classes.close}
-                            onClick={handleClose}
-                        >
-                            <CloseIcon/>
-                        </IconButton>,
-                    ]}
-                />
-            </div>
+        <Typography classes={classes} component='div'>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                open={isOpen}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message={getMessageContent()}
+                action={[
+                    <IconButton
+                        key="close"
+                        aria-label="Close"
+                        color="inherit"
+                        className={classes.display1}
+                        onClick={handleClose}
+                    >
+                        <CloseIcon/>
+                    </IconButton>,
+                ]}
+            />
         </Typography>
     );
 });
@@ -88,7 +87,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
     error: state.toast.error,
 });
 
-const mapDispatchToProps = (dispatch: Redux.Dispatch<Actions>): DispatchProps => (
+const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
     {
         closeToast: () => {
             dispatch(Actions.hideToast());

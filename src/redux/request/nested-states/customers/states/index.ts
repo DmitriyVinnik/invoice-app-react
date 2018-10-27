@@ -12,15 +12,15 @@ export interface RequestNestedState {
 }
 
 export interface CustomersRequestState {
-    customerGet: RequestNestedState,
-    customerPost: RequestNestedState,
-    customerPut: RequestNestedState,
-    customerDelete: RequestNestedState,
+    customersGet: RequestNestedState,
+    customersPost: RequestNestedState,
+    customersPut: RequestNestedState,
+    customersDelete: RequestNestedState,
 }
 
 export const initialState: CustomersRequestState = {
-    customerGet: customersGetState,
-    customerPost: customersPostState,
-    customerPut: customersPutState,
-    customerDelete: customersDeleteState,
+    customersGet: customersGetState,
+    customersPost: customersPostState,
+    customersPut: customersPutState,
+    customersDelete: customersDeleteState,
 };

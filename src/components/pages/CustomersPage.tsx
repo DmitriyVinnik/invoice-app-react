@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import CustomerList from '../CustomerList';
@@ -7,14 +6,36 @@ import CustomerAddForm from '../CustomerAddForm';
 import CustomerChangeForm from '../CustomerChangeForm';
 import CustomerDeleteForm from '../CustomerDeleteForm';
 import EditPanel from '../EditPanel';
+import {Actions} from '../../redux/customers/AC';
 
-import {
-    submitCustomerAddForm, submitCustomerChangeForm, submitCustomerDeleteForm,
-    loadAllCustomers,
-} from '../../redux/customers/AC/index'
+import {Dispatch} from 'redux';
+import {RootState} from '../../redux/store';
+import {CustomersState} from '../../redux/customers/states';
+import {CustomersRequestState} from '../../redux/request/nested-states/customers/states';
+import {CustomerDataForServer, Customer as CustomerInterface} from '../../redux/customers/states';
 
-class Toast extends Component {
-    constructor(props) {
+interface StateProps {
+    customers: CustomersState,
+    customersRequests: CustomersRequestState,
+}
+
+interface DispatchProps {
+    loadCustomers(): void,
+    submitAddForm(data: CustomerDataForServer): void,
+    submitChangeForm(data: CustomerDataForServer, id: number): void,
+    submitDeleteForm(id: number): void,
+}
+
+type Props = StateProps & DispatchProps;
+
+interface State {
+    isVisibleAddForm: boolean,
+    isVisibleChangeForm: boolean,
+    isVisibleDeleteForm: boolean,
+}
+
+class CustomersPage extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             isVisibleAddForm: false,
@@ -23,15 +44,15 @@ class Toast extends Component {
         };
     }
 
-    handleSubmitCustomerAddForm = (values) => {
+    handleSubmitCustomerAddForm = (values: CustomerDataForServer) => {
         this.props.submitAddForm(values);
     };
-    handleSubmitCustomerChangeForm = (values) => {
+    handleSubmitCustomerChangeForm = (values: CustomerDataForServer) => {
         const {customers: {activeCustomerId}, submitChangeForm} = this.props;
 
-        submitChangeForm(values, activeCustomerId);
+        activeCustomerId ? submitChangeForm(values, activeCustomerId) : null;
     };
-    handleSubmitCustomerDeleteForm = (evt) => {
+    handleSubmitCustomerDeleteForm = (evt: React.FormEvent<HTMLFormElement>) => {
         const {customers: {activeCustomerId}, submitDeleteForm} = this.props;
 
         evt.preventDefault();
@@ -41,21 +62,21 @@ class Toast extends Component {
             this.handleButtonCustomerDeleteClick();
         }
     };
-    handleButtonCustomerAddClick = () => {
+    handleButtonCustomerAddClick = (): void => {
         this.setState({
             isVisibleAddForm: !this.state.isVisibleAddForm,
             isVisibleChangeForm: false,
             isVisibleDeleteForm: false,
         });
     };
-    handleButtonCustomerChangeClick = () => {
+    handleButtonCustomerChangeClick = (): void => {
         this.setState({
             isVisibleChangeForm: !this.state.isVisibleChangeForm,
             isVisibleAddForm: false,
             isVisibleDeleteForm: false,
         });
     };
-    handleButtonCustomerDeleteClick = () => {
+    handleButtonCustomerDeleteClick = (): void => {
         this.setState({
             isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
             isVisibleAddForm: false,
@@ -66,6 +87,9 @@ class Toast extends Component {
     render() {
         const {customers: {activeCustomerId, data}, customersRequests, loadCustomers} = this.props;
         const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
+        const activeCustomer: CustomerInterface | undefined = data.find(
+            (elem: CustomerInterface) => elem.id === activeCustomerId
+        );
 
         return (
             <section>
@@ -96,12 +120,8 @@ class Toast extends Component {
                     isVisible={isVisibleDeleteForm}
                     isLoading={customersRequests.customersDelete.loading}
                     errors={customersRequests.customersDelete.errors}
-                    name={
-                        activeCustomerId ?
-                            data.find(elem => elem.id === activeCustomerId).name :
-                            null
-                    }
-                    onSubmit={this.handleSubmitCustomerDeleteForm}
+                    name={activeCustomer ? activeCustomer.name : null}
+                    handleSubmit={this.handleSubmitCustomerDeleteForm}
                 />
                 <h1>Customers: </h1>
                 <CustomerList
@@ -112,62 +132,29 @@ class Toast extends Component {
             </section>
         )
     }
-
-    static propTypes = {
-        loadCustomers: PropTypes.func.isRequired,
-        submitAddForm: PropTypes.func.isRequired,
-        submitChangeForm: PropTypes.func.isRequired,
-        submitDeleteForm: PropTypes.func.isRequired,
-        customersRequests: PropTypes.shape({
-            customersGet: PropTypes.shape({
-                loading: PropTypes.bool,
-                loaded: PropTypes.bool,
-                errors: PropTypes.object,
-            }),
-            customersPost: PropTypes.shape({
-                loading: PropTypes.bool,
-                loaded: PropTypes.bool,
-                errors: PropTypes.object,
-            }),
-            customersPut: PropTypes.shape({
-                loading: PropTypes.bool,
-                loaded: PropTypes.bool,
-                errors: PropTypes.object,
-            }),
-            customersDelete: PropTypes.shape({
-                loading: PropTypes.bool,
-                loaded: PropTypes.bool,
-                errors: PropTypes.object,
-            }),
-        }),
-        customers: PropTypes.shape({
-            activeCustomerId: PropTypes.number,
-            data: PropTypes.array,
-        }),
-    };
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: RootState): StateProps => ({
     customers: state.customers,
     customersRequests: state.request.customers,
 });
 
-const mapDispatchToProps = dispatch => (
+const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
     {
         loadCustomers: () => {
-            dispatch(loadAllCustomers());
+            dispatch(Actions.loadAllCustomers());
         },
         submitAddForm: (data) => {
-            dispatch(submitCustomerAddForm(data));
+            dispatch(Actions.submitCustomerAddForm(data));
         },
         submitChangeForm: (data, id) => {
-            dispatch(submitCustomerChangeForm(data, id));
+            dispatch(Actions.submitCustomerChangeForm(data, id));
         },
         submitDeleteForm: (id) => {
-            dispatch(submitCustomerDeleteForm(id));
+            dispatch(Actions.submitCustomerDeleteForm(id));
         },
 
     }
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Toast);
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(CustomersPage);

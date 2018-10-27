@@ -1,7 +1,8 @@
 import React from 'react';
-import Redux from 'redux';
 import {connect} from 'react-redux';
 import {Actions} from '../redux/customers/AC';
+
+import {Dispatch} from 'redux';
 import {Customer as CustomerInterface} from '../redux/customers/states';
 import {RootState} from '../redux/store';
 
@@ -52,7 +53,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
     customersData: state.customers.data,
 });
 
-const mapDispatchToProps = (dispatch: Redux.Dispatch<Actions>): DispatchProps => (
+const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
     {
         selectActiveCustomer: (data, id) => {
             dispatch(Actions.selectCustomer(data, id));
