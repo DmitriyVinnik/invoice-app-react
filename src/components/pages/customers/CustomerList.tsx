@@ -12,15 +12,13 @@ export interface OwnProps {
 export default class CustomerList extends Component<OwnProps> {
 
     public componentDidMount() {
-        const {loadCustomers, customersRequest: {loaded, loading}} = this.props;
+        const {loadCustomers} = this.props;
 
-        if (!loaded && !loading) {
-            loadCustomers();
-        }
+        loadCustomers();
     }
 
     public render() {
-        const {customersRequest: {errors, loading}, customersData} = this.props;
+        const {customersRequest: {errors, loading, loaded}, customersData} = this.props;
         let customerItems: React.ReactNode | null;
 
         if (customersData) {
@@ -43,8 +41,12 @@ export default class CustomerList extends Component<OwnProps> {
             );
         } else if (loading) {
             return (
-                <p>Wait a second, loading..."</p>
+                <p>Wait a second, loading...</p>
             );
+        } else  if (!loaded) {
+            return (
+                <p>Something went wrong! Customers have not loaded, try reloading the page</p>
+            )
         }
 
         return (

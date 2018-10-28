@@ -1,12 +1,19 @@
 import {Action} from 'redux';
 import {Observable} from 'rxjs';
-import {ofType} from 'redux-observable';
-import {map} from 'rxjs/operators';
+import {ofType, StateObservable} from 'redux-observable';
+import {filter, map, withLatestFrom} from 'rxjs/operators';
 import * as fromActions from '../AC';
 import {customersRequestAC, RequestActionsSuccess} from '../../request/nested-states/customers/AC';
+import {RootState} from '../../store';
 
-const loadAllCustomersEpic = (action$: Observable<Action>) => action$.pipe(
+const loadAllCustomersEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
     ofType<fromActions.Actions>(fromActions.ActionTypes.CUSTOMERS_LOAD_ALL),
+    withLatestFrom(state$),
+    filter(([, state]) => {
+        const {loaded, loading} = state.request.customers.customersGet;
+
+        return  (!loaded && !loading) === true;
+    }),
     map(() => customersRequestAC.customersGet.Actions.customersGet())
 );
 
