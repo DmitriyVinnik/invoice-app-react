@@ -43,15 +43,17 @@ const formReducer = reducer.plugin({
                 const activeCustomer = !!customer ? customer : emptyCustomer;
 
 
-                return {
-                    ...state,
-                    values: {
-                        ...state.values,
-                        name:  activeCustomer.name,
-                        address: activeCustomer.address,
-                        phone: activeCustomer.phone,
-                    }
-                };
+                return state ?
+                    {
+                        ...state,
+                        values: {
+                            ...state.values,
+                            name: activeCustomer.name,
+                            address: activeCustomer.address,
+                            phone: activeCustomer.phone,
+                        }
+                    } :
+                    state;
 
             default:
                 return state;
@@ -93,7 +95,7 @@ const formReducer = reducer.plugin({
                     ...state,
                     values: {
                         ...state.values,
-                        name:  activeProduct.name,
+                        name: activeProduct.name,
                         price: activeProduct.price,
                     }
                 };

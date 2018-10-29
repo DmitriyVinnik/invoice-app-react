@@ -7,10 +7,22 @@
       "coverage/lcov-report/*.js"
     ]
   },
+//  "defaultSeverity": "warning",
   "rules": {
     "object-literal-sort-keys": false,
     "interface-name": [true, "never-prefix"],
     "ordered-imports": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "no-console": {
+      "severity": "warning",
+      "options": [
+        "debug",
+        "info",
+        "log",
+        "time",
+        "timeEnd",
+        "trace"
+      ]
+    }
   }
 }
