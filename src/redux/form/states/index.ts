@@ -5,4 +5,6 @@ export interface FormsState {
     customerChange: FormState,
     productAdd: FormsState,
     productChange: FormsState,
+    invoiceAdd: FormsState,
+    invoiceChange: FormsState,
 }

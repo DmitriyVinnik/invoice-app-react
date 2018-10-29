@@ -5,10 +5,15 @@ import {
 import {
     productsRequestAC, RequestActionsSuccess as RequestProductActionsSuccess
 } from '../../request/nested-states/products/AC';
+import {
+    invoicesRequestAC, RequestActionsSuccess as RequestInvoiceActionsSuccess
+} from '../../request/nested-states/invoices/AC';
 import * as customersAC from '../../customers/AC';
 import * as productsAC from '../../products/AC';
+import * as invoicesAC from '../../invoices/AC';
 import {CustomerDataForServer, Customer} from '../../customers/states';
 import {ProductDataForServer, Product} from '../../products/states';
+import {InvoiceDataForServer, Invoice} from '../../invoices/states';
 
 const formReducer = reducer.plugin({
     customerAdd: (state, action: RequestCustomerActionsSuccess): FormState | undefined => {
@@ -91,14 +96,63 @@ const formReducer = reducer.plugin({
                 const activeProduct = !!product ? product : emptyProduct;
 
 
-                return {
-                    ...state,
-                    values: {
-                        ...state.values,
-                        name: activeProduct.name,
-                        price: activeProduct.price,
-                    }
+                return state ?
+                    {
+                        ...state,
+                        values: {
+                            ...state.values,
+                            name: activeProduct.name,
+                            price: activeProduct.price,
+                        }
+                    } :
+                    state;
+
+            default:
+                return state;
+        }
+    },
+
+    invoiceAdd: (state, action: RequestInvoiceActionsSuccess): FormState | undefined => {
+        const {type} = action;
+
+        switch (type) {
+            case invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_SUCCESS:
+                return undefined;
+
+            default:
+                return state;
+        }
+    },
+
+    invoiceChange: (state, action: invoicesAC.Actions): FormState | undefined => {
+
+        switch (action.type) {
+
+            case invoicesAC.ActionTypes.INVOICES_RESET_SELECTION_ACTIVE:
+                return undefined;
+
+            case invoicesAC.ActionTypes.INVOICES_SELECT_ACTIVE:
+                const {payload} = action;
+                const invoice: Invoice | undefined = payload.data.find(
+                    (elem: Invoice) => elem.id === payload.id
+                );
+                const emptyInvoice: InvoiceDataForServer = {
+                    discount: 0,
+                    total: 0,
                 };
+                const activeInvoice = !!invoice ? invoice : emptyInvoice;
+
+
+                return state ?
+                    {
+                        ...state,
+                        values: {
+                            ...state.values,
+                            discount: activeInvoice.discount,
+                            total: activeInvoice.total,
+                        }
+                    } :
+                    state;
 
             default:
                 return state;
