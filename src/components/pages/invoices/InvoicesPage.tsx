@@ -1,109 +1,176 @@
-import React from 'react';
-import {connect} from "react-redux";
-import {Actions} from "../../../redux/customers/AC";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
-import {RootState} from "../../../redux/store";
-import {Dispatch} from "redux";
-import {Customer, CustomersState} from "../../../redux/customers/states";
-import {CustomersRequestState} from "../../../redux/request/nested-states/customers/states";
+import InvoicesList from './InvoicesList';
+import InvoiceAddForm from './InvoiceAddForm';
+import InvoiceChangeForm from './InvoiceChangeForm';
+import InvoiceDeleteForm from './InvoiceDeleteForm';
+import EditPanel from '../../../shared/components/EditPanel';
+import CustomerSelectElement from '../../../shared/components/CustomerSelectElement';
+import {Actions} from '../../../redux/invoices/AC';
 
-import {createStyles, StyleRules, Theme, WithStyles, withStyles} from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import {Dispatch} from 'redux';
+import {RootState} from '../../../redux/store';
+import {InvoicesRequestState} from '../../../redux/request/nested-states/invoices/states';
+import {InvoiceDataForServer, Invoice as InvoiceInterface, InvoicesState} from '../../../redux/invoices/states';
+import {CustomersState} from "../../../redux/customers/states";
 
 interface StateProps {
+    invoices: InvoicesState,
+    invoicesRequests: InvoicesRequestState,
     customers: CustomersState,
-    customersRequests: CustomersRequestState,
 }
 
 interface DispatchProps {
-    loadCustomers(): void,
+    loadInvoices(): void,
 
-    selectActiveCustomer(data: Customer[], id: number): void,
+    submitAddForm(data: InvoiceDataForServer): void,
+
+    submitChangeForm(data: InvoiceDataForServer, id: number): void,
+
+    submitDeleteForm(id: number): void,
 }
 
-type Props = StateProps & DispatchProps & WithStyles<typeof styles>;
+type Props = StateProps & DispatchProps;
 
-class InvoicesPage extends React.Component<Props> {
-    public componentDidMount() {
-        this.props.loadCustomers();
+interface State {
+    isVisibleAddForm: boolean,
+    isVisibleChangeForm: boolean,
+    isVisibleDeleteForm: boolean,
+}
+
+class InvoicesPage extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            isVisibleAddForm: false,
+            isVisibleChangeForm: false,
+            isVisibleDeleteForm: false,
+        };
     }
 
-    public handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const {selectActiveCustomer, customers: {data}} = this.props;
+    public handleSubmitInvoiceAddForm = (values: InvoiceDataForServer): void => {
+        this.props.submitAddForm(values);
+    };
+    public handleSubmitInvoiceChangeForm = (values: InvoiceDataForServer): void => {
+        const {invoices: {activeInvoiceId}, submitChangeForm} = this.props;
 
-        selectActiveCustomer(data, +event.target.value)
+        if (activeInvoiceId) {
+            submitChangeForm(values, activeInvoiceId);
+        }
+    };
+    public handleSubmitInvoiceDeleteForm = (evt: React.FormEvent<HTMLFormElement>): void => {
+        const {invoices: {activeInvoiceId}, submitDeleteForm} = this.props;
+
+        evt.preventDefault();
+        if (activeInvoiceId) {
+            submitDeleteForm(activeInvoiceId);
+        } else {
+            this.handleButtonInvoiceDeleteClick();
+        }
+    };
+    public handleButtonInvoiceAddClick = (): void => {
+        this.setState({
+            isVisibleAddForm: !this.state.isVisibleAddForm,
+            isVisibleChangeForm: false,
+            isVisibleDeleteForm: false,
+        });
+    };
+    public handleButtonInvoiceChangeClick = (): void => {
+        this.setState({
+            isVisibleChangeForm: !this.state.isVisibleChangeForm,
+            isVisibleAddForm: false,
+            isVisibleDeleteForm: false,
+        });
+    };
+    public handleButtonInvoiceDeleteClick = (): void => {
+        this.setState({
+            isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
+            isVisibleAddForm: false,
+            isVisibleChangeForm: false,
+        });
     };
 
     public render() {
-        const {classes, customers: {activeCustomerId, data}} = this.props;
-        const menuItems = data.map(customer => (
-            <MenuItem
-                value={customer.id}
-                key={customer.id}
-            >
-                {customer.name}, id: {customer.id}
-            </MenuItem>
-        ));
+        const {
+            invoices: {activeInvoiceId, data}, invoicesRequests, loadInvoices,
+            customers: {activeCustomerId},
+        } = this.props;
+        const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
+        const activeInvoice: InvoiceInterface | undefined = data.find(
+            (elem: InvoiceInterface) => elem.id === activeInvoiceId
+        );
 
         return (
             <div>
                 <h1>Invoices: </h1>
-                <form className={classes.root} autoComplete="off">
-                    <span style={{paddingTop: '30px'}}>Select customer - </span>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="customers-select">Customer:</InputLabel>
-                        <Select
-                            value={activeCustomerId ? activeCustomerId : '0'}
-                            onChange={this.handleChange}
-                            inputProps={{
-                                name: 'customers',
-                                id: 'customers-select',
-                            }}
-                        >
-                            <MenuItem value='0'>None</MenuItem>
-                            {menuItems}
-                        </Select>
-                    </FormControl>
-                </form>
+                <CustomerSelectElement/>
+                {activeCustomerId && <section>
+                    <EditPanel
+                        labelButton='invoice'
+                        onAddButtonClick={this.handleButtonInvoiceAddClick}
+                        onChangeButtonClick={this.handleButtonInvoiceChangeClick}
+                        onDeleteButtonClick={this.handleButtonInvoiceDeleteClick}
+                        activeId={activeInvoiceId}
+                        formsState={{
+                            isVisibleAddForm,
+                            isVisibleChangeForm,
+                            isVisibleDeleteForm,
+                        }}
+                    />
+                    <InvoiceAddForm
+                        isVisible={isVisibleAddForm}
+                        isLoading={invoicesRequests.invoicesPost.loading}
+                        errors={invoicesRequests.invoicesPost.errors}
+                        onSubmit={this.handleSubmitInvoiceAddForm}
+                    />
+                    <InvoiceChangeForm
+                        isVisible={isVisibleChangeForm}
+                        isLoading={invoicesRequests.invoicesPut.loading}
+                        errors={invoicesRequests.invoicesPut.errors}
+                        onSubmit={this.handleSubmitInvoiceChangeForm}
+                    />
+                    <InvoiceDeleteForm
+                        isVisible={isVisibleDeleteForm}
+                        isLoading={invoicesRequests.invoicesDelete.loading}
+                        errors={invoicesRequests.invoicesDelete.errors}
+                        id={activeInvoice ? activeInvoice.id : null}
+                        handleSubmit={this.handleSubmitInvoiceDeleteForm}
+                    />
+                    <InvoicesList
+                        invoicesRequest={invoicesRequests.invoicesGet}
+                        invoicesData={data}
+                        activeCustomerId={activeCustomerId}
+                        loadInvoices={loadInvoices}
+                    />
+                </section>}
             </div>
-        );
+        )
     }
 }
 
-const styles = (theme: Theme): StyleRules => createStyles({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    formControl: {
-        margin: theme.spacing.unit,
-        minWidth: 120,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing.unit * 2,
-    },
-});
-
-
 const mapStateToProps = (state: RootState): StateProps => ({
+    invoices: state.invoices,
     customers: state.customers,
-    customersRequests: state.request.customers,
+    invoicesRequests: state.request.invoices,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
     {
-        loadCustomers: () => {
-            dispatch(Actions.loadAllCustomers());
+        loadInvoices: () => {
+            dispatch(Actions.loadAllInvoices());
         },
-        selectActiveCustomer: (data, id) => {
-            dispatch(Actions.selectCustomer(data, id));
+        submitAddForm: (data) => {
+            dispatch(Actions.submitInvoiceAddForm(data));
         },
+        submitChangeForm: (data, id) => {
+            dispatch(Actions.submitInvoiceChangeForm(data, id));
+        },
+        submitDeleteForm: (id) => {
+            dispatch(Actions.submitInvoiceDeleteForm(id));
+        },
+
     }
 );
 
-export default withStyles(styles)(
-    connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(InvoicesPage)
-);
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(InvoicesPage);

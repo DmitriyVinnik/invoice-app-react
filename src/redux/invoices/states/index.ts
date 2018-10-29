@@ -1,11 +1,11 @@
 export interface InvoiceDataForServer {
     discount: number,
     total: number,
+    customer_id: number,
 }
 
 export interface Invoice extends InvoiceDataForServer{
     id: number,
-    customer_id: number,
 }
 
 export interface InvoicesState {

@@ -112,13 +112,34 @@ const formReducer = reducer.plugin({
         }
     },
 
-    invoiceAdd: (state, action: RequestInvoiceActionsSuccess): FormState | undefined => {
-        const {type} = action;
+    invoiceAdd: (state, action: RequestInvoiceActionsSuccess | invoicesAC.Actions): FormState | undefined => {
 
-        switch (type) {
+        switch (action.type) {
             case invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_SUCCESS:
                 return undefined;
 
+        //     case invoicesAC.ActionTypes.INVOICES_SELECT_ACTIVE:
+        //         const {payload} = action;
+        //         const invoice: Invoice | undefined = payload.data.find(
+        //             (elem: Invoice) => elem.id === payload.id
+        //         );
+        //         const emptyInvoice: InvoiceDataForServer = {
+        //             discount: 0,
+        //             total: 0,
+        //             customer_id: 0,
+        //         };
+        //         const activeInvoice = !!invoice ? invoice : emptyInvoice;
+        //
+        //         return state ?
+        //             {
+        //                 ...state,
+        //                 values: {
+        //                     ...state.values,
+        //                     customer_id: activeInvoice.customer_id,
+        //                 }
+        //             } :
+        //             state;
+        //
             default:
                 return state;
         }
@@ -139,6 +160,7 @@ const formReducer = reducer.plugin({
                 const emptyInvoice: InvoiceDataForServer = {
                     discount: 0,
                     total: 0,
+                    customer_id: 0,
                 };
                 const activeInvoice = !!invoice ? invoice : emptyInvoice;
 
