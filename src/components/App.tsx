@@ -6,7 +6,6 @@ import CustomersPage from './pages/customers/CustomersPage';
 import ProductsPage from './pages/products/ProductsPage';
 import InvoicesPage from './pages/invoices/InvoicesPage';
 import NotFoundPage from './pages/NotFoundPage';
-import Home from './pages/Home';
 
 const App: React.SFC = () => {
     return (
@@ -16,22 +15,21 @@ const App: React.SFC = () => {
                     <Toast/>
                     <ul>
                         <li>
+                            <NavLink exact to="/" activeStyle={{backgroundColor: 'red'}}>Invoices</NavLink>
+                        </li>
+                        <li>
                             <NavLink to="/customers" activeStyle={{backgroundColor: 'red'}}>Customer</NavLink>
                         </li>
                         <li>
                             <NavLink to="/products" activeStyle={{backgroundColor: 'red'}}>Products</NavLink>
                         </li>
-                        <li>
-                            <NavLink to="/invoices" activeStyle={{backgroundColor: 'red'}}>Invoices</NavLink>
-                        </li>
                     </ul>
                 </nav>
                 <main>
                     <Switch>
-                        <Route exact path="/" component={Home}/>
+                        <Route exact path="/" component={InvoicesPage}/>
                         <Route path="/customers" component={CustomersPage}/>
                         <Route path="/products" component={ProductsPage}/>
-                        <Route path="/invoices" component={InvoicesPage}/>
                         <Route component={NotFoundPage}/>
                     </Switch>
                 </main>
