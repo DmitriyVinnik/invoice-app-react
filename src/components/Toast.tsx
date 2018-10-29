@@ -29,7 +29,7 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps & WithStyles<typeof styles>
 
-const Toast = withStyles(styles)((props: Props) => {
+const Toast = (props: Props) => {
     const {message, error, closeToast, isOpen, classes} = props;
     const handleClose = (event: React.MouseEvent<HTMLElement>, reason?: string): void => {
         if (reason === 'clickaway') {
@@ -75,7 +75,7 @@ const Toast = withStyles(styles)((props: Props) => {
             />
         </Typography>
     );
-});
+};
 
 const mapStateToProps = (state: RootState): StateProps => ({
     isOpen: state.toast.isOpen,
@@ -91,4 +91,6 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
     }
 );
 
-export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Toast);
+export default withStyles(styles)(
+    connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Toast)
+);
