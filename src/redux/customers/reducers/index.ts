@@ -1,3 +1,4 @@
+import _ from 'lodash-es';
 import * as fromActions from '../AC';
 import {initialState, CustomersState} from '../states';
 
@@ -5,32 +6,11 @@ export function reducer(state = initialState, action: fromActions.Actions): Cust
 
     switch (action.type) {
         case fromActions.ActionTypes.CUSTOMERS_SET_DATA: {
-            return {
-                ...state,
-                data: action.payload.data,
-            };
-        }
-
-        case fromActions.ActionTypes.CUSTOMERS_UPDATE_DATA_AFTER_POST_REQUEST: {
-            return {
-                ...state,
-                data: [
-                    ...state.data,
-                    action.payload.data,
-                ],
-            };
-        }
-
-        case fromActions.ActionTypes.CUSTOMERS_UPDATE_DATA_AFTER_PUT_REQUEST: {
-            const newData = [...state.data];
-            const changedCustomerIndex = state.data.findIndex(
-                (elem) => elem.id === action.payload.data.id
-            );
-            newData.splice(changedCustomerIndex, 1, action.payload.data);
+            const newData = Array.isArray(action.payload.data) ? action.payload.data : [action.payload.data];
 
             return {
                 ...state,
-                data: newData,
+                data: _.unionBy(newData, state.data, 'id')
             };
         }
 

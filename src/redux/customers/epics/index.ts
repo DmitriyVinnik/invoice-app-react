@@ -12,12 +12,12 @@ const loadAllCustomersEpic = (action$: Observable<Action>, state$: StateObservab
     filter(([, state]) => {
         const {loaded, loading} = state.request.customers.customersGet;
 
-        return  (!loaded && !loading) === true;
+        return (!loaded && !loading) === true;
     }),
     map(() => customersRequestAC.customersGet.Actions.customersGet())
 );
 
-const updateCustomersDataAfterRequestEpic = (action$: Observable<Action>) => action$.pipe(
+const updateCustomersDataEpic = (action$: Observable<Action>) => action$.pipe(
     ofType<RequestActionsSuccess>(
         customersRequestAC.customersGet.ActionTypes.CUSTOMERS_GET_SUCCESS,
         customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_SUCCESS,
@@ -27,22 +27,12 @@ const updateCustomersDataAfterRequestEpic = (action$: Observable<Action>) => act
     map((action) => {
 
         switch (action.type) {
-            case customersRequestAC.customersGet.ActionTypes.CUSTOMERS_GET_SUCCESS: {
-                const {data} = action.payload;
-
-                return fromActions.Actions.setCustomersData(data)
-            }
-
-            case customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_SUCCESS: {
-                const {data} = action.payload;
-
-                return fromActions.Actions.updateCustomersDataAfterPostRequest(data)
-            }
-
+            case customersRequestAC.customersGet.ActionTypes.CUSTOMERS_GET_SUCCESS:
+            case customersRequestAC.customersPost.ActionTypes.CUSTOMERS_POST_SUCCESS:
             case customersRequestAC.customersPut.ActionTypes.CUSTOMERS_PUT_SUCCESS: {
                 const {data} = action.payload;
 
-                return fromActions.Actions.updateCustomersDataAfterPutRequest(data)
+                return fromActions.Actions.setCustomersData(data)
             }
 
             case customersRequestAC.customersDelete.ActionTypes.CUSTOMERS_DELETE_SUCCESS: {
@@ -50,11 +40,7 @@ const updateCustomersDataAfterRequestEpic = (action$: Observable<Action>) => act
 
                 return fromActions.Actions.updateCustomersDataAfterDeleteRequest(data)
             }
-
-            default:
-                return null;
         }
-
     })
 );
 
@@ -93,6 +79,6 @@ const submitCustomerFormsEpic = (action$: Observable<Action>) => action$.pipe(
 
 export const customersEpics = [
     loadAllCustomersEpic,
-    updateCustomersDataAfterRequestEpic,
+    updateCustomersDataEpic,
     submitCustomerFormsEpic,
 ];

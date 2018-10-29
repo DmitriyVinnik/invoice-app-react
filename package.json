@@ -11,6 +11,7 @@
   "dependencies": {
     "@material-ui/core": "^3.3.2",
     "@material-ui/icons": "^3.0.1",
+    "@types/lodash-es": "^4.17.1",
     "autoprefixer": "7.1.6",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
@@ -42,7 +43,7 @@
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
     "jsonwebtoken": "^8.3.0",
-    "lodash": "latest",
+    "lodash-es": "^4.17.11",
     "mongoose": "^4.13.17",
     "morgan": "^1.9.1",
     "object-assign": "4.1.1",

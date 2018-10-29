@@ -17,7 +17,7 @@ const loadAllProductsEpic = (action$: Observable<Action>, state$: StateObservabl
     map(() => productsRequestAC.productsGet.Actions.productsGet())
 );
 
-const updateProductsDataAfterRequestEpic = (action$: Observable<Action>) => action$.pipe(
+const updateProductsDataEpic = (action$: Observable<Action>) => action$.pipe(
     ofType<RequestActionsSuccess>(
         productsRequestAC.productsGet.ActionTypes.PRODUCTS_GET_SUCCESS,
         productsRequestAC.productsPost.ActionTypes.PRODUCTS_POST_SUCCESS,
@@ -27,22 +27,12 @@ const updateProductsDataAfterRequestEpic = (action$: Observable<Action>) => acti
     map((action) => {
 
         switch (action.type) {
-            case productsRequestAC.productsGet.ActionTypes.PRODUCTS_GET_SUCCESS: {
-                const {data} = action.payload;
-
-                return fromActions.Actions.setProductsData(data)
-            }
-
-            case productsRequestAC.productsPost.ActionTypes.PRODUCTS_POST_SUCCESS: {
-                const {data} = action.payload;
-
-                return fromActions.Actions.updateProductsDataAfterPostRequest(data)
-            }
-
+            case productsRequestAC.productsGet.ActionTypes.PRODUCTS_GET_SUCCESS:
+            case productsRequestAC.productsPost.ActionTypes.PRODUCTS_POST_SUCCESS:
             case productsRequestAC.productsPut.ActionTypes.PRODUCTS_PUT_SUCCESS: {
                 const {data} = action.payload;
 
-                return fromActions.Actions.updateProductsDataAfterPutRequest(data)
+                return fromActions.Actions.setProductsData(data)
             }
 
             case productsRequestAC.productsDelete.ActionTypes.PRODUCTS_DELETE_SUCCESS: {
@@ -93,6 +83,6 @@ const submitProductFormsEpic = (action$: Observable<Action>) => action$.pipe(
 
 export const productsEpics = [
     loadAllProductsEpic,
-    updateProductsDataAfterRequestEpic,
+    updateProductsDataEpic,
     submitProductFormsEpic,
 ];

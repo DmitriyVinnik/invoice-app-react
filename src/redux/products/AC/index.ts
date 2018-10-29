@@ -16,14 +16,8 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    setProductsData: (data: Product[]) => {
+    setProductsData: (data: Product[] | Product) => {
         return createAction(ActionTypes.PRODUCTS_SET_DATA, {data})
-    },
-    updateProductsDataAfterPostRequest: (data: Product) => {
-        return createAction(ActionTypes.PRODUCTS_UPDATE_DATA_AFTER_POST_REQUEST, {data})
-    },
-    updateProductsDataAfterPutRequest: (data: Product) => {
-        return createAction(ActionTypes.PRODUCTS_UPDATE_DATA_AFTER_PUT_REQUEST, {data})
     },
     updateProductsDataAfterDeleteRequest: (data: Product) => {
         return createAction(ActionTypes.PRODUCTS_UPDATE_DATA_AFTER_DELETE_REQUEST, {data})

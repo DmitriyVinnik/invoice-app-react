@@ -16,14 +16,8 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    setCustomersData: (data: Customer[]) => {
+    setCustomersData: (data: Customer[] | Customer) => {
         return createAction(ActionTypes.CUSTOMERS_SET_DATA, {data})
-    },
-    updateCustomersDataAfterPostRequest: (data: Customer) => {
-        return createAction(ActionTypes.CUSTOMERS_UPDATE_DATA_AFTER_POST_REQUEST, {data})
-    },
-    updateCustomersDataAfterPutRequest: (data: Customer) => {
-        return createAction(ActionTypes.CUSTOMERS_UPDATE_DATA_AFTER_PUT_REQUEST, {data})
     },
     updateCustomersDataAfterDeleteRequest: (data: Customer) => {
         return createAction(ActionTypes.CUSTOMERS_UPDATE_DATA_AFTER_DELETE_REQUEST, {data})
