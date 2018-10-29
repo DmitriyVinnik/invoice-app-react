@@ -1,10 +1,17 @@
 import {reducer, FormState} from 'redux-form';
-import {customersRequestAC, RequestActionsSuccess} from '../../request/nested-states/customers/AC';
+import {
+    customersRequestAC, RequestActionsSuccess as RequestCustomerActionsSuccess
+} from '../../request/nested-states/customers/AC';
+import {
+    productsRequestAC, RequestActionsSuccess as RequestProductActionsSuccess
+} from '../../request/nested-states/products/AC';
 import * as customersAC from '../../customers/AC';
+import * as productsAC from '../../products/AC';
 import {CustomerDataForServer, Customer} from '../../customers/states';
+import {ProductDataForServer, Product} from '../../products/states';
 
 const formReducer = reducer.plugin({
-    customerAdd: (state, action: RequestActionsSuccess): FormState | undefined => {
+    customerAdd: (state, action: RequestCustomerActionsSuccess): FormState | undefined => {
         const {type} = action;
 
         switch (type) {
@@ -43,6 +50,51 @@ const formReducer = reducer.plugin({
                         name:  activeCustomer.name,
                         address: activeCustomer.address,
                         phone: activeCustomer.phone,
+                    }
+                };
+
+            default:
+                return state;
+        }
+    },
+
+    productAdd: (state, action: RequestProductActionsSuccess): FormState | undefined => {
+        const {type} = action;
+
+        switch (type) {
+            case productsRequestAC.productsPost.ActionTypes.PRODUCTS_POST_SUCCESS:
+                return undefined;
+
+            default:
+                return state;
+        }
+    },
+
+    productChange: (state, action: productsAC.Actions): FormState | undefined => {
+
+        switch (action.type) {
+
+            case productsAC.ActionTypes.PRODUCTS_RESET_SELECTION_ACTIVE:
+                return undefined;
+
+            case productsAC.ActionTypes.PRODUCTS_SELECT_ACTIVE:
+                const {payload} = action;
+                const product: Product | undefined = payload.data.find(
+                    (elem: Product) => elem.id === payload.id
+                );
+                const emptyProduct: ProductDataForServer = {
+                    name: '',
+                    price: 0,
+                };
+                const activeProduct = !!product ? product : emptyProduct;
+
+
+                return {
+                    ...state,
+                    values: {
+                        ...state.values,
+                        name:  activeProduct.name,
+                        price: activeProduct.price,
                     }
                 };
 

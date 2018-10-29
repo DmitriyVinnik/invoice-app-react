@@ -10,9 +10,8 @@ import {Actions} from '../../../redux/customers/AC';
 
 import {Dispatch} from 'redux';
 import {RootState} from '../../../redux/store';
-import {CustomersState} from '../../../redux/customers/states';
 import {CustomersRequestState} from '../../../redux/request/nested-states/customers/states';
-import {CustomerDataForServer, Customer as CustomerInterface} from '../../../redux/customers/states';
+import {CustomerDataForServer, Customer as CustomerInterface, CustomersState} from '../../../redux/customers/states';
 
 interface StateProps {
     customers: CustomersState,
