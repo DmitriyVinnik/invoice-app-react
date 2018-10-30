@@ -1,22 +1,13 @@
-import {reducer, FormState} from 'redux-form';
-import {
-    customersRequestAC, RequestActionsSuccess as RequestCustomerActionsSuccess
-} from '../../request/nested-states/customers/AC';
-import {
-    productsRequestAC, RequestActionsSuccess as RequestProductActionsSuccess
-} from '../../request/nested-states/products/AC';
-import {
-    invoicesRequestAC, RequestActionsSuccess as RequestInvoiceActionsSuccess
-} from '../../request/nested-states/invoices/AC';
+import {reducer, FormState, actionTypes, FormAction} from 'redux-form';
+import {customersRequestAC} from '../../request/nested-states/customers/AC';
+import {productsRequestAC} from '../../request/nested-states/products/AC';
+import {invoicesRequestAC} from '../../request/nested-states/invoices/AC';
 import * as customersAC from '../../customers/AC';
 import * as productsAC from '../../products/AC';
 import * as invoicesAC from '../../invoices/AC';
-import {CustomerDataForServer, Customer} from '../../customers/states';
-import {ProductDataForServer, Product} from '../../products/states';
-import {InvoiceDataForServer, Invoice} from '../../invoices/states';
 
 const formReducer = reducer.plugin({
-    customerAdd: (state, action: RequestCustomerActionsSuccess): FormState | undefined => {
+    customerAdd: (state, action: FormAction): FormState | undefined => {
         const {type} = action;
 
         switch (type) {
@@ -28,44 +19,30 @@ const formReducer = reducer.plugin({
         }
     },
 
-    customerChange: (state, action: customersAC.Actions): FormState | undefined => {
+    customerChange: (state, action: FormAction): FormState | undefined => {
 
         switch (action.type) {
-
             case customersAC.ActionTypes.CUSTOMERS_RESET_SELECTION_ACTIVE:
                 return undefined;
 
-            case customersAC.ActionTypes.CUSTOMERS_SELECT_ACTIVE:
-                const {payload} = action;
-                const customer: Customer | undefined = payload.data.find(
-                    (elem: Customer) => elem.id === payload.id
-                );
-                const emptyCustomer: CustomerDataForServer = {
-                    name: '',
-                    address: '',
-                    phone: '',
-                };
-                const activeCustomer = !!customer ? customer : emptyCustomer;
-
-
-                return state ?
-                    {
-                        ...state,
-                        values: {
-                            ...state.values,
-                            name: activeCustomer.name,
-                            address: activeCustomer.address,
-                            phone: activeCustomer.phone,
-                        }
-                    } :
-                    state;
+            case actionTypes.INITIALIZE: {
+                return {
+                    ...state,
+                    values: {
+                        ...state.values,
+                        name: action.payload.name,
+                        address: action.payload.address,
+                        phone: action.payload.phone,
+                    }
+                }
+            }
 
             default:
                 return state;
         }
     },
 
-    productAdd: (state, action: RequestProductActionsSuccess): FormState | undefined => {
+    productAdd: (state, action: FormAction): FormState | undefined => {
         const {type} = action;
 
         switch (type) {
@@ -77,104 +54,90 @@ const formReducer = reducer.plugin({
         }
     },
 
-    productChange: (state, action: productsAC.Actions): FormState | undefined => {
+    productChange: (state, action: FormAction): FormState | undefined => {
 
         switch (action.type) {
 
             case productsAC.ActionTypes.PRODUCTS_RESET_SELECTION_ACTIVE:
                 return undefined;
 
-            case productsAC.ActionTypes.PRODUCTS_SELECT_ACTIVE:
-                const {payload} = action;
-                const product: Product | undefined = payload.data.find(
-                    (elem: Product) => elem.id === payload.id
-                );
-                const emptyProduct: ProductDataForServer = {
-                    name: '',
-                    price: 0,
-                };
-                const activeProduct = !!product ? product : emptyProduct;
-
-
-                return state ?
-                    {
-                        ...state,
-                        values: {
-                            ...state.values,
-                            name: activeProduct.name,
-                            price: activeProduct.price,
-                        }
-                    } :
-                    state;
+            case actionTypes.INITIALIZE: {
+                return {
+                    ...state,
+                    values: {
+                        ...state.values,
+                        name: action.payload.name,
+                        price: action.payload.price,
+                    }
+                }
+            }
 
             default:
                 return state;
         }
     },
 
-    invoiceAdd: (state, action: RequestInvoiceActionsSuccess | invoicesAC.Actions): FormState | undefined => {
+    invoiceAdd: (state, action: FormAction): FormState | undefined => {
 
         switch (action.type) {
             case invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_SUCCESS:
                 return undefined;
 
-        //     case invoicesAC.ActionTypes.INVOICES_SELECT_ACTIVE:
-        //         const {payload} = action;
-        //         const invoice: Invoice | undefined = payload.data.find(
-        //             (elem: Invoice) => elem.id === payload.id
-        //         );
-        //         const emptyInvoice: InvoiceDataForServer = {
-        //             discount: 0,
-        //             total: 0,
-        //             customer_id: 0,
-        //         };
-        //         const activeInvoice = !!invoice ? invoice : emptyInvoice;
-        //
-        //         return state ?
-        //             {
-        //                 ...state,
-        //                 values: {
-        //                     ...state.values,
-        //                     customer_id: activeInvoice.customer_id,
-        //                 }
-        //             } :
-        //             state;
-        //
+            case actionTypes.INITIALIZE: {
+                return {
+                        ...state,
+                        values: {
+                            ...state.values,
+                            customer_id: action.payload.customer_id,
+                        }
+                    }
+            }
+
             default:
                 return state;
         }
     },
 
-    invoiceChange: (state, action: invoicesAC.Actions): FormState | undefined => {
+    invoiceChange: (state, action: FormAction): FormState | undefined => {
 
         switch (action.type) {
-
             case invoicesAC.ActionTypes.INVOICES_RESET_SELECTION_ACTIVE:
                 return undefined;
 
-            case invoicesAC.ActionTypes.INVOICES_SELECT_ACTIVE:
-                const {payload} = action;
-                const invoice: Invoice | undefined = payload.data.find(
-                    (elem: Invoice) => elem.id === payload.id
-                );
-                const emptyInvoice: InvoiceDataForServer = {
-                    discount: 0,
-                    total: 0,
-                    customer_id: 0,
+            case actionTypes.INITIALIZE: {
+                return {
+                    ...state,
+                    values: {
+                        ...state.values,
+                        discount: action.payload.discount,
+                        customer_id: action.payload.customer_id,
+                        total: action.payload.total,
+                    }
                 };
-                const activeInvoice = !!invoice ? invoice : emptyInvoice;
-
-
-                return state ?
-                    {
-                        ...state,
-                        values: {
-                            ...state.values,
-                            discount: activeInvoice.discount,
-                            total: activeInvoice.total,
-                        }
-                    } :
-                    state;
+            }
+                // case invoicesAC.ActionTypes.INVOICES_SELECT_ACTIVE:
+            //     const {payload} = action;
+            //     const invoice: Invoice | undefined = payload.data.find(
+            //         (elem: Invoice) => elem.id === payload.id
+            //     );
+            //     const emptyInvoice: InvoiceDataForServer = {
+            //         discount: 0,
+            //         total: 0,
+            //         customer_id: 0,
+            //     };
+            //     const activeInvoice = !!invoice ? invoice : emptyInvoice;
+            //
+            //
+            //     return state ?
+            //         {
+            //             ...state,
+            //             values: {
+            //                 ...state.values,
+            //                 discount: activeInvoice.discount,
+            //                 total: activeInvoice.total,
+            //             }
+            //         } :
+            //         state;
 
             default:
                 return state;
