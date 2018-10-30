@@ -1,4 +1,5 @@
 import React from 'react';
+import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {Actions} from '../redux/toast/AC';
 
@@ -14,12 +15,6 @@ import CloseIcon from '@material-ui/icons/Close';
 
 declare var window: any;
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
-
-const styles = (theme: Theme): StyleRules => createStyles({
-    display1: {
-        padding: theme.spacing.unit / 2,
-    },
-});
 
 type StateProps = ToastState
 
@@ -38,7 +33,7 @@ const Toast = (props: Props) => {
 
         closeToast();
     };
-    const getMessageContent = ():React.ReactNode => {
+    const getMessageContent = (): React.ReactNode => {
         if (error) {
             return (
                 <span>{error}</span>
@@ -91,6 +86,13 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
     }
 );
 
-export default withStyles(styles)(
-    connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Toast)
-);
+const styles = (theme: Theme): StyleRules => createStyles({
+    display1: {
+        padding: theme.spacing.unit / 2,
+    },
+});
+
+export default compose(
+    connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps),
+    withStyles(styles),
+)(Toast);
