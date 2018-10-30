@@ -1,13 +1,13 @@
 import {ajax} from 'rxjs/ajax';
 import {RequestPayloadInvoices, RequestServiceInvoices} from '../types/Request'
 
-const PRODUCTS_URL = 'http://localhost:8000/api/invoices/';
+const INVOICES_URL = 'http://localhost:8000/api/invoices/';
 
 class InvoicesService implements RequestServiceInvoices {
 
     public postInvoice(payload: RequestPayloadInvoices) {
         return ajax.post(
-            PRODUCTS_URL,
+            INVOICES_URL,
             JSON.stringify(payload.data),
             {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -16,12 +16,12 @@ class InvoicesService implements RequestServiceInvoices {
     }
 
     public getInvoice() {
-        return ajax.get(PRODUCTS_URL)
+        return ajax.get(INVOICES_URL)
     }
 
     public putInvoice(payload: RequestPayloadInvoices) {
         return ajax.put(
-            PRODUCTS_URL + payload.id,
+            INVOICES_URL + payload.id,
             JSON.stringify(payload.data),
             {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -30,7 +30,7 @@ class InvoicesService implements RequestServiceInvoices {
     }
 
     public deleteInvoice(payload: RequestPayloadInvoices) {
-        return ajax.delete(PRODUCTS_URL + payload.id)
+        return ajax.delete(INVOICES_URL + payload.id)
     }
 }
 

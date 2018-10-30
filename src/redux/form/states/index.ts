@@ -7,4 +7,6 @@ export interface FormsState {
     productChange: FormsState,
     invoiceAdd: FormsState,
     invoiceChange: FormsState,
+    invoiceItemAdd: FormsState,
+    invoiceItemChange: FormsState,
 }
