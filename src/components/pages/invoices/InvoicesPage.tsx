@@ -12,7 +12,7 @@ import {Actions} from '../../../redux/invoices/AC';
 import {Dispatch} from 'redux';
 import {RootState} from '../../../redux/store';
 import {InvoicesRequestState} from '../../../redux/request/nested-states/invoices/states';
-import {InvoiceDataForServer, Invoice as InvoiceInterface, InvoicesState} from '../../../redux/invoices/states';
+import {InvoiceDataForServer, InvoicesState} from '../../../redux/invoices/states';
 import {CustomersState} from "../../../redux/customers/states";
 
 interface StateProps {
@@ -97,8 +97,8 @@ class InvoicesPage extends Component<Props, State> {
             customers: {activeCustomerId},
         } = this.props;
         const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
-        const activeInvoice: InvoiceInterface | undefined = data.find(
-            (elem: InvoiceInterface) => elem.id === activeInvoiceId
+        const activeInvoice = data.find(
+            (elem) => elem.id === activeInvoiceId
         );
 
         return (
@@ -123,12 +123,14 @@ class InvoicesPage extends Component<Props, State> {
                         isLoading={invoicesRequests.invoicesPost.loading}
                         errors={invoicesRequests.invoicesPost.errors}
                         onSubmit={this.handleSubmitInvoiceAddForm}
+                        activeCustomerId={activeCustomerId}
                     />
                     <InvoiceChangeForm
                         isVisible={isVisibleChangeForm}
                         isLoading={invoicesRequests.invoicesPut.loading}
                         errors={invoicesRequests.invoicesPut.errors}
                         onSubmit={this.handleSubmitInvoiceChangeForm}
+                        activeInvoice={activeInvoice}
                     />
                     <InvoiceDeleteForm
                         isVisible={isVisibleDeleteForm}

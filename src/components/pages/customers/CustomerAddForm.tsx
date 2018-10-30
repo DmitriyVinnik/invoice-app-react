@@ -13,7 +13,7 @@ export interface OwnProps {
 
 type Props = OwnProps & InjectedFormProps<FormData, OwnProps>
 
-const CustomerAddForm:React.SFC<Props> = (props: Props) => {
+const CustomerAddForm: React.SFC<Props> = (props: Props) => {
     const {isVisible, handleSubmit, isLoading, errors} = props;
 
     return (

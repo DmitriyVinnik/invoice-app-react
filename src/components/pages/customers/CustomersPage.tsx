@@ -11,7 +11,7 @@ import {Actions} from '../../../redux/customers/AC';
 import {Dispatch} from 'redux';
 import {RootState} from '../../../redux/store';
 import {CustomersRequestState} from '../../../redux/request/nested-states/customers/states';
-import {CustomerDataForServer, Customer as CustomerInterface, CustomersState} from '../../../redux/customers/states';
+import {CustomerDataForServer, CustomersState} from '../../../redux/customers/states';
 
 interface StateProps {
     customers: CustomersState,
@@ -88,8 +88,8 @@ class CustomersPage extends Component<Props, State> {
     public render() {
         const {customers: {activeCustomerId, data}, customersRequests, loadCustomers} = this.props;
         const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
-        const activeCustomer: CustomerInterface | undefined = data.find(
-            (elem: CustomerInterface) => elem.id === activeCustomerId
+        const activeCustomer = data.find(
+            (elem) => elem.id === activeCustomerId
         );
 
         return (
@@ -117,6 +117,7 @@ class CustomersPage extends Component<Props, State> {
                     isLoading={customersRequests.customersPut.loading}
                     errors={customersRequests.customersPut.errors}
                     onSubmit={this.handleSubmitCustomerChangeForm}
+                    activeCustomer={activeCustomer}
                 />
                 <CustomerDeleteForm
                     isVisible={isVisibleDeleteForm}

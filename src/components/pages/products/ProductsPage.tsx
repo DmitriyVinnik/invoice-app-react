@@ -11,7 +11,7 @@ import {Actions} from '../../../redux/products/AC';
 import {Dispatch} from 'redux';
 import {RootState} from '../../../redux/store';
 import {ProductsRequestState} from '../../../redux/request/nested-states/products/states';
-import {ProductDataForServer, Product as ProductInterface, ProductsState} from '../../../redux/products/states';
+import {ProductDataForServer, ProductsState} from '../../../redux/products/states';
 
 interface StateProps {
     products: ProductsState,
@@ -88,8 +88,8 @@ class ProductsPage extends Component<Props, State> {
     public render() {
         const {products: {activeProductId, data}, productsRequests, loadProducts} = this.props;
         const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
-        const activeProduct: ProductInterface | undefined = data.find(
-            (elem: ProductInterface) => elem.id === activeProductId
+        const activeProduct = data.find(
+            (elem) => elem.id === activeProductId
         );
 
         return (
@@ -117,6 +117,7 @@ class ProductsPage extends Component<Props, State> {
                     isLoading={productsRequests.productsPut.loading}
                     errors={productsRequests.productsPut.errors}
                     onSubmit={this.handleSubmitProductChangeForm}
+                    activeProduct={activeProduct}
                 />
                 <ProductDeleteForm
                     isVisible={isVisibleDeleteForm}
