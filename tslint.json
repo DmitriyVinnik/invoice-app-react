@@ -23,6 +23,12 @@
         "timeEnd",
         "trace"
       ]
+    },
+    "variable-name": {
+      "options": [
+        "allow-snake-case",
+        "allow-pascal-case"
+      ]
     }
   }
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 import {compose} from 'redux';
 import {connect} from "react-redux";
-import {Actions} from "../../redux/customers/AC";
+import {Actions} from "../../../redux/customers/AC";
 
-import {RootState} from "../../redux/store";
+import {RootState} from "../../../redux/store";
 import {Dispatch} from "redux";
-import {Customer, CustomersState} from "../../redux/customers/states";
-import {CustomersRequestState} from "../../redux/request/nested-states/customers/states";
+import {Customer, CustomersState} from "../../../redux/customers/states";
+import {CustomersRequestState} from "../../../redux/request/nested-states/customers/states";
 
 import {createStyles, StyleRules, Theme, WithStyles, withStyles} from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';

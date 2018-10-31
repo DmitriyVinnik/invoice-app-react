@@ -8,12 +8,14 @@ export interface OwnProps {
     invoicesRequest: RequestNestedState;
     activeCustomerId: number | null;
     loadInvoices(): void,
+    loadProducts(): void,
 }
 
 export default class InvoicesList extends Component<OwnProps> {
 
     public componentDidMount() {
         this.props.loadInvoices();
+        this.props.loadProducts();
     }
 
     public render() {
