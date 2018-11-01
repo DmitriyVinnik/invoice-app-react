@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware, combineReducers} from 'redux';
+import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
 import {combineEpics, createEpicMiddleware} from 'redux-observable';
 
 import formReducer from './form/reducers';
@@ -24,7 +24,6 @@ import {ProductsState} from './products/states';
 import {InvoicesState} from './invoices/states';
 import {InvoiceItemsState} from './invoiceItems/states';
 
-declare var window: any;
 
 export interface RootState {
     customers: CustomersState,
@@ -57,10 +56,21 @@ const rootEpic = combineEpics(
 
 const epicMiddleware = createEpicMiddleware();
 
+declare var window: any;
+
+const composeEnhancers =
+    typeof window === 'object' &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        }) : compose;
+
+const enhancer = composeEnhancers(
+    applyMiddleware(epicMiddleware),
+);
+
 const store = createStore(
     rootReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-    applyMiddleware(epicMiddleware),
+    enhancer,
 );
 
 epicMiddleware.run(rootEpic);

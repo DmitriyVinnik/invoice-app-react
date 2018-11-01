@@ -1,6 +1,6 @@
 export interface InvoiceDataForServer {
     discount: number,
-    total: number,
+    total?: number,
     customer_id: number,
 }
 

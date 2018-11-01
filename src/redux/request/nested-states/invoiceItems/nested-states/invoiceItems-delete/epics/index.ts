@@ -8,7 +8,7 @@ import * as fromActions from '../AC';
 
 export const invoiceItemsDeleteEpic = (action$: Observable<Action>) => action$.pipe(
     ofType<fromActions.Actions>(fromActions.ActionTypes.INVOICE_ITEMS_DELETE),
-    switchMap((action: fromActions.Actions): Observable<fromActions.Actions> =>
+    switchMap((action: fromActions.DeleteAction): Observable<fromActions.Actions> =>
         InvoiceItemsService.deleteInvoiceItem(action.payload).pipe(
             map(ajaxResponse => {
                 return fromActions.Actions.invoiceItemsDeleteSuccess(ajaxResponse.response)

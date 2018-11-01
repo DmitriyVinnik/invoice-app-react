@@ -9,7 +9,7 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    invoiceItemsPut: (data: InvoiceItemDataForServer, id: number, invoice_id: number) => {
+    invoiceItemsPut: (data: InvoiceItemDataForServer[], id: number[], invoice_id: number) => {
         return createAction(ActionTypes.INVOICE_ITEMS_PUT, {data, id, invoice_id})
     },
     invoiceItemsPutSuccess: (data: InvoiceItem) => {
@@ -20,4 +20,9 @@ export const Actions = {
     },
 };
 
+const putAction = {
+    put: Actions.invoiceItemsPut,
+};
+
 export type Actions = ActionsUnion<typeof Actions>
+export type PutAction = ActionsUnion<typeof putAction>

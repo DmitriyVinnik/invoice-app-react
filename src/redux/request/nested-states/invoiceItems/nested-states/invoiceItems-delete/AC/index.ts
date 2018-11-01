@@ -9,7 +9,7 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    invoiceItemsDelete: (id: number, invoice_id: number) => {
+    invoiceItemsDelete: (id: number[], invoice_id: number) => {
         return createAction(ActionTypes.INVOICE_ITEMS_DELETE, {id, invoice_id})
     },
     invoiceItemsDeleteSuccess: (data: InvoiceItem) => {
@@ -20,4 +20,10 @@ export const Actions = {
     },
 };
 
+const deleteAction = {
+    delete: Actions.invoiceItemsDelete,
+};
+
 export type Actions = ActionsUnion<typeof Actions>
+
+export type DeleteAction = ActionsUnion<typeof deleteAction>

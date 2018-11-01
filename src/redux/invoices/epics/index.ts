@@ -5,6 +5,7 @@ import {filter, map, withLatestFrom} from 'rxjs/operators';
 import * as fromActions from '../AC';
 import {invoicesRequestAC, RequestActionsSuccess} from '../../request/nested-states/invoices/AC';
 import {RootState} from "../../store";
+import {InvoiceDataForServer} from "../states";
 
 const loadAllInvoicesEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
     ofType<fromActions.Actions>(fromActions.ActionTypes.INVOICES_LOAD_ALL),
@@ -58,9 +59,14 @@ const submitInvoiceFormsEpic = (action$: Observable<Action>) => action$.pipe(
 
         switch (action.type) {
             case fromActions.ActionTypes.INVOICES_SUBMIT_ADD_FORM: {
-                const {data} = action.payload;
+                const {data, total} = action.payload;
+                const body: InvoiceDataForServer = {
+                    discount: data.discount,
+                    customer_id: data.customer_id,
+                    total
+                };
 
-                return invoicesRequestAC.invoicesPost.Actions.invoicesPost(data)
+                return invoicesRequestAC.invoicesPost.Actions.invoicesPost(body)
             }
 
             case fromActions.ActionTypes.INVOICES_SUBMIT_CHANGE_FORM: {

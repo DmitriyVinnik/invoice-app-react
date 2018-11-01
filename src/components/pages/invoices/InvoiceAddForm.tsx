@@ -2,7 +2,7 @@ import React from 'react';
 import {compose, Dispatch} from 'redux'
 import {connect} from 'react-redux';
 import {
-    reduxForm, Field, FieldArray, initialize,
+    reduxForm, Field, FieldArray, initialize, getFormValues,
     InjectedFormProps, FormErrors, FormAction,
 } from 'redux-form';
 import FormField from '../../../shared/components/FormField';
@@ -10,8 +10,10 @@ import InvoiceItemFieldsArray from './invoiceItems/InvoiceItemFieldsArray';
 
 import {InvoiceDataForServer} from '../../../redux/invoices/states';
 import {InvoiceItemDataForServer} from '../../../redux/invoiceItems/states';
-import {ProductsState} from "../../../redux/products/states";
+import {Product, ProductsState} from "../../../redux/products/states";
 import {RootState} from "../../../redux/store";
+
+import {Actions} from "../../../redux/invoices/AC";
 
 interface FormData extends InvoiceDataForServer {
     invoiceItems: InvoiceItemDataForServer[]
@@ -26,25 +28,17 @@ export interface OwnProps {
 
 interface StateProps {
     products: ProductsState,
+    formValues: FormData,
 }
 
 interface DispatchProps {
-    initializeForm: (values: FormData) => void
-}
-
-interface State {
-    total: number,
+    initializeForm(values: FormData): void
+    submitForm(data: FormData, total: number): void
 }
 
 type Props = OwnProps & StateProps & DispatchProps & InjectedFormProps<FormData, OwnProps>
 
-class InvoiceAddForm extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            total: 0,
-        }
-    }
+class InvoiceAddForm extends React.Component<Props> {
 
     public componentDidMount() {
         this.setFormValues()
@@ -56,19 +50,22 @@ class InvoiceAddForm extends React.Component<Props, State> {
         }
     }
 
+    public handleSubmitForm = (values: FormData): void => {
+        this.props.submitForm(values, this.getTotalPrice());
+    };
+
     public render() {
         const {isVisible, handleSubmit, isLoading, errors, products, activeCustomerId} = this.props;
-        const {total} = this.state;
 
         return (
             <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(this.handleSubmitForm)}>
                     <section>
                         <h2>
                             Addition new invoice.
                             <span>{`Invoice's customer ID: ${activeCustomerId}`}</span>
                         </h2>
-                        <strong>{`Invoice's total: ${total}`}</strong>
+                        <strong>{`Invoice's total: ${this.getTotalPrice()}`}</strong>
                         <Field
                             name='discount'
                             component={FormField}
@@ -113,6 +110,34 @@ class InvoiceAddForm extends React.Component<Props, State> {
             this.props.initializeForm(initialFormValue)
         }
     }
+
+    private getTotalPrice() {
+        const {formValues, products} = this.props;
+
+        let priceWithoutDiscount = 0;
+        let priceTotal = 0;
+
+        if (formValues) {
+            priceWithoutDiscount = formValues.invoiceItems.reduce((accum, invoiceItem) => {
+                if (invoiceItem) {
+                    const product = products.data.find((prod) => {
+
+                        return prod.id === invoiceItem.product_id
+                    }) as Product;
+
+                    return accum +
+                        (invoiceItem.quantity ? invoiceItem.quantity : 0) *
+                        (product ? product.price : 0)
+                }
+
+                return 0
+            }, 0);
+
+            priceTotal = Math.round(priceWithoutDiscount * (1 - formValues.discount) * 100) / 100;
+        }
+
+        return priceTotal
+    }
 }
 
 const validate = (values: FormData) => {
@@ -155,13 +180,17 @@ const validate = (values: FormData) => {
 
 const mapStateToProps = (state: RootState): StateProps => ({
     products: state.products,
+    formValues: getFormValues('invoiceAdd')(state) as FormData,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
     {
         initializeForm: (values) => {
             dispatch(initialize('invoiceAdd', values));
-        }
+        },
+        submitForm: (data, total) => {
+            dispatch(Actions.submitInvoiceAddForm(data, total));
+        },
     }
 );
 

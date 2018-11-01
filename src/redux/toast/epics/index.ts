@@ -171,8 +171,8 @@ const showInvoiceItemSuccessRequestToastEpic = (action$: Observable<Action>) => 
 
         switch (action.type) {
             case invoiceItems.invoiceItemsRequestAC.invoiceItemsPost.ActionTypes.INVOICE_ITEMS_POST_SUCCESS: {
-                const id = action.payload.data.id;
-                const message = `InvoiceItem - id: ${id} created successfully`;
+                const arrayId = action.payload.data.map<number>((invoiceItem) => invoiceItem.id);
+                const message = `InvoiceItems - id: ${arrayId.join(', id: ')} created successfully`;
 
                 return fromActions.Actions.showToast(message)
             }

@@ -8,7 +8,7 @@ import * as fromActions from '../AC';
 
 export const invoiceItemsGetEpic = (action$: Observable<Action>) => action$.pipe(
     ofType<fromActions.Actions>(fromActions.ActionTypes.INVOICE_ITEMS_GET),
-    switchMap((action: fromActions.Actions): Observable<fromActions.Actions> =>
+    switchMap((action: fromActions.GetAction): Observable<fromActions.Actions> =>
         InvoiceItemsService.getInvoiceItem(action.payload).pipe(
             map(ajaxResponse => fromActions.Actions.invoiceItemsGetSuccess(ajaxResponse.response)),
             catchError((ajaxError: AjaxError) => {

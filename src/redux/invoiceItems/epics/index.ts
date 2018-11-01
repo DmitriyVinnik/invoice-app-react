@@ -1,9 +1,16 @@
 import {Action} from 'redux';
 import {Observable} from 'rxjs';
-import {ofType} from 'redux-observable';
+import {ofType, StateObservable} from 'redux-observable';
 import {map} from 'rxjs/operators';
 import * as fromActions from '../AC';
 import {invoiceItemsRequestAC, RequestActionsSuccess} from '../../request/nested-states/invoiceItems/AC';
+import {
+    invoicesRequestAC, PostSuccess as RequestInvoicePostSuccess /*RequestActionsSuccess as
+     RequestInvoiceActionsSuccess*/
+} from '../../request/nested-states/invoices/AC';
+import {RootState} from "../../store";
+import {InvoiceItemDataForServer} from "../states";
+// import {Invoice} from "../../invoices/states";
 
 const loadAllInvoiceItemsEpic = (action$: Observable<Action>) => action$.pipe(
     ofType<fromActions.LoadAction>(fromActions.ActionTypes.INVOICE_ITEMS_LOAD_ALL),
@@ -41,41 +48,28 @@ const updateInvoiceItemsDataEpic = (action$: Observable<Action>) => action$.pipe
     })
 );
 
-const submitInvoiceFormsEpic = (action$: Observable<Action>) => action$.pipe(
-    ofType<fromActions.Actions>(
-        fromActions.ActionTypes.INVOICE_ITEMS_SUBMIT_ADD_FORM,
-        fromActions.ActionTypes.INVOICE_ITEMS_SUBMIT_CHANGE_FORM,
-        fromActions.ActionTypes.INVOICE_ITEMS_SUBMIT_DELETE_FORM,
-    ),
+const afterSuccesPostInvoiceEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
+    ofType<RequestInvoicePostSuccess>(invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_SUCCESS),
     map((action) => {
+        const {id} = action.payload.data;
 
-        switch (action.type) {
-            case fromActions.ActionTypes.INVOICE_ITEMS_SUBMIT_ADD_FORM: {
-                const {data, invoice_id} = action.payload;
+        let formData: InvoiceItemDataForServer[]  = [];
+        let dataForServer: InvoiceItemDataForServer[] = [];
+        if (state$.value.form.invoiceAdd.values) {
+            formData = state$.value.form.invoiceAdd.values.invoiceItems;
+            dataForServer = formData.map<InvoiceItemDataForServer>((elem) => {
+                elem.invoice_id = id;
 
-                return invoiceItemsRequestAC.invoiceItemsPost.Actions.invoiceItemsPost(data, invoice_id)
-            }
-
-            case fromActions.ActionTypes.INVOICE_ITEMS_SUBMIT_CHANGE_FORM: {
-                const {data, id, invoice_id} = action.payload;
-
-                return invoiceItemsRequestAC.invoiceItemsPut.Actions.invoiceItemsPut(data, id, invoice_id)
-            }
-
-            case fromActions.ActionTypes.INVOICE_ITEMS_SUBMIT_DELETE_FORM: {
-                const {id, invoice_id} = action.payload;
-
-                return invoiceItemsRequestAC.invoiceItemsDelete.Actions.invoiceItemsDelete(id, invoice_id)
-            }
-
-            default:
-                return null;
+                return elem
+            })
         }
+
+        return invoiceItemsRequestAC.invoiceItemsPost.Actions.invoiceItemsPost(dataForServer, id)
     })
 );
 
 export const invoiceItemsEpics = [
     loadAllInvoiceItemsEpic,
     updateInvoiceItemsDataEpic,
-    submitInvoiceFormsEpic,
+    afterSuccesPostInvoiceEpic,
 ];

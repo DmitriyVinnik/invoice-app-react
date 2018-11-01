@@ -9,12 +9,14 @@ export interface OwnProps {
     step?: string,
     disabled?: boolean,
     min?: string,
-}
+    }
 
 type Props = OwnProps & WrappedFieldProps;
 
 export const FormField:React.SFC<Props> = (props: Props) => {
-    const {id, placeholder, step, min, input, labelText, type, disabled, meta: {touched, error}} = props;
+    const {
+        id, placeholder, step, min, input, labelText, type, disabled, meta: {touched, error}
+    } = props;
 
     return (
         <div>

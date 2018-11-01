@@ -27,3 +27,4 @@ export const invoicesRequestAC = {
 
 export type RequestActionsFail = ActionsUnion<typeof requestActionsFail>
 export type RequestActionsSuccess = ActionsUnion<typeof requestActionsSuccess>
+export {PostSuccess} from '../nested-states/invoices-post/AC';

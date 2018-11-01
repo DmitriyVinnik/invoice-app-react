@@ -8,7 +8,7 @@ import * as fromActions from '../AC';
 
 export const invoiceItemsPutEpic = (action$: Observable<Action>) => action$.pipe(
     ofType<fromActions.Actions>(fromActions.ActionTypes.INVOICE_ITEMS_PUT),
-    switchMap((action: fromActions.Actions): Observable<fromActions.Actions> =>
+    switchMap((action: fromActions.PutAction): Observable<fromActions.Actions> =>
         InvoiceItemsService.putInvoiceItem(action.payload).pipe(
             map(ajaxResponse => {
                 return fromActions.Actions.invoiceItemsPutSuccess(ajaxResponse.response)

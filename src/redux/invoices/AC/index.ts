@@ -29,8 +29,8 @@ export const Actions = {
     resetSelectionInvoice: () => {
         return createAction(ActionTypes.INVOICES_RESET_SELECTION_ACTIVE)
     },
-    submitInvoiceAddForm: (data: InvoiceDataForServer) => {
-        return createAction(ActionTypes.INVOICES_SUBMIT_ADD_FORM, {data})
+    submitInvoiceAddForm: (data: InvoiceDataForServer, total: number) => {
+        return createAction(ActionTypes.INVOICES_SUBMIT_ADD_FORM, {data, total})
     },
     submitInvoiceChangeForm: (data: InvoiceDataForServer, id: number) => {
         return createAction(ActionTypes.INVOICES_SUBMIT_CHANGE_FORM, {data, id})

@@ -9,10 +9,10 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    invoiceItemsPost: (data: InvoiceItemDataForServer, invoice_id: number) => {
+    invoiceItemsPost: (data: InvoiceItemDataForServer[], invoice_id: number) => {
         return createAction(ActionTypes.INVOICE_ITEMS_POST, {data, invoice_id})
     },
-    invoiceItemsPostSuccess: (data: InvoiceItem) => {
+    invoiceItemsPostSuccess: (data: InvoiceItem[]) => {
         return createAction(ActionTypes.INVOICE_ITEMS_POST_SUCCESS, {data})
     },
     invoiceItemsPostFail: (errors: string) => {
@@ -20,4 +20,9 @@ export const Actions = {
     },
 };
 
+const postAction = {post: Actions.invoiceItemsPost};
+
+
 export type Actions = ActionsUnion<typeof Actions>
+export type PostAction = ActionsUnion<typeof postAction>
+

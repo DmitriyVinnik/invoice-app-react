@@ -18,4 +18,10 @@ export const Actions = {
     },
 };
 
+const getAction = {
+    get: Actions.invoiceItemsGet,
+};
+
 export type Actions = ActionsUnion<typeof Actions>
+export type GetAction = ActionsUnion<typeof getAction>
+
