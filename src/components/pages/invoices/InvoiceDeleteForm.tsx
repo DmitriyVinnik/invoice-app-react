@@ -24,7 +24,7 @@ const InvoiceDeleteForm:React.SFC<Props> = (props: Props) => {
                         type='submit'
                         disabled={isLoading}
                     >
-                        {name === null ? 'Close' : 'Delete'}
+                        {id === null ? 'Close' : 'Delete'}
                     </button>
                 </div>
             </form>

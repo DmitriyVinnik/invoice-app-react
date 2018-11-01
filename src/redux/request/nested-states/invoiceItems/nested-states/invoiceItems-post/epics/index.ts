@@ -13,7 +13,6 @@ export const invoiceItemsPostEpic = (action$: Observable<Action>) => action$.pip
         InvoiceItemsService.postInvoiceItem(action.payload).pipe(
             map(ajaxResponse => {
                 const response = ajaxResponse.map<InvoiceItem>((ajaxResp) => ajaxResp.response);
-
                 return fromActions.Actions.invoiceItemsPostSuccess(response)
             }),
             catchError((ajaxError: AjaxError) => {

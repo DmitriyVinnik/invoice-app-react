@@ -24,7 +24,7 @@ interface RequestServiceInvoiceItems {
     postInvoiceItem(payload: PostPayload): Observable<AjaxResponse[]>;
     getInvoiceItem(payload?: GetPayload): Observable<AjaxResponse>;
     putInvoiceItem(payload: PutPayload): Observable<AjaxResponse>;
-    deleteInvoiceItem(payload: DeletePayload): Observable<AjaxResponse>;
+    deleteInvoiceItem(payload: DeletePayload): Observable<AjaxResponse[]>;
 }
 
 class InvoiceItemsService implements RequestServiceInvoiceItems {
@@ -59,7 +59,12 @@ class InvoiceItemsService implements RequestServiceInvoiceItems {
     }
 
     public deleteInvoiceItem(payload: DeletePayload) {
-        return ajax.delete(INVOICES_URL + payload.invoice_id + '/items/' + payload.id)
+        const {id, invoice_id} = payload;
+        const arrayObservable = id.map<Observable<AjaxResponse>>((idItem) => {
+            return ajax.delete(INVOICES_URL + invoice_id + '/items/' + idItem)
+        });
+
+        return forkJoin(arrayObservable);
     }
 }
 

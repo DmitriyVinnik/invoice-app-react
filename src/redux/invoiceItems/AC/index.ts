@@ -17,7 +17,7 @@ export const Actions = {
     setInvoiceItemsData: (data: InvoiceItem[] | InvoiceItem) => {
         return createAction(ActionTypes.INVOICE_ITEMS_SET_DATA, {data})
     },
-    updateInvoiceItemsDataAfterDeleteRequest: (data: InvoiceItem) => {
+    updateInvoiceItemsDataAfterDeleteRequest: (data: InvoiceItem[]) => {
         return createAction(ActionTypes.INVOICE_ITEMS_UPDATE_DATA_AFTER_DELETE_REQUEST, {data})
     },
     loadAllInvoiceItems: (invoice_id: number) => {

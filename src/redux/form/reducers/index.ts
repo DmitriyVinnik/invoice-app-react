@@ -1,7 +1,6 @@
 import {reducer, FormState, actionTypes, FormAction} from 'redux-form';
 import {customersRequestAC} from '../../request/nested-states/customers/AC';
 import {productsRequestAC} from '../../request/nested-states/products/AC';
-// import {invoicesRequestAC} from '../../request/nested-states/invoices/AC';
 import * as customersAC from '../../customers/AC';
 import * as productsAC from '../../products/AC';
 import * as invoicesAC from '../../invoices/AC';

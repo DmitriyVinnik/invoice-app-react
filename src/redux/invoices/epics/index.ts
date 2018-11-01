@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {ofType, StateObservable} from 'redux-observable';
 import {filter, map, withLatestFrom} from 'rxjs/operators';
 import * as fromActions from '../AC';
+import * as customersActions from '../../customers/AC';
 import {invoicesRequestAC, RequestActionsSuccess} from '../../request/nested-states/invoices/AC';
 import {RootState} from "../../store";
 import {InvoiceDataForServer} from "../states";
@@ -87,8 +88,14 @@ const submitInvoiceFormsEpic = (action$: Observable<Action>) => action$.pipe(
     })
 );
 
+const afterSelectCustomerEpic = (action$: Observable<Action>) => action$.pipe(
+    ofType<customersActions.Actions>(customersActions.ActionTypes.CUSTOMERS_SELECT_ACTIVE),
+    map(() => fromActions.Actions.resetSelectionInvoice())
+);
+
 export const invoicesEpics = [
     loadAllInvoicesEpic,
     updateInvoicesDataEpic,
     submitInvoiceFormsEpic,
+    afterSelectCustomerEpic,
 ];

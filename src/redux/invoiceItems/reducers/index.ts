@@ -18,7 +18,10 @@ export function reducer(state = initialState, action: fromActions.Actions): Invo
             return {
                 ...state,
                 data: state.data.filter(
-                    (elem) => elem.id !== action.payload.data.id
+                    (stateElem) => {
+                        const isNeedDelete = !!action.payload.data.find((actionElem) => actionElem.id === stateElem.id);
+                        return !isNeedDelete
+                    }
                 ),
                 activeInvoiceItemId: null,
             };

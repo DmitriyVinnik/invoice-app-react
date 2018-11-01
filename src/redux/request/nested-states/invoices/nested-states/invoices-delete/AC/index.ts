@@ -20,4 +20,7 @@ export const Actions = {
     },
 };
 
+const deleteSuccess = {deleteSuccess: Actions.invoicesDeleteSuccess};
+
 export type Actions = ActionsUnion<typeof Actions>
+export type DeleteSuccess = ActionsUnion<typeof deleteSuccess>

@@ -24,7 +24,6 @@ export default class InvoiceItemsList extends Component<OwnProps> {
     public render() {
         const {invoiceItemsRequest: {errors, loading, loaded}, invoiceItemsData, activeInvoiceId} = this.props;
         let invoiceItemElements: React.ReactNode | null;
-
         if (invoiceItemsData) {
             invoiceItemElements = invoiceItemsData.filter(
                 (invoiceItem) => invoiceItem.invoice_id === activeInvoiceId

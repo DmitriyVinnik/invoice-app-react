@@ -33,7 +33,6 @@ interface DispatchProps {
     loadProducts(): void,
     loadInvoices(): void,
     loadInvoiceItems(invoice_id: number): void,
-    // submitAddForm(data: InvoiceDataForServer): void,
     submitChangeForm(data: InvoiceDataForServer, id: number): void,
     submitDeleteForm(id: number): void,
 }
@@ -56,9 +55,6 @@ class InvoicesPage extends Component<Props, State> {
         };
     }
 
-    // public handleSubmitInvoiceAddForm = (values: InvoiceDataForServer): void => {
-    //     this.props.submitAddForm(values);
-    // };
     public handleSubmitInvoiceChangeForm = (values: InvoiceDataForServer): void => {
         const {invoices: {activeInvoiceId}, submitChangeForm} = this.props;
 
@@ -189,9 +185,6 @@ const mapDispatchToProps = (
         loadInvoiceItems: (invoice_id) => {
             dispatch(invoiceItemsActions.Actions.loadAllInvoiceItems(invoice_id));
         },
-        // submitAddForm: (data) => {
-        //     dispatch(Actions.submitInvoiceAddForm(data));
-        // },
         submitChangeForm: (data, id) => {
             dispatch(Actions.submitInvoiceChangeForm(data, id));
         },

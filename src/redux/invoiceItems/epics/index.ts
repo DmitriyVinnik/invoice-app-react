@@ -5,12 +5,10 @@ import {map} from 'rxjs/operators';
 import * as fromActions from '../AC';
 import {invoiceItemsRequestAC, RequestActionsSuccess} from '../../request/nested-states/invoiceItems/AC';
 import {
-    invoicesRequestAC, PostSuccess as RequestInvoicePostSuccess /*RequestActionsSuccess as
-     RequestInvoiceActionsSuccess*/
+    invoicesRequestAC, PostSuccess as RequestInvoicePostSuccess, DeleteSuccess as RequestInvoiceDeleteSuccess,
 } from '../../request/nested-states/invoices/AC';
 import {RootState} from "../../store";
-import {InvoiceItemDataForServer} from "../states";
-// import {Invoice} from "../../invoices/states";
+import { InvoiceItemDataForServer} from "../states";
 
 const loadAllInvoiceItemsEpic = (action$: Observable<Action>) => action$.pipe(
     ofType<fromActions.LoadAction>(fromActions.ActionTypes.INVOICE_ITEMS_LOAD_ALL),
@@ -68,8 +66,25 @@ const afterSuccesPostInvoiceEpic = (action$: Observable<Action>, state$: StateOb
     })
 );
 
+const afterSuccessDeleteInvoiceEpic = (action$: Observable<Action>, state$: StateObservable<RootState>) => action$.pipe(
+    ofType<RequestInvoiceDeleteSuccess>(invoicesRequestAC.invoicesDelete.ActionTypes.INVOICES_DELETE_SUCCESS),
+    map((action) => {
+        const {id} = action.payload.data;
+
+        let dataForServer: number[] = [];
+        if (state$.value.invoiceItems.data) {
+            dataForServer = state$.value.invoiceItems.data
+                .filter((dataElem) => dataElem.invoice_id === id)
+                .map<number>((elem) => elem.id)
+        }
+
+        return invoiceItemsRequestAC.invoiceItemsDelete.Actions.invoiceItemsDelete(dataForServer, id)
+    })
+);
+
 export const invoiceItemsEpics = [
     loadAllInvoiceItemsEpic,
     updateInvoiceItemsDataEpic,
     afterSuccesPostInvoiceEpic,
+    afterSuccessDeleteInvoiceEpic,
 ];

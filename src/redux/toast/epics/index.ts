@@ -185,8 +185,9 @@ const showInvoiceItemSuccessRequestToastEpic = (action$: Observable<Action>) => 
             }
 
             case invoiceItems.invoiceItemsRequestAC.invoiceItemsDelete.ActionTypes.INVOICE_ITEMS_DELETE_SUCCESS: {
-                const id = action.payload.data.id;
-                const message = `InvoiceItem: ${id} deleted successfully`;
+                const arrayId = action.payload.data.map<number>((invoiceItem) => invoiceItem.id);
+
+                const message = `InvoiceItem: ${arrayId.join(', id: ')} deleted successfully`;
 
                 return fromActions.Actions.showToast(message)
             }

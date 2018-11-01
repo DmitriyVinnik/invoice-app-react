@@ -10,7 +10,9 @@ export const invoiceItemsGetEpic = (action$: Observable<Action>) => action$.pipe
     ofType<fromActions.Actions>(fromActions.ActionTypes.INVOICE_ITEMS_GET),
     switchMap((action: fromActions.GetAction): Observable<fromActions.Actions> =>
         InvoiceItemsService.getInvoiceItem(action.payload).pipe(
-            map(ajaxResponse => fromActions.Actions.invoiceItemsGetSuccess(ajaxResponse.response)),
+            map(ajaxResponse => {
+                return fromActions.Actions.invoiceItemsGetSuccess(ajaxResponse.response)
+            }),
             catchError((ajaxError: AjaxError) => {
                 return of(fromActions.Actions.invoiceItemsGetFail(ajaxError.response))
             })
