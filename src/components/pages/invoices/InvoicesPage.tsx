@@ -126,7 +126,6 @@ class InvoicesPage extends Component<Props, State> {
                         isVisible={isVisibleAddForm}
                         isLoading={invoicesRequests.invoicesPost.loading}
                         errors={invoicesRequests.invoicesPost.errors}
-                        // onSubmit={this.handleSubmitInvoiceAddForm}
                         activeCustomerId={activeCustomerId}
                     />
                     <InvoiceChangeForm

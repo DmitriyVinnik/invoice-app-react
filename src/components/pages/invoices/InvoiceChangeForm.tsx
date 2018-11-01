@@ -36,17 +36,7 @@ interface DispatchProps {
 
 type Props = OwnProps & StateProps & DispatchProps & InjectedFormProps<FormData, OwnProps>
 
-interface State {
-    total: number,
-}
-
-class InvoiceChangeForm extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            total: 0,
-        }
-    }
+class InvoiceChangeForm extends React.Component<Props> {
 
     public componentDidMount() {
         this.setFormValues()
@@ -60,7 +50,6 @@ class InvoiceChangeForm extends React.Component<Props, State> {
 
     public render() {
         const {isVisible, handleSubmit, isLoading, errors, products, activeCustomerId} = this.props;
-        const {total} = this.state;
 
         return (
             <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
@@ -70,7 +59,7 @@ class InvoiceChangeForm extends React.Component<Props, State> {
                             Change invoice.
                             <span>{`Invoice's customer ID: ${activeCustomerId}`}</span>
                         </h2>
-                        <strong>{`Invoice's total: ${total}`}</strong>
+                        <strong>{`Invoice's total: `}</strong>
                         <Field
                             name='discount'
                             component={FormField}
@@ -109,7 +98,11 @@ class InvoiceChangeForm extends React.Component<Props, State> {
                 discount: activeInvoice.discount,
                 customer_id: activeInvoice.customer_id,
                 total: activeInvoice.total,
-                invoiceItems: [],
+                invoiceItems: [{
+                    quantity: 2,
+                    product_id: 19,
+                    invoice_id: activeInvoice.id,
+                }],
             };
 
             this.props.initializeForm(initialFormValue)
