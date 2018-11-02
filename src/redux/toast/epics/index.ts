@@ -178,15 +178,14 @@ const showInvoiceItemSuccessRequestToastEpic = (action$: Observable<Action>) => 
             }
 
             case invoiceItems.invoiceItemsRequestAC.invoiceItemsPut.ActionTypes.INVOICE_ITEMS_PUT_SUCCESS: {
-                const id = action.payload.data.id;
-                const message = `InvoiceItem: ${id} updated successfully`;
+                const arrayId = action.payload.data.map<number>((invoiceItem) => invoiceItem.id);
+                const message = `InvoiceItem: ${arrayId.join(', id: ')} updated successfully`;
 
                 return fromActions.Actions.showToast(message)
             }
 
             case invoiceItems.invoiceItemsRequestAC.invoiceItemsDelete.ActionTypes.INVOICE_ITEMS_DELETE_SUCCESS: {
                 const arrayId = action.payload.data.map<number>((invoiceItem) => invoiceItem.id);
-
                 const message = `InvoiceItem: ${arrayId.join(', id: ')} deleted successfully`;
 
                 return fromActions.Actions.showToast(message)

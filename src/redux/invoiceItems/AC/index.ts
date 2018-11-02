@@ -6,9 +6,9 @@ export enum ActionTypes {
     INVOICE_ITEMS_LOAD_ALL = 'INVOICE_ITEMS_LOAD_ALL',
     INVOICE_ITEMS_SET_DATA = 'INVOICE_ITEMS_SET_DATA',
     INVOICE_ITEMS_UPDATE_DATA_AFTER_DELETE_REQUEST = 'INVOICE_ITEMS_UPDATE_DATA_AFTER_DELETE_REQUEST',
-    INVOICE_ITEMS_SUBMIT_ADD_FORM = 'INVOICE_ITEMS_SUBMIT_ADD_FORM',
-    INVOICE_ITEMS_SUBMIT_CHANGE_FORM = 'INVOICE_ITEMS_SUBMIT_CHANGE_FORM',
-    INVOICE_ITEMS_SUBMIT_DELETE_FORM = 'INVOICE_ITEMS_SUBMIT_DELETE_FORM',
+    INVOICE_ITEMS_SUBMIT_ADD = 'INVOICE_ITEMS_SUBMIT_ADD',
+    INVOICE_ITEMS_SUBMIT_PUT = 'INVOICE_ITEMS_SUBMIT_PUT',
+    INVOICE_ITEMS_SUBMIT_DELETE = 'INVOICE_ITEMS_SUBMIT_DELETE',
     INVOICE_ITEMS_SELECT_ACTIVE = 'INVOICE_ITEMS_SELECT_ACTIVE',
     INVOICE_ITEMS_RESET_SELECTION_ACTIVE = 'INVOICE_ITEMS_RESET_SELECTION_ACTIVE',
 }
@@ -29,14 +29,14 @@ export const Actions = {
     resetSelectionInvoiceItem: () => {
         return createAction(ActionTypes.INVOICE_ITEMS_RESET_SELECTION_ACTIVE)
     },
-    submitInvoiceItemAddForm: (data: InvoiceItemDataForServer, invoice_id: number) => {
-        return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_ADD_FORM, {data, invoice_id})
+    submitAddInvoiceItem: (data: InvoiceItemDataForServer[], invoice_id: number) => {
+        return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_ADD, {data, invoice_id})
     },
-    submitInvoiceItemChangeForm: (data: InvoiceItemDataForServer, id: number, invoice_id: number) => {
-        return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_CHANGE_FORM, {data, id, invoice_id})
+    submitPutInvoiceItem: (data: InvoiceItem[], invoice_id: number) => {
+        return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_PUT, {data, invoice_id})
     },
-    submitInvoiceItemDeleteForm: (id: number, invoice_id: number) => {
-        return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_DELETE_FORM, {id, invoice_id})
+    submitDeleteInvoiceItem: (id: number[], invoice_id: number) => {
+        return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_DELETE, {id, invoice_id})
     },
 };
 

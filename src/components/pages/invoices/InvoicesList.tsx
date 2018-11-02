@@ -5,8 +5,8 @@ import {RequestNestedState} from '../../../redux/request/nested-states/invoices/
 
 export interface OwnProps {
     invoicesData: InvoiceInterface[],
-    invoicesRequest: RequestNestedState;
-    activeCustomerId: number | null;
+    invoicesRequest: RequestNestedState,
+    activeCustomerId: number | null,
     loadInvoices(): void,
     loadProducts(): void,
 }

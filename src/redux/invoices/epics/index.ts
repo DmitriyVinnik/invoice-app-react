@@ -71,9 +71,14 @@ const submitInvoiceFormsEpic = (action$: Observable<Action>) => action$.pipe(
             }
 
             case fromActions.ActionTypes.INVOICES_SUBMIT_CHANGE_FORM: {
-                const {data, id} = action.payload;
+                const {data, total, id} = action.payload;
+                const body: InvoiceDataForServer = {
+                    discount: data.discount,
+                    customer_id: data.customer_id,
+                    total
+                };
 
-                return invoicesRequestAC.invoicesPut.Actions.invoicesPut(data, id)
+                return invoicesRequestAC.invoicesPut.Actions.invoicesPut(body, id)
             }
 
             case fromActions.ActionTypes.INVOICES_SUBMIT_DELETE_FORM: {

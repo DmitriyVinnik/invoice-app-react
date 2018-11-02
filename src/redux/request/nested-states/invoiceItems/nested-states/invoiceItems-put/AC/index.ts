@@ -1,6 +1,6 @@
 import {ActionsUnion} from '../../../../../../../shared/types/ActionsUnion';
 import {createAction} from '../../../../../../../shared/helpers/createAction';
-import {InvoiceItemDataForServer, InvoiceItem} from '../../../../../../invoiceItems/states';
+import {InvoiceItem} from '../../../../../../invoiceItems/states';
 
 export enum ActionTypes {
     INVOICE_ITEMS_PUT = 'INVOICE_ITEMS_PUT',
@@ -9,10 +9,10 @@ export enum ActionTypes {
 }
 
 export const Actions = {
-    invoiceItemsPut: (data: InvoiceItemDataForServer[], id: number[], invoice_id: number) => {
-        return createAction(ActionTypes.INVOICE_ITEMS_PUT, {data, id, invoice_id})
+    invoiceItemsPut: (data: InvoiceItem[], invoice_id: number) => {
+        return createAction(ActionTypes.INVOICE_ITEMS_PUT, {data, invoice_id})
     },
-    invoiceItemsPutSuccess: (data: InvoiceItem) => {
+    invoiceItemsPutSuccess: (data: InvoiceItem[]) => {
         return createAction(ActionTypes.INVOICE_ITEMS_PUT_SUCCESS, {data})
     },
     invoiceItemsPutFail: (errors: string) => {

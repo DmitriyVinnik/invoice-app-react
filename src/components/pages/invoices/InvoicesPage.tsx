@@ -17,7 +17,7 @@ import {Dispatch} from 'redux';
 import {RootState} from '../../../redux/store';
 import {InvoicesRequestState} from '../../../redux/request/nested-states/invoices/states';
 import {InvoiceItemsRequestState} from '../../../redux/request/nested-states/invoiceItems/states';
-import {InvoiceDataForServer, InvoicesState} from '../../../redux/invoices/states';
+import {InvoicesState} from '../../../redux/invoices/states';
 import {CustomersState} from "../../../redux/customers/states";
 import {InvoiceItemsState} from "../../../redux/invoiceItems/states";
 
@@ -33,7 +33,6 @@ interface DispatchProps {
     loadProducts(): void,
     loadInvoices(): void,
     loadInvoiceItems(invoice_id: number): void,
-    submitChangeForm(data: InvoiceDataForServer, id: number): void,
     submitDeleteForm(id: number): void,
 }
 
@@ -55,13 +54,16 @@ class InvoicesPage extends Component<Props, State> {
         };
     }
 
-    public handleSubmitInvoiceChangeForm = (values: InvoiceDataForServer): void => {
-        const {invoices: {activeInvoiceId}, submitChangeForm} = this.props;
-
-        if (activeInvoiceId) {
-            submitChangeForm(values, activeInvoiceId);
+    public componentDidUpdate (prevProps: Props) {
+        if (prevProps.customers.activeCustomerId !== this.props.customers.activeCustomerId) {
+            this.setState({
+                isVisibleAddForm: false,
+                isVisibleChangeForm: false,
+                isVisibleDeleteForm: false,
+            })
         }
-    };
+    }
+
     public handleSubmitInvoiceDeleteForm = (evt: React.FormEvent<HTMLFormElement>): void => {
         const {invoices: {activeInvoiceId}, submitDeleteForm} = this.props;
 
@@ -128,14 +130,13 @@ class InvoicesPage extends Component<Props, State> {
                         errors={invoicesRequests.invoicesPost.errors}
                         activeCustomerId={activeCustomerId}
                     />
-                    <InvoiceChangeForm
+                    {activeInvoice && <InvoiceChangeForm
                         isVisible={isVisibleChangeForm}
                         isLoading={invoicesRequests.invoicesPut.loading}
                         errors={invoicesRequests.invoicesPut.errors}
-                        onSubmit={this.handleSubmitInvoiceChangeForm}
                         activeInvoice={activeInvoice}
                         activeCustomerId={activeCustomerId}
-                    />
+                    />}
                     <InvoiceDeleteForm
                         isVisible={isVisibleDeleteForm}
                         isLoading={invoicesRequests.invoicesDelete.loading}
@@ -183,9 +184,6 @@ const mapDispatchToProps = (
         },
         loadInvoiceItems: (invoice_id) => {
             dispatch(invoiceItemsActions.Actions.loadAllInvoiceItems(invoice_id));
-        },
-        submitChangeForm: (data, id) => {
-            dispatch(Actions.submitInvoiceChangeForm(data, id));
         },
         submitDeleteForm: (id) => {
             dispatch(Actions.submitInvoiceDeleteForm(id));

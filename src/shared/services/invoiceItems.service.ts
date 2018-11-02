@@ -1,6 +1,6 @@
 import {forkJoin, Observable} from 'rxjs'
 import {ajax, AjaxResponse} from 'rxjs/ajax';
-import {InvoiceItemDataForServer} from "../../redux/invoiceItems/states";
+import {InvoiceItem, InvoiceItemDataForServer} from "../../redux/invoiceItems/states";
 
 const INVOICES_URL = 'http://localhost:8000/api/invoices/';
 
@@ -12,8 +12,8 @@ interface PostPayload extends GetPayload{
     data: InvoiceItemDataForServer[],
 }
 
-interface PutPayload extends PostPayload {
-    id: number[],
+interface PutPayload extends GetPayload {
+    data: InvoiceItem[],
 }
 
 interface DeletePayload extends GetPayload {
@@ -23,7 +23,7 @@ interface DeletePayload extends GetPayload {
 interface RequestServiceInvoiceItems {
     postInvoiceItem(payload: PostPayload): Observable<AjaxResponse[]>;
     getInvoiceItem(payload?: GetPayload): Observable<AjaxResponse>;
-    putInvoiceItem(payload: PutPayload): Observable<AjaxResponse>;
+    putInvoiceItem(payload: PutPayload): Observable<AjaxResponse[]>;
     deleteInvoiceItem(payload: DeletePayload): Observable<AjaxResponse[]>;
 }
 
@@ -49,13 +49,18 @@ class InvoiceItemsService implements RequestServiceInvoiceItems {
     }
 
     public putInvoiceItem(payload: PutPayload) {
-        return ajax.put(
-            INVOICES_URL + payload.invoice_id + '/items/' + payload.id,
-            JSON.stringify(payload.data),
-            {
-                'Content-Type': 'application/json; charset=utf-8',
-            }
-        )
+        const {data, invoice_id} = payload;
+        const arrayObservable = data.map<Observable<AjaxResponse>>((elem) => {
+            return ajax.put(
+                INVOICES_URL + invoice_id + '/items/' + elem.id,
+                JSON.stringify(elem),
+                {
+                    'Content-Type': 'application/json; charset=utf-8',
+                }
+            )
+        });
+
+        return forkJoin(arrayObservable);
     }
 
     public deleteInvoiceItem(payload: DeletePayload) {

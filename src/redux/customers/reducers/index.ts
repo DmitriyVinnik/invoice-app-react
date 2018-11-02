@@ -1,4 +1,4 @@
-import _ from 'lodash-es';
+import {unionBy} from 'lodash-es';
 import * as fromActions from '../AC';
 import {initialState, CustomersState} from '../states';
 
@@ -10,7 +10,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Cust
 
             return {
                 ...state,
-                data: _.unionBy(newData, state.data, 'id')
+                data: unionBy(newData, state.data, 'id')
             };
         }
 

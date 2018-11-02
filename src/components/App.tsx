@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Switch, NavLink} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, NavLink, Redirect} from "react-router-dom";
 
 import Toast from './Toast';
 import CustomersPage from './pages/customers/CustomersPage';
@@ -15,7 +15,7 @@ const App: React.SFC = () => {
                     <Toast/>
                     <ul>
                         <li>
-                            <NavLink exact to="/" activeStyle={{backgroundColor: 'red'}}>Invoices</NavLink>
+                            <NavLink to="/invoices" activeStyle={{backgroundColor: 'red'}}>Invoices</NavLink>
                         </li>
                         <li>
                             <NavLink to="/customers" activeStyle={{backgroundColor: 'red'}}>Customer</NavLink>
@@ -27,7 +27,8 @@ const App: React.SFC = () => {
                 </nav>
                 <main>
                     <Switch>
-                        <Route exact path="/" component={InvoicesPage}/>
+                        <Redirect exact from='/' to='/invoices'/>
+                        <Route path="/invoices" component={InvoicesPage}/>
                         <Route path="/customers" component={CustomersPage}/>
                         <Route path="/products" component={ProductsPage}/>
                         <Route component={NotFoundPage}/>

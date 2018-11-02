@@ -20,4 +20,7 @@ export const Actions = {
     },
 };
 
+const putSuccess = {putSuccess: Actions.invoicesPutSuccess};
+
 export type Actions = ActionsUnion<typeof Actions>
+export type PutSuccess = ActionsUnion<typeof putSuccess>

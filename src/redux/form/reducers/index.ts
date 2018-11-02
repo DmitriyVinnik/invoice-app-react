@@ -79,8 +79,6 @@ const formReducer = reducer.plugin({
     invoiceAdd: (state, action: FormAction): FormState | undefined => {
 
         switch (action.type) {
-            // case invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_SUCCESS:
-            //     return undefined;
 
             case actionTypes.INITIALIZE: {
                 return {
@@ -101,6 +99,7 @@ const formReducer = reducer.plugin({
 
         switch (action.type) {
             case invoicesAC.ActionTypes.INVOICES_RESET_SELECTION_ACTIVE:
+            case customersAC.ActionTypes.CUSTOMERS_SELECT_ACTIVE:
                 return undefined;
 
             case actionTypes.INITIALIZE: {
@@ -111,12 +110,7 @@ const formReducer = reducer.plugin({
                         discount: action.payload.discount,
                         customer_id: action.payload.customer_id,
                         total: action.payload.total,
-                        invoiceItems: [{
-                            quantity: 2,
-                            product_id: 19,
-                            invoice_id: action.payload.id,
-                        }],
-
+                        invoiceItems: action.payload.invoiceItems,
                     }
                 };
             }

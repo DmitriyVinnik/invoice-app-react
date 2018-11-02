@@ -29,3 +29,4 @@ export type RequestActionsFail = ActionsUnion<typeof requestActionsFail>
 export type RequestActionsSuccess = ActionsUnion<typeof requestActionsSuccess>
 export {PostSuccess} from '../nested-states/invoices-post/AC';
 export {DeleteSuccess} from '../nested-states/invoices-delete/AC';
+export {PutSuccess} from '../nested-states/invoices-put/AC';

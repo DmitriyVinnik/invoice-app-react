@@ -1,37 +1,51 @@
 import React from 'react';
+import {isEqual} from "lodash-es";
 import {compose, Dispatch} from 'redux'
 import {connect} from 'react-redux';
 import {
     reduxForm, Field, FieldArray, initialize,
-    InjectedFormProps, FormErrors, FormAction,
+    InjectedFormProps, FormErrors, FormAction, getFormValues,
 } from 'redux-form';
 import FormField from '../../../shared/components/FormField';
 import InvoiceItemFieldsArray from './invoiceItems/InvoiceItemFieldsArray';
 
 import {Invoice, InvoiceDataForServer} from '../../../redux/invoices/states';
-import {InvoiceItemDataForServer} from '../../../redux/invoiceItems/states';
-import {ProductsState} from "../../../redux/products/states";
+import {InvoiceItem, InvoiceItemDataForServer, InvoiceItemsState} from '../../../redux/invoiceItems/states';
+import {Product, ProductsState} from "../../../redux/products/states";
 import {RootState} from "../../../redux/store";
+
+import {Actions} from "../../../redux/invoices/AC";
+import {Actions as invoiceItemsActions} from "../../../redux/invoiceItems/AC";
 
 
 interface FormData extends InvoiceDataForServer {
-    invoiceItems: InvoiceItemDataForServer[]
+    invoiceItems: InvoiceItem[]
 }
 
 export interface OwnProps {
     isVisible: boolean,
     isLoading: boolean,
     errors: string | null,
-    activeInvoice?: Invoice,
-    activeCustomerId?: number,
+    activeInvoice: Invoice,
+    activeCustomerId: number,
 }
 
 interface StateProps {
     products: ProductsState,
+    invoiceItems: InvoiceItemsState,
+    formValues: FormData,
 }
 
 interface DispatchProps {
-    initializeForm: (values: FormData) => void
+    initializeForm(values: FormData): void,
+
+    submitForm(data: FormData, total: number, id: number): void,
+
+    submitAddInvoiceItem(data: InvoiceItemDataForServer[], invoice_id: number): void,
+
+    submitPutInvoiceItem(data: InvoiceItem[], invoice_id: number): void,
+
+    submitDeleteInvoiceItem(id: number[], invoice_id: number): void,
 }
 
 type Props = OwnProps & StateProps & DispatchProps & InjectedFormProps<FormData, OwnProps>
@@ -39,27 +53,74 @@ type Props = OwnProps & StateProps & DispatchProps & InjectedFormProps<FormData,
 class InvoiceChangeForm extends React.Component<Props> {
 
     public componentDidMount() {
-        this.setFormValues()
+        this.setFormValues();
     }
 
     public componentDidUpdate(prevProps: Props) {
         if (prevProps.activeInvoice !== this.props.activeInvoice) {
             this.setFormValues()
         }
+
+        if (this.props.isVisible && !prevProps.isVisible) {
+            this.setFormValues();
+        }
     }
+
+    public handleSubmitForm = (values: FormData): void => {
+        const {
+            submitAddInvoiceItem, submitPutInvoiceItem, submitDeleteInvoiceItem,
+            activeInvoice, submitForm, invoiceItems: {data}
+        } = this.props;
+        const forPostInvoiceItems = values.invoiceItems.filter((formElem) => !formElem.id);
+        const forDeleteInvoiceItems = data
+            .filter(
+                (stateElem) => {
+                    const isInFormData = values.invoiceItems.find(
+                        (formElem) => formElem.id === stateElem.id
+                    );
+
+                    return !isInFormData
+                }
+            )
+            .map<number>((elem) => elem.id)
+        ;
+        const forPutInvoiceItems = values.invoiceItems
+            .filter((formElem) => !!formElem.id)
+            .filter((formElem) => {
+                const formElemInState = data.find(
+                    (stateElem) => formElem.id === stateElem.id
+                );
+
+                return !(formElemInState && isEqual(formElemInState, formElem));
+            });
+
+        submitForm(values, this.getTotalPrice(), activeInvoice.id);
+
+        if (forPostInvoiceItems) {
+            submitAddInvoiceItem(forPostInvoiceItems, activeInvoice.id)
+        }
+
+        if (forPutInvoiceItems) {
+            submitPutInvoiceItem(forPutInvoiceItems, activeInvoice.id)
+        }
+
+        if (forDeleteInvoiceItems) {
+            submitDeleteInvoiceItem(forDeleteInvoiceItems, activeInvoice.id)
+        }
+    };
 
     public render() {
         const {isVisible, handleSubmit, isLoading, errors, products, activeCustomerId} = this.props;
 
         return (
             <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit(this.handleSubmitForm)}>
                     <section>
                         <h2>
                             Change invoice.
                             <span>{`Invoice's customer ID: ${activeCustomerId}`}</span>
                         </h2>
-                        <strong>{`Invoice's total: `}</strong>
+                        <strong>{`Invoice's total: ${this.getTotalPrice()}`}</strong>
                         <Field
                             name='discount'
                             component={FormField}
@@ -91,22 +152,48 @@ class InvoiceChangeForm extends React.Component<Props> {
     }
 
     private setFormValues() {
-        const {activeInvoice} = this.props;
+        const {activeInvoice, invoiceItems} = this.props;
 
-        if (activeInvoice) {
-            const initialFormValue: FormData = {
-                discount: activeInvoice.discount,
-                customer_id: activeInvoice.customer_id,
-                total: activeInvoice.total,
-                invoiceItems: [{
-                    quantity: 2,
-                    product_id: 19,
-                    invoice_id: activeInvoice.id,
-                }],
-            };
+        const initialInvoiceItems = invoiceItems.data.filter(
+            (invoiceItem) => invoiceItem.invoice_id === activeInvoice.id
+        );
 
-            this.props.initializeForm(initialFormValue)
+        const initialFormValue: FormData = {
+            discount: activeInvoice.discount,
+            customer_id: activeInvoice.customer_id,
+            total: activeInvoice.total,
+            invoiceItems: initialInvoiceItems,
+        };
+
+        this.props.initializeForm(initialFormValue)
+    }
+
+    private getTotalPrice() {
+        const {formValues, products, activeInvoice, dirty} = this.props;
+
+        let priceWithoutDiscount = 0;
+        let priceTotal = 0;
+
+        if (formValues) {
+            priceWithoutDiscount = formValues.invoiceItems.reduce((accum, invoiceItem) => {
+                if (invoiceItem) {
+                    const product = products.data.find((prod) => {
+
+                        return prod.id === invoiceItem.product_id
+                    }) as Product;
+
+                    return accum +
+                        (invoiceItem.quantity ? invoiceItem.quantity : 0) *
+                        (product ? product.price : 0)
+                }
+
+                return 0
+            }, 0);
+
+            priceTotal = Math.round(priceWithoutDiscount * (1 - formValues.discount) * 100) / 100;
         }
+
+        return dirty ? priceTotal : activeInvoice.total
     }
 }
 
@@ -150,13 +237,27 @@ const validate = (values: FormData) => {
 
 const mapStateToProps = (state: RootState): StateProps => ({
     products: state.products,
+    invoiceItems: state.invoiceItems,
+    formValues: getFormValues('invoiceChange')(state) as FormData
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<FormAction>): DispatchProps => (
     {
         initializeForm: (values) => {
             dispatch(initialize('invoiceChange', values));
-        }
+        },
+        submitForm: (data, total, id) => {
+            dispatch(Actions.submitInvoiceChangeForm(data, total, id));
+        },
+        submitAddInvoiceItem: (data, invoice_id) => {
+            dispatch(invoiceItemsActions.submitAddInvoiceItem(data, invoice_id));
+        },
+        submitPutInvoiceItem: (data, invoice_id) => {
+            dispatch(invoiceItemsActions.submitPutInvoiceItem(data, invoice_id));
+        },
+        submitDeleteInvoiceItem: (id, invoice_id) => {
+            dispatch(invoiceItemsActions.submitDeleteInvoiceItem(id, invoice_id));
+        },
     }
 );
 

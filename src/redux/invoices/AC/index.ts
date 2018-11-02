@@ -32,8 +32,8 @@ export const Actions = {
     submitInvoiceAddForm: (data: InvoiceDataForServer, total: number) => {
         return createAction(ActionTypes.INVOICES_SUBMIT_ADD_FORM, {data, total})
     },
-    submitInvoiceChangeForm: (data: InvoiceDataForServer, id: number) => {
-        return createAction(ActionTypes.INVOICES_SUBMIT_CHANGE_FORM, {data, id})
+    submitInvoiceChangeForm: (data: InvoiceDataForServer, total: number, id: number) => {
+        return createAction(ActionTypes.INVOICES_SUBMIT_CHANGE_FORM, {data, total, id})
     },
     submitInvoiceDeleteForm: (id: number) => {
         return createAction(ActionTypes.INVOICES_SUBMIT_DELETE_FORM, {id})

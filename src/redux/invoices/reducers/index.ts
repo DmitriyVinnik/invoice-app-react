@@ -1,8 +1,9 @@
-import _ from 'lodash-es';
+import {unionBy} from 'lodash-es';
 import * as fromActions from '../AC';
 import {initialState, InvoicesState} from '../states';
+import {invoiceItemsRequestAC, RequestActionsSuccess} from '../../request/nested-states/invoiceItems/AC';
 
-export function reducer(state = initialState, action: fromActions.Actions): InvoicesState {
+export function reducer(state = initialState, action: fromActions.Actions | RequestActionsSuccess): InvoicesState {
 
     switch (action.type) {
         case fromActions.ActionTypes.INVOICES_SET_DATA: {
@@ -10,7 +11,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Invo
 
             return {
                 ...state,
-                data: _.unionBy(newData, state.data, 'id')
+                data: unionBy(newData, state.data, 'id')
             };
         }
 
@@ -31,12 +32,15 @@ export function reducer(state = initialState, action: fromActions.Actions): Invo
             };
         }
 
-        case fromActions.ActionTypes.INVOICES_RESET_SELECTION_ACTIVE: {
+        case fromActions.ActionTypes.INVOICES_RESET_SELECTION_ACTIVE:
+        case invoiceItemsRequestAC.invoiceItemsPost.ActionTypes.INVOICE_ITEMS_POST_SUCCESS:
+        case invoiceItemsRequestAC.invoiceItemsPut.ActionTypes.INVOICE_ITEMS_PUT_SUCCESS:
+        case invoiceItemsRequestAC.invoiceItemsDelete.ActionTypes.INVOICE_ITEMS_DELETE_SUCCESS:
             return {
                 ...state,
                 activeInvoiceId: null,
             };
-        }
+
 
         default:
             return state;
