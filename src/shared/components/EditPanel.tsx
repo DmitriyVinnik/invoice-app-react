@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 
 export interface OwnProps {
     labelButton: string,
@@ -7,44 +8,52 @@ export interface OwnProps {
         isVisibleAddForm: boolean,
         isVisibleChangeForm: boolean,
         isVisibleDeleteForm: boolean,
-    }
+    },
+
     onAddButtonClick(): void,
+
     onChangeButtonClick(): void,
+
     onDeleteButtonClick(): void,
 }
 
-const EditPanel:React.SFC<OwnProps> = (props: OwnProps) => {
+const EditPanel: React.SFC<OwnProps> = (props: OwnProps) => {
     const {
         onAddButtonClick, onChangeButtonClick, onDeleteButtonClick,
         activeId, formsState, labelButton,
     } = props;
 
     return (
-        <div>
-            <button
-                type="button"
-                onClick={onAddButtonClick}
-            >
-                {formsState.isVisibleAddForm ? `Close` : `Add new ${labelButton}`}
-            </button>
-            {
-                activeId &&
-                <button
-                    type="button"
-                    onClick={onChangeButtonClick}
+        <div className='edit-panel'>
+            <div className='edit-panel__btn-wraper'>
+                <Button
+                    onClick={onAddButtonClick}
+                    variant="contained"
+                    color={"primary"}
                 >
-                    {formsState.isVisibleChangeForm ? `Close` : `Change ${labelButton}`}
-                </button>
-            }
-            {
-                activeId &&
-                <button
-                    type="button"
-                    onClick={onDeleteButtonClick}
-                >
-                    {formsState.isVisibleDeleteForm ? `Close` : `Delete ${labelButton}`}
-                </button>
-            }
+                    {formsState.isVisibleAddForm ? `Close` : `Add new ${labelButton}`}
+                </Button>
+                {
+                    activeId &&
+                    <Button
+                        onClick={onChangeButtonClick}
+                        variant="contained"
+                        color={"primary"}
+                    >
+                        {formsState.isVisibleChangeForm ? `Close` : `Change ${labelButton}`}
+                    </Button>
+                }
+                {
+                    activeId &&
+                    <Button
+                        onClick={onDeleteButtonClick}
+                        variant="contained"
+                        color={"primary"}
+                    >
+                        {formsState.isVisibleDeleteForm ? `Close` : `Delete ${labelButton}`}
+                    </Button>
+                }
+            </div>
         </div>
     );
 };

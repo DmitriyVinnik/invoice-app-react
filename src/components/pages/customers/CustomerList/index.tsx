@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Customer from './Customer';
-import {Customer as CustomerInterface} from '../../../redux/customers/states';
-import {RequestNestedState} from '../../../redux/request/nested-states/customers/states';
+import Customer from '../Customer/index';
+import {Customer as CustomerInterface} from '../../../../redux/customers/states';
+import {RequestNestedState} from '../../../../redux/request/nested-states/customers/states';
 
 export interface OwnProps {
     customersData: CustomerInterface[],
@@ -37,20 +37,20 @@ export default class CustomerList extends Component<OwnProps> {
 
         if (errors) {
             return (
-                <p>Error: {errors}</p>
+                <p className='error'>Error: {errors}</p>
             );
         } else if (loading) {
             return (
-                <p>Wait a second, loading...</p>
+                <p className='loader'>Wait a second, loading...</p>
             );
         } else  if (!loaded) {
             return (
-                <p>Something went wrong! Customers have not loaded, try reloading the page</p>
+                <p className='error'>Something went wrong! Customers have not loaded, try reloading the page</p>
             )
         }
 
         return (
-            <ul style={{listStyle: 'none'}}>
+            <ul className='entity-list'>
                 {customerItems}
             </ul>
         )

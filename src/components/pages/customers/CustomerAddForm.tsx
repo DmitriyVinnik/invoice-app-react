@@ -1,6 +1,13 @@
 import React from 'react';
 import {reduxForm, Field, InjectedFormProps, FormErrors} from 'redux-form';
 import FormField from '../../../shared/components/FormField';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+
 import {CustomerDataForServer} from '../../../redux/customers/states';
 
 type FormData = CustomerDataForServer
@@ -9,51 +16,76 @@ export interface OwnProps {
     isVisible: boolean,
     isLoading: boolean,
     errors: string | null,
+
+    handleClose(): void,
 }
 
 type Props = OwnProps & InjectedFormProps<FormData, OwnProps>
 
 const CustomerAddForm: React.SFC<Props> = (props: Props) => {
-    const {isVisible, handleSubmit, isLoading, errors} = props;
+    const {isVisible, handleSubmit, isLoading, errors, handleClose, pristine} = props;
 
     return (
-        <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
-            <form onSubmit={handleSubmit}>
-                <h2>
-                    Addition new customer.
-                </h2>
-                <Field
-                    name='name'
-                    component={FormField}
-                    type='text'
-                    id='add-customer-name'
-                    labelText="Customer's name: "
-                />
-                <Field
-                    name='address'
-                    component={FormField}
-                    type='text'
-                    id='add-customer-address'
-                    labelText="Customer's address: "
-                />
-                <Field
-                    name='phone'
-                    component={FormField}
-                    type='tel'
-                    id='add-customer-phone'
-                    labelText="Customer's phone: "
-                />
-                <div>
-                    {errors && (<span>Error: {errors}</span>)}
-                    <button
-                        type='submit'
-                        disabled={isLoading}
-                    >
-                        Submit
-                    </button>
-                </div>
-            </form>
-        </div>
+        <Dialog
+            open={isVisible}
+            onClose={handleClose}
+            aria-labelledby="customer-add-dialog-title"
+        >
+            <DialogTitle
+                id="customer-add-dialog-title"
+                className='form__title'
+            >
+                <span className='form__title'>Addition new customer.</span>
+            </DialogTitle>
+            <DialogContent>
+                <form
+                    onSubmit={handleSubmit}
+                    autoComplete={'none'}
+                >
+                    {errors && (<span className='error'>Error: {errors}</span>)}
+                    <Field
+                        name='name'
+                        component={FormField}
+                        type='text'
+                        id='add-customer-name'
+                        labelText="Customer's name: "
+                    />
+                    <Field
+                        name='address'
+                        component={FormField}
+                        type='text'
+                        id='add-customer-address'
+                        labelText="Customer's address: "
+                    />
+                    <Field
+                        name='phone'
+                        component={FormField}
+                        type='tel'
+                        id='add-customer-phone'
+                        labelText="Customer's phone: "
+                    />
+                    <DialogActions>
+                        <div className='form__btn-wraper'>
+                            <Button
+                                onClick={handleClose}
+                                variant="contained"
+                                color="primary"
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                type='submit'
+                                disabled={pristine || isLoading}
+                                variant="contained"
+                                color="primary"
+                            >
+                                Submit
+                            </Button>
+                        </div>
+                    </DialogActions>
+                </form>
+            </DialogContent>
+        </Dialog>
     );
 };
 

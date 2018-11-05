@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Actions} from '../../../redux/customers/AC';
+import {Actions} from '../../../../redux/customers/AC';
 
 import {Dispatch} from 'redux';
-import {Customer as CustomerInterface} from '../../../redux/customers/states';
-import {RootState} from '../../../redux/store';
+import {Customer as CustomerInterface} from '../../../../redux/customers/states';
+import {RootState} from '../../../../redux/store';
 
 type OwnProps = CustomerInterface
 
@@ -15,12 +15,13 @@ interface StateProps {
 
 interface DispatchProps {
     selectActiveCustomer(data: CustomerInterface[], id: number): void,
+
     resetSelectionActiveCustomer(): void,
 }
 
 type Props = StateProps & DispatchProps & OwnProps
 
-const Customer:React.SFC<Props> = (props: Props) => {
+const Customer: React.SFC<Props> = (props: Props) => {
     const {
         id, name, address, phone, activeCustomerId, customersData,
         resetSelectionActiveCustomer, selectActiveCustomer,
@@ -32,16 +33,39 @@ const Customer:React.SFC<Props> = (props: Props) => {
     const onReClickCustomer = (): void => {
         resetSelectionActiveCustomer();
     };
-    const customerStyle: React.CSSProperties = isCustomerActive ?
-        {color: 'green', paddingBottom: '20px', cursor: 'pointer'} :
-        {paddingBottom: '20px', cursor: 'pointer'};
 
     return (
-        <li onClick={!isCustomerActive ? onClickCustomer : onReClickCustomer} style={customerStyle}>
-            <ul style={{listStyle: 'none'}}>
-                <li>Name: {name}, id: {id}</li>
-                <li>Address: {address}</li>
-                <li>Phone: {phone}</li>
+        <li
+            onClick={!isCustomerActive ? onClickCustomer : onReClickCustomer}
+            className={
+                isCustomerActive ?
+                    'entity-list__item entity-list__item--active' :
+                    'entity-list__item'
+            }
+        >
+            <ul className='customer-list'>
+                <li className='customer-list__item'>
+                    <div>
+                        Name:
+                        <span className='customer-list__title'> {name}</span>,
+                    </div>
+                    <div>
+                        id:
+                        <span className='customer-list__title'> {id}</span>
+                    </div>
+                </li>
+                <li className='customer-list__item'>
+                    <div>
+                        Address:
+                        <span className='customer-list__title'> {address}</span>
+                    </div>
+                </li>
+                <li className='customer-list__item'>
+                    <div>
+                        Phone:
+                        <span className='customer-list__title'> {phone}</span>
+                    </div>
+                </li>
             </ul>
         </li>
     );

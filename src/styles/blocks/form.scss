@@ -1,0 +1,17 @@
+.form__btn-wraper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.form__title {
+  display: block;
+
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+
+  &--small {
+    font-size: 20px;
+  }
+}

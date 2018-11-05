@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {destroy} from "redux-form";
 
-import ProductList from './ProductList';
-import ProductAddForm from './ProductAddForm';
-import ProductChangeForm from './ProductChangeForm';
-import ProductDeleteForm from './ProductDeleteForm';
-import EditPanel from '../../../shared/components/EditPanel';
-import {Actions} from '../../../redux/products/AC';
+import ProductList from '../ProductList';
+import ProductAddForm from '../ProductAddForm';
+import ProductChangeForm from '../ProductChangeForm';
+import ProductDeleteForm from '../ProductDeleteForm';
+import EditPanel from '../../../../shared/components/EditPanel';
+import {Actions} from '../../../../redux/products/AC';
 
 import {Dispatch} from 'redux';
-import {RootState} from '../../../redux/store';
-import {ProductsRequestState} from '../../../redux/request/nested-states/products/states';
-import {ProductDataForServer, ProductsState} from '../../../redux/products/states';
+import {RootState} from '../../../../redux/store';
+import {ProductsRequestState} from '../../../../redux/request/nested-states/products/states';
+import {ProductDataForServer, ProductsState} from '../../../../redux/products/states';
 
 interface StateProps {
     products: ProductsState,
@@ -23,6 +24,7 @@ interface DispatchProps {
     submitAddForm(data: ProductDataForServer): void,
     submitChangeForm(data: ProductDataForServer, id: number): void,
     submitDeleteForm(id: number): void,
+    destroyForm(form: string): void,
 }
 
 type Props = StateProps & DispatchProps;
@@ -33,7 +35,7 @@ interface State {
     isVisibleDeleteForm: boolean,
 }
 
-class ProductsPage extends Component<Props, State> {
+class Index extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -59,29 +61,28 @@ class ProductsPage extends Component<Props, State> {
         evt.preventDefault();
         if (activeProductId) {
             submitDeleteForm(activeProductId);
+            this.setState({isVisibleDeleteForm: false})
         } else {
-            this.handleButtonProductDeleteClick();
+            this.toggleProductDeleteForm();
         }
     };
-    public handleButtonProductAddClick = (): void => {
+    public toggleProductAddForm = (): void => {
         this.setState({
             isVisibleAddForm: !this.state.isVisibleAddForm,
-            isVisibleChangeForm: false,
-            isVisibleDeleteForm: false,
         });
+
+        if (this.state.isVisibleAddForm) {
+            this.props.destroyForm('productAdd')
+        }
     };
-    public handleButtonProductChangeClick = (): void => {
+    public toggleProductChangeForm = (): void => {
         this.setState({
             isVisibleChangeForm: !this.state.isVisibleChangeForm,
-            isVisibleAddForm: false,
-            isVisibleDeleteForm: false,
         });
     };
-    public handleButtonProductDeleteClick = (): void => {
+    public toggleProductDeleteForm = (): void => {
         this.setState({
             isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
-            isVisibleAddForm: false,
-            isVisibleChangeForm: false,
         });
     };
 
@@ -96,9 +97,9 @@ class ProductsPage extends Component<Props, State> {
             <section>
                 <EditPanel
                     labelButton='product'
-                    onAddButtonClick={this.handleButtonProductAddClick}
-                    onChangeButtonClick={this.handleButtonProductChangeClick}
-                    onDeleteButtonClick={this.handleButtonProductDeleteClick}
+                    onAddButtonClick={this.toggleProductAddForm}
+                    onChangeButtonClick={this.toggleProductChangeForm}
+                    onDeleteButtonClick={this.toggleProductDeleteForm}
                     activeId={activeProductId}
                     formsState={{
                         isVisibleAddForm,
@@ -108,12 +109,14 @@ class ProductsPage extends Component<Props, State> {
                 />
                 <ProductAddForm
                     isVisible={isVisibleAddForm}
+                    handleClose={this.toggleProductAddForm}
                     isLoading={productsRequests.productsPost.loading}
                     errors={productsRequests.productsPost.errors}
                     onSubmit={this.handleSubmitProductAddForm}
                 />
                 <ProductChangeForm
                     isVisible={isVisibleChangeForm}
+                    handleClose={this.toggleProductChangeForm}
                     isLoading={productsRequests.productsPut.loading}
                     errors={productsRequests.productsPut.errors}
                     onSubmit={this.handleSubmitProductChangeForm}
@@ -121,12 +124,13 @@ class ProductsPage extends Component<Props, State> {
                 />
                 <ProductDeleteForm
                     isVisible={isVisibleDeleteForm}
+                    handleClose={this.toggleProductDeleteForm}
                     isLoading={productsRequests.productsDelete.loading}
                     errors={productsRequests.productsDelete.errors}
                     name={activeProduct ? activeProduct.name : null}
                     handleSubmit={this.handleSubmitProductDeleteForm}
                 />
-                <h1>Products: </h1>
+                <h1 className='main-heading'>Products: </h1>
                 <ProductList
                     productsRequest={productsRequests.productsGet}
                     productsData={data}
@@ -156,8 +160,10 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
         submitDeleteForm: (id) => {
             dispatch(Actions.submitProductDeleteForm(id));
         },
-
+        destroyForm: (form: string) => {
+            dispatch(destroy(form));
+        },
     }
 );
 
-export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(ProductsPage);
+export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(Index);

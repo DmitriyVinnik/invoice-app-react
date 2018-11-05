@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Product from './Product';
-import {Product as ProductInterface} from '../../../redux/products/states';
-import {RequestNestedState} from '../../../redux/request/nested-states/products/states';
+import Product from '../Product';
+import {Product as ProductInterface} from '../../../../redux/products/states';
+import {RequestNestedState} from '../../../../redux/request/nested-states/products/states';
 
 export interface OwnProps {
     productsData: ProductInterface[],
@@ -36,20 +36,20 @@ export default class ProductList extends Component<OwnProps> {
 
         if (errors) {
             return (
-                <p>Error: {errors}</p>
+                <p className='error'>Error: {errors}</p>
             );
         } else if (loading) {
             return (
-                <p>Wait a second, loading...</p>
+                <p className='loader'>Wait a second, loading...</p>
             );
         } else  if (!loaded) {
             return (
-                <p>Something went wrong! Products have not loaded, try reloading the page</p>
+                <p className='error'>Something went wrong! Products have not loaded, try reloading the page</p>
             )
         }
 
         return (
-            <ul style={{listStyle: 'none'}}>
+            <ul className='entity-list'>
                 {productItems}
             </ul>
         )

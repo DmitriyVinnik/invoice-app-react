@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Actions} from '../../../redux/products/AC';
+import {Actions} from '../../../../redux/products/AC';
 
 import {Dispatch} from 'redux';
-import {Product as ProductInterface} from '../../../redux/products/states';
-import {RootState} from '../../../redux/store';
+import {Product as ProductInterface} from '../../../../redux/products/states';
+import {RootState} from '../../../../redux/store';
 
 type OwnProps = ProductInterface
 
@@ -15,12 +15,13 @@ interface StateProps {
 
 interface DispatchProps {
     selectActiveProduct(data: ProductInterface[], id: number): void,
+
     resetSelectionActiveProduct(): void,
 }
 
 type Props = StateProps & DispatchProps & OwnProps
 
-const Product:React.SFC<Props> = (props: Props) => {
+const Product: React.SFC<Props> = (props: Props) => {
     const {
         id, name, price, activeProductId, productsData,
         resetSelectionActiveProduct, selectActiveProduct,
@@ -32,15 +33,29 @@ const Product:React.SFC<Props> = (props: Props) => {
     const onReClickProduct = (): void => {
         resetSelectionActiveProduct();
     };
-    const productStyle: React.CSSProperties = isProductActive ?
-        {color: 'green', paddingBottom: '20px', cursor: 'pointer'} :
-        {paddingBottom: '20px', cursor: 'pointer'};
 
     return (
-        <li onClick={!isProductActive ? onClickProduct : onReClickProduct} style={productStyle}>
-            <ul style={{listStyle: 'none'}}>
-                <li>Name: {name}, id: {id}</li>
-                <li>Price: {price}</li>
+        <li
+            onClick={!isProductActive ? onClickProduct : onReClickProduct}
+            className={
+                isProductActive ?
+                    'entity-list__item entity-list__item--active' :
+                    'entity-list__item'
+            }
+        >
+            <ul className='product-list'>
+                <li className='product-list__item'>
+                    Name:
+                    <span className='product-list__title'> {name}</span>
+                </li>
+                <li className='product-list__item'>
+                    Price:
+                    <span className='product-list__title'> {price}</span>
+                </li>
+                <li className='product-list__item'>
+                    id:
+                    <span className='product-list__title'> {id}</span>
+                </li>
             </ul>
         </li>
     );

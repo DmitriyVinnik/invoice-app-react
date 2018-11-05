@@ -3,6 +3,13 @@ import {compose, Dispatch} from 'redux'
 import {connect} from 'react-redux';
 import {reduxForm, Field, InjectedFormProps, FormErrors, FormAction, initialize} from 'redux-form';
 import FormField from '../../../shared/components/FormField';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+
 import {CustomerDataForServer, Customer} from '../../../redux/customers/states';
 
 type FormData = CustomerDataForServer
@@ -12,6 +19,8 @@ export interface OwnProps {
     isLoading: boolean,
     errors: string | null,
     activeCustomer?: Customer,
+
+    handleClose(): void,
 }
 
 interface DispatchProps {
@@ -21,9 +30,6 @@ interface DispatchProps {
 type Props = OwnProps & DispatchProps & InjectedFormProps<FormData, OwnProps>
 
 class CustomerChangeForm extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props)
-    }
 
     public componentDidMount() {
         this.setFormValues()
@@ -36,46 +42,66 @@ class CustomerChangeForm extends React.Component<Props> {
     }
 
     public render() {
-        const {isVisible, handleSubmit, isLoading, errors,} = this.props;
+        const {isVisible, handleSubmit, isLoading, errors, pristine, handleClose} = this.props;
 
         return (
-            <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
-                <form onSubmit={handleSubmit}>
-                    <h2>
-                        Change customer.
-                    </h2>
-                    <Field
-                        name='name'
-                        component={FormField}
-                        type='text'
-                        id='change-customer-name'
-                        labelText="Customer's name: "
-                    />
-                    <Field
-                        name='address'
-                        component={FormField}
-                        type='text'
-                        id='change-customer-address'
-                        labelText="Customer's address: "
-                    />
-                    <Field
-                        name='phone'
-                        component={FormField}
-                        type='tel'
-                        id='change-customer-phone'
-                        labelText="Customer's phone: "
-                    />
-                    <div>
-                        {errors && (<span>Error: {errors}</span>)}
-                        <button
-                            type='submit'
-                            disabled={isLoading}
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <Dialog
+                open={isVisible}
+                onClose={handleClose}
+                aria-labelledby="customer-change-dialog-title"
+            >
+                <DialogTitle
+                    id="customer-change-dialog-title"
+                    className='form__title'
+                >
+                    <span className='form__title'>Change customer.</span>
+                </DialogTitle>
+                <DialogContent>
+                    <form onSubmit={handleSubmit}>
+                        {errors && (<span className='error'>Error: {errors}</span>)}
+                        <Field
+                            name='name'
+                            component={FormField}
+                            type='text'
+                            id='change-customer-name'
+                            labelText="Customer's name: "
+                        />
+                        <Field
+                            name='address'
+                            component={FormField}
+                            type='text'
+                            id='change-customer-address'
+                            labelText="Customer's address: "
+                        />
+                        <Field
+                            name='phone'
+                            component={FormField}
+                            type='tel'
+                            id='change-customer-phone'
+                            labelText="Customer's phone: "
+                        />
+                        <DialogActions>
+                            <div className='form__btn-wraper'>
+                                <Button
+                                    onClick={handleClose}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type='submit'
+                                    disabled={pristine || isLoading}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Submit
+                                </Button>
+                            </div>
+                        </DialogActions>
+                    </form>
+                </DialogContent>
+            </Dialog>
         );
     }
 

@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-import CustomerList from './CustomerList';
-import CustomerAddForm from './CustomerAddForm';
-import CustomerChangeForm from './CustomerChangeForm';
-import CustomerDeleteForm from './CustomerDeleteForm';
-import EditPanel from '../../../shared/components/EditPanel';
-import {Actions} from '../../../redux/customers/AC';
+import CustomerList from '../CustomerList';
+import CustomerAddForm from '../CustomerAddForm';
+import CustomerChangeForm from '../CustomerChangeForm';
+import CustomerDeleteForm from '../CustomerDeleteForm';
+import EditPanel from '../../../../shared/components/EditPanel';
+import {Actions} from '../../../../redux/customers/AC';
+import {destroy} from 'redux-form';
 
 import {Dispatch} from 'redux';
-import {RootState} from '../../../redux/store';
-import {CustomersRequestState} from '../../../redux/request/nested-states/customers/states';
-import {CustomerDataForServer, CustomersState} from '../../../redux/customers/states';
+import {RootState} from '../../../../redux/store';
+import {CustomersRequestState} from '../../../../redux/request/nested-states/customers/states';
+import {CustomerDataForServer, CustomersState} from '../../../../redux/customers/states';
 
 interface StateProps {
     customers: CustomersState,
@@ -23,6 +24,7 @@ interface DispatchProps {
     submitAddForm(data: CustomerDataForServer): void,
     submitChangeForm(data: CustomerDataForServer, id: number): void,
     submitDeleteForm(id: number): void,
+    destroyForm(form: string): void,
 }
 
 type Props = StateProps & DispatchProps;
@@ -59,29 +61,28 @@ class CustomersPage extends Component<Props, State> {
         evt.preventDefault();
         if (activeCustomerId) {
             submitDeleteForm(activeCustomerId);
+            this.setState({isVisibleDeleteForm: false})
         } else {
-            this.handleButtonCustomerDeleteClick();
+            this.toggleCustomerDeleteForm();
         }
     };
-    public handleButtonCustomerAddClick = (): void => {
+    public toggleCustomerAddForm = (): void => {
         this.setState({
             isVisibleAddForm: !this.state.isVisibleAddForm,
-            isVisibleChangeForm: false,
-            isVisibleDeleteForm: false,
         });
+
+        if (this.state.isVisibleAddForm) {
+            this.props.destroyForm('customerAdd');
+        }
     };
-    public handleButtonCustomerChangeClick = (): void => {
+    public toggleCustomerChangeform = (): void => {
         this.setState({
             isVisibleChangeForm: !this.state.isVisibleChangeForm,
-            isVisibleAddForm: false,
-            isVisibleDeleteForm: false,
         });
     };
-    public handleButtonCustomerDeleteClick = (): void => {
+    public toggleCustomerDeleteForm = (): void => {
         this.setState({
             isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
-            isVisibleAddForm: false,
-            isVisibleChangeForm: false,
         });
     };
 
@@ -96,9 +97,9 @@ class CustomersPage extends Component<Props, State> {
             <section>
                 <EditPanel
                     labelButton='customer'
-                    onAddButtonClick={this.handleButtonCustomerAddClick}
-                    onChangeButtonClick={this.handleButtonCustomerChangeClick}
-                    onDeleteButtonClick={this.handleButtonCustomerDeleteClick}
+                    onAddButtonClick={this.toggleCustomerAddForm}
+                    onChangeButtonClick={this.toggleCustomerChangeform}
+                    onDeleteButtonClick={this.toggleCustomerDeleteForm}
                     activeId={activeCustomerId}
                     formsState={{
                         isVisibleAddForm,
@@ -108,12 +109,14 @@ class CustomersPage extends Component<Props, State> {
                 />
                 <CustomerAddForm
                     isVisible={isVisibleAddForm}
+                    handleClose={this.toggleCustomerAddForm}
                     isLoading={customersRequests.customersPost.loading}
                     errors={customersRequests.customersPost.errors}
                     onSubmit={this.handleSubmitCustomerAddForm}
                 />
                 <CustomerChangeForm
                     isVisible={isVisibleChangeForm}
+                    handleClose={this.toggleCustomerChangeform}
                     isLoading={customersRequests.customersPut.loading}
                     errors={customersRequests.customersPut.errors}
                     onSubmit={this.handleSubmitCustomerChangeForm}
@@ -121,12 +124,13 @@ class CustomersPage extends Component<Props, State> {
                 />
                 <CustomerDeleteForm
                     isVisible={isVisibleDeleteForm}
+                    handleClose={this.toggleCustomerDeleteForm}
                     isLoading={customersRequests.customersDelete.loading}
                     errors={customersRequests.customersDelete.errors}
                     name={activeCustomer ? activeCustomer.name : null}
                     handleSubmit={this.handleSubmitCustomerDeleteForm}
                 />
-                <h1>Customers: </h1>
+                <h1 className='main-heading'>Customers: </h1>
                 <CustomerList
                     customersRequest={customersRequests.customersGet}
                     customersData={data}
@@ -156,7 +160,9 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
         submitDeleteForm: (id) => {
             dispatch(Actions.submitCustomerDeleteForm(id));
         },
-
+        destroyForm: (form: string) => {
+            dispatch(destroy(form));
+        },
     }
 );
 
