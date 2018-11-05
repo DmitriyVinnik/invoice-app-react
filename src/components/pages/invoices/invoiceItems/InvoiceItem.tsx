@@ -1,65 +1,37 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Actions} from '../../../../redux/invoiceItems/AC';
 
-import {Dispatch} from 'redux';
 import {InvoiceItem as InvoiceItemInterface} from '../../../../redux/invoiceItems/states';
-import {RootState} from '../../../../redux/store';
 
 type OwnProps = InvoiceItemInterface
 
-interface StateProps {
-    activeInvoiceItemId: number | null,
-}
 
-interface DispatchProps {
-    selectActiveInvoiceItem(id: number): void,
-    resetSelectionActiveInvoiceItem(): void,
-}
-
-type Props = StateProps & DispatchProps & OwnProps
-
-const InvoiceItemItem:React.SFC<Props> = (props: Props) => {
+const InvoiceItem: React.SFC<OwnProps> = (props: OwnProps) => {
     const {
-        id, quantity, invoice_id, product_id, activeInvoiceItemId,
-        resetSelectionActiveInvoiceItem, selectActiveInvoiceItem,
+        id, quantity, invoice_id, product_id,
     } = props;
-    const onClickInvoiceItem = (): void => {
-        selectActiveInvoiceItem(id);
-    };
-    const isInvoiceItemActive = activeInvoiceItemId === id;
-    const onReClickInvoiceItem = (): void => {
-        resetSelectionActiveInvoiceItem();
-    };
-    const invoiceItemStyle: React.CSSProperties = isInvoiceItemActive ?
-        {color: 'green', paddingBottom: '20px', cursor: 'pointer'} :
-        {paddingBottom: '20px', cursor: 'pointer'};
 
     return (
-        <li onClick={!isInvoiceItemActive ? onClickInvoiceItem : onReClickInvoiceItem} style={invoiceItemStyle}>
-            <ul style={{listStyle: 'none'}}>
-                <li>InvoiceItem id: {id}</li>
-                <li>Invoice id: {invoice_id}</li>
-                <li>Product id: {product_id}</li>
-                <li>Quantity: {quantity}</li>
+        <li className='entity-list__sub-item'>
+            <ul className='invoice-items-list'>
+                <li>
+                    InvoiceItem id:
+                    <span className='invoice-item-list__title'> {id}</span>
+                </li>
+                <li>
+                    Invoice id:
+                    <span className='invoice-item-list__title'> {invoice_id}</span>
+                </li>
+                <li>
+                    Product id:
+                    <span className='invoice-item-list__title'> {product_id}</span>
+                </li>
+                <li>
+                    Quantity:
+                    <span className='invoice-item-list__title'> {quantity}</span>
+                </li>
             </ul>
         </li>
     );
 };
 
-const mapStateToProps = (state: RootState): StateProps => ({
-    activeInvoiceItemId: state.invoiceItems.activeInvoiceItemId,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => (
-    {
-        selectActiveInvoiceItem: (id) => {
-            dispatch(Actions.selectInvoiceItem(id));
-        },
-        resetSelectionActiveInvoiceItem: () => {
-            dispatch(Actions.resetSelectionInvoiceItem());
-        },
-    }
-);
-
-export default connect<StateProps, DispatchProps>(mapStateToProps, mapDispatchToProps)(InvoiceItemItem)
+export default InvoiceItem;

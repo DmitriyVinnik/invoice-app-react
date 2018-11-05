@@ -51,7 +51,7 @@ class CustomerSelectElement extends React.Component<Props> {
 
         return (
             <form className={classes.root} autoComplete="off">
-                <span style={{paddingTop: '30px'}}>Select customer - </span>
+                <p className={classes.label}>Choose the customer: </p>
                 <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="customers-select">Customer:</InputLabel>
                     <Select
@@ -75,10 +75,16 @@ const styles = (theme: Theme): StyleRules => createStyles({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     formControl: {
         margin: theme.spacing.unit,
         minWidth: 120,
+    },
+    label: {
+        fontSize: '18px'
     },
     selectEmpty: {
         marginTop: theme.spacing.unit * 2,

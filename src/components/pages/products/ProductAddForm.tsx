@@ -38,7 +38,10 @@ const ProductAddForm: React.SFC<Props> = (props: Props) => {
                 <span className='form__title'>Addition new product.</span>
             </DialogTitle>
             <DialogContent>
-                <form onSubmit={handleSubmit}>
+                <form
+                    onSubmit={handleSubmit}
+                    autoComplete="off"
+                >
                     {errors && (<span className='error'>Error: {errors}</span>)}
                     <Field
                         name='name'

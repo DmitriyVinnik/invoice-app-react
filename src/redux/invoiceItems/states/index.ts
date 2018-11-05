@@ -10,10 +10,8 @@ export interface InvoiceItem extends InvoiceItemDataForServer {
 
 export interface InvoiceItemsState {
     data: InvoiceItem[];
-    activeInvoiceItemId: number | null,
 }
 
 export const initialState: InvoiceItemsState = {
     data: [],
-    activeInvoiceItemId: null,
 };

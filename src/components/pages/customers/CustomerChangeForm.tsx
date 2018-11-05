@@ -57,7 +57,10 @@ class CustomerChangeForm extends React.Component<Props> {
                     <span className='form__title'>Change customer.</span>
                 </DialogTitle>
                 <DialogContent>
-                    <form onSubmit={handleSubmit}>
+                    <form
+                        onSubmit={handleSubmit}
+                        autoComplete="off"
+                    >
                         {errors && (<span className='error'>Error: {errors}</span>)}
                         <Field
                             name='name'

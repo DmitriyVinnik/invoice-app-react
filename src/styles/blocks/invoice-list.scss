@@ -1,0 +1,16 @@
+.invoice-list {
+  display: flex;
+  padding: 0;
+  margin: 0 auto;
+
+  list-style-type: none;
+}
+
+.invoice-list__item {
+  font-size: 18px;
+  width: 250px;
+}
+
+.invoice-list__title {
+  font-weight: 600;
+}

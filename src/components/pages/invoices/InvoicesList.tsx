@@ -39,20 +39,20 @@ export default class InvoicesList extends Component<OwnProps> {
 
         if (errors) {
             return (
-                <p>Error: {errors}</p>
+                <p className='error'>Error: {errors}</p>
             );
         } else if (loading) {
             return (
-                <p>Wait a second, loading...</p>
+                <p className='loader'>Wait a second, loading...</p>
             );
         } else  if (!loaded) {
             return (
-                <p>Something went wrong! Invoices have not loaded, try reloading the page</p>
+                <p className='error'>Something went wrong! Invoices have not loaded, try reloading the page</p>
             )
         }
 
         return (
-            <ul style={{listStyle: 'none'}}>
+            <ul className='entity-list'>
                 {invoiceItems}
             </ul>
         )

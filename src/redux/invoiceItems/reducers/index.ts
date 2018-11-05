@@ -22,22 +22,7 @@ export function reducer(state = initialState, action: fromActions.Actions): Invo
                         const isNeedDelete = !!action.payload.data.find((actionElem) => actionElem.id === stateElem.id);
                         return !isNeedDelete
                     }
-                ),
-                activeInvoiceItemId: null,
-            };
-        }
-
-        case fromActions.ActionTypes.INVOICE_ITEMS_SELECT_ACTIVE: {
-            return {
-                ...state,
-                activeInvoiceItemId: action.payload.id,
-            };
-        }
-
-        case fromActions.ActionTypes.INVOICE_ITEMS_RESET_SELECTION_ACTIVE: {
-            return {
-                ...state,
-                activeInvoiceItemId: null,
+                )
             };
         }
 

@@ -40,7 +40,7 @@ const CustomerAddForm: React.SFC<Props> = (props: Props) => {
             <DialogContent>
                 <form
                     onSubmit={handleSubmit}
-                    autoComplete={'none'}
+                    autoComplete="off"
                 >
                     {errors && (<span className='error'>Error: {errors}</span>)}
                     <Field

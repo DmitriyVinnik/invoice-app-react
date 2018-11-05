@@ -4,6 +4,10 @@
   margin: 0 auto;
 
   list-style-type: none;
+
+  &--sub {
+    width: 800px;
+  }
 }
 
 .entity-list__item {
@@ -17,7 +21,7 @@
   cursor: pointer;
 
   transition:
-          transform 0.2s ease-out;
+    transform 0.2s ease-out;
 
   &:hover,
   &:focus {
@@ -27,4 +31,9 @@
   &--active {
     color: #a61b9e;
   }
+}
+
+.entity-list__sub-item {
+  padding: 20px;
+  margin-bottom: 10px;
 }

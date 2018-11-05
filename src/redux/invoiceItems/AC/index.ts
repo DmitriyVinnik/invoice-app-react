@@ -9,8 +9,6 @@ export enum ActionTypes {
     INVOICE_ITEMS_SUBMIT_ADD = 'INVOICE_ITEMS_SUBMIT_ADD',
     INVOICE_ITEMS_SUBMIT_PUT = 'INVOICE_ITEMS_SUBMIT_PUT',
     INVOICE_ITEMS_SUBMIT_DELETE = 'INVOICE_ITEMS_SUBMIT_DELETE',
-    INVOICE_ITEMS_SELECT_ACTIVE = 'INVOICE_ITEMS_SELECT_ACTIVE',
-    INVOICE_ITEMS_RESET_SELECTION_ACTIVE = 'INVOICE_ITEMS_RESET_SELECTION_ACTIVE',
 }
 
 export const Actions = {
@@ -22,12 +20,6 @@ export const Actions = {
     },
     loadAllInvoiceItems: (invoice_id: number) => {
         return createAction(ActionTypes.INVOICE_ITEMS_LOAD_ALL, {invoice_id})
-    },
-    selectInvoiceItem: (id: number) => {
-        return createAction(ActionTypes.INVOICE_ITEMS_SELECT_ACTIVE, {id})
-    },
-    resetSelectionInvoiceItem: () => {
-        return createAction(ActionTypes.INVOICE_ITEMS_RESET_SELECTION_ACTIVE)
     },
     submitAddInvoiceItem: (data: InvoiceItemDataForServer[], invoice_id: number) => {
         return createAction(ActionTypes.INVOICE_ITEMS_SUBMIT_ADD, {data, invoice_id})

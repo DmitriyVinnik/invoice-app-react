@@ -7,32 +7,26 @@ import InvoiceChangeForm from './InvoiceChangeForm';
 import InvoiceDeleteForm from './InvoiceDeleteForm';
 import EditPanel from '../../../shared/components/EditPanel';
 import CustomerSelectElement from './CustomerSelectElement';
-import InvoiceItemsList from "./invoiceItems/InvoiceItemsList";
 
 import {Actions} from '../../../redux/invoices/AC';
 import * as productsActions from '../../../redux/products/AC';
-import * as invoiceItemsActions from '../../../redux/invoiceItems/AC';
+
 
 import {Dispatch} from 'redux';
 import {RootState} from '../../../redux/store';
 import {InvoicesRequestState} from '../../../redux/request/nested-states/invoices/states';
-import {InvoiceItemsRequestState} from '../../../redux/request/nested-states/invoiceItems/states';
 import {InvoicesState} from '../../../redux/invoices/states';
 import {CustomersState} from "../../../redux/customers/states";
-import {InvoiceItemsState} from "../../../redux/invoiceItems/states";
 
 interface StateProps {
     invoices: InvoicesState,
-    invoiceItems: InvoiceItemsState
     invoicesRequests: InvoicesRequestState,
-    invoiceItemsRequests: InvoiceItemsRequestState,
     customers: CustomersState,
 }
 
 interface DispatchProps {
     loadProducts(): void,
     loadInvoices(): void,
-    loadInvoiceItems(invoice_id: number): void,
     submitDeleteForm(id: number): void,
 }
 
@@ -77,29 +71,23 @@ class InvoicesPage extends Component<Props, State> {
     public handleButtonInvoiceAddClick = (): void => {
         this.setState({
             isVisibleAddForm: !this.state.isVisibleAddForm,
-            isVisibleChangeForm: false,
-            isVisibleDeleteForm: false,
         });
     };
     public handleButtonInvoiceChangeClick = (): void => {
         this.setState({
             isVisibleChangeForm: !this.state.isVisibleChangeForm,
-            isVisibleAddForm: false,
-            isVisibleDeleteForm: false,
         });
     };
     public handleButtonInvoiceDeleteClick = (): void => {
         this.setState({
             isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
-            isVisibleAddForm: false,
-            isVisibleChangeForm: false,
         });
     };
 
     public render() {
         const {
-            invoices: {activeInvoiceId}, invoicesRequests, invoiceItemsRequests, invoiceItems, invoices,
-            loadInvoices, loadProducts, loadInvoiceItems,
+            invoices: {activeInvoiceId}, invoicesRequests, invoices,
+            loadInvoices, loadProducts,
             customers: {activeCustomerId},
         } = this.props;
         const {isVisibleAddForm, isVisibleChangeForm, isVisibleDeleteForm} = this.state;
@@ -109,7 +97,7 @@ class InvoicesPage extends Component<Props, State> {
 
         return (
             <div>
-                <h1>Invoices: </h1>
+                <h1 className='main-heading'>Invoices: </h1>
                 <CustomerSelectElement/>
                 {activeCustomerId && <section>
                     <EditPanel
@@ -137,13 +125,13 @@ class InvoicesPage extends Component<Props, State> {
                         activeInvoice={activeInvoice}
                         activeCustomerId={activeCustomerId}
                     />}
-                    <InvoiceDeleteForm
+                    {activeInvoice && <InvoiceDeleteForm
                         isVisible={isVisibleDeleteForm}
                         isLoading={invoicesRequests.invoicesDelete.loading}
                         errors={invoicesRequests.invoicesDelete.errors}
-                        id={activeInvoice ? activeInvoice.id : null}
+                        id={activeInvoice.id}
                         handleSubmit={this.handleSubmitInvoiceDeleteForm}
-                    />
+                    />}
                     <InvoicesList
                         invoicesRequest={invoicesRequests.invoicesGet}
                         invoicesData={invoices.data}
@@ -151,13 +139,6 @@ class InvoicesPage extends Component<Props, State> {
                         loadInvoices={loadInvoices}
                         loadProducts={loadProducts}
                     />
-                    {activeInvoiceId &&
-                    <InvoiceItemsList
-                        invoiceItemsRequest={invoiceItemsRequests.invoiceItemsGet}
-                        invoiceItemsData={invoiceItems.data}
-                        activeInvoiceId={activeInvoiceId}
-                        loadInvoiceItems={loadInvoiceItems}
-                    />}
                 </section>}
             </div>
         )
@@ -167,13 +148,11 @@ class InvoicesPage extends Component<Props, State> {
 const mapStateToProps = (state: RootState): StateProps => ({
     invoices: state.invoices,
     customers: state.customers,
-    invoiceItems: state.invoiceItems,
     invoicesRequests: state.request.invoices,
-    invoiceItemsRequests: state.request.invoiceItems,
 });
 
 const mapDispatchToProps = (
-    dispatch: Dispatch<Actions | productsActions.Actions | invoiceItemsActions.Actions>
+    dispatch: Dispatch<Actions | productsActions.Actions>
 ): DispatchProps => (
     {
         loadInvoices: () => {
@@ -181,9 +160,6 @@ const mapDispatchToProps = (
         },
         loadProducts: () => {
             dispatch(productsActions.Actions.loadAllProducts());
-        },
-        loadInvoiceItems: (invoice_id) => {
-            dispatch(invoiceItemsActions.Actions.loadAllInvoiceItems(invoice_id));
         },
         submitDeleteForm: (id) => {
             dispatch(Actions.submitInvoiceDeleteForm(id));
