@@ -10,7 +10,7 @@ import CustomerSelectElement from './CustomerSelectElement';
 
 import {Actions} from '../../../redux/invoices/AC';
 import * as productsActions from '../../../redux/products/AC';
-
+import {destroy} from 'redux-form';
 
 import {Dispatch} from 'redux';
 import {RootState} from '../../../redux/store';
@@ -28,6 +28,7 @@ interface DispatchProps {
     loadProducts(): void,
     loadInvoices(): void,
     submitDeleteForm(id: number): void,
+    destroyForm(form: string): void,
 }
 
 type Props = StateProps & DispatchProps;
@@ -48,37 +49,30 @@ class InvoicesPage extends Component<Props, State> {
         };
     }
 
-    public componentDidUpdate (prevProps: Props) {
-        if (prevProps.customers.activeCustomerId !== this.props.customers.activeCustomerId) {
-            this.setState({
-                isVisibleAddForm: false,
-                isVisibleChangeForm: false,
-                isVisibleDeleteForm: false,
-            })
-        }
-    }
-
     public handleSubmitInvoiceDeleteForm = (evt: React.FormEvent<HTMLFormElement>): void => {
         const {invoices: {activeInvoiceId}, submitDeleteForm} = this.props;
 
         evt.preventDefault();
         if (activeInvoiceId) {
             submitDeleteForm(activeInvoiceId);
-        } else {
-            this.handleButtonInvoiceDeleteClick();
+            this.setState({isVisibleDeleteForm: false})
         }
     };
-    public handleButtonInvoiceAddClick = (): void => {
+    public toggleInvoiceAddForm= (): void => {
         this.setState({
             isVisibleAddForm: !this.state.isVisibleAddForm,
         });
+
+        if (this.state.isVisibleAddForm) {
+            this.props.destroyForm('invoiceAdd');
+        }
     };
-    public handleButtonInvoiceChangeClick = (): void => {
+    public toggleInvoiceChangeForm= (): void => {
         this.setState({
             isVisibleChangeForm: !this.state.isVisibleChangeForm,
         });
     };
-    public handleButtonInvoiceDeleteClick = (): void => {
+    public toggleInvoiceDeleteForm = (): void => {
         this.setState({
             isVisibleDeleteForm: !this.state.isVisibleDeleteForm,
         });
@@ -102,24 +96,21 @@ class InvoicesPage extends Component<Props, State> {
                 {activeCustomerId && <section>
                     <EditPanel
                         labelButton='invoice'
-                        onAddButtonClick={this.handleButtonInvoiceAddClick}
-                        onChangeButtonClick={this.handleButtonInvoiceChangeClick}
-                        onDeleteButtonClick={this.handleButtonInvoiceDeleteClick}
+                        onAddButtonClick={this.toggleInvoiceAddForm}
+                        onChangeButtonClick={this.toggleInvoiceChangeForm}
+                        onDeleteButtonClick={this.toggleInvoiceDeleteForm}
                         activeId={activeInvoiceId}
-                        formsState={{
-                            isVisibleAddForm,
-                            isVisibleChangeForm,
-                            isVisibleDeleteForm,
-                        }}
                     />
                     <InvoiceAddForm
                         isVisible={isVisibleAddForm}
+                        handleClose={this.toggleInvoiceAddForm}
                         isLoading={invoicesRequests.invoicesPost.loading}
                         errors={invoicesRequests.invoicesPost.errors}
                         activeCustomerId={activeCustomerId}
                     />
                     {activeInvoice && <InvoiceChangeForm
                         isVisible={isVisibleChangeForm}
+                        handleClose={this.toggleInvoiceChangeForm}
                         isLoading={invoicesRequests.invoicesPut.loading}
                         errors={invoicesRequests.invoicesPut.errors}
                         activeInvoice={activeInvoice}
@@ -127,6 +118,7 @@ class InvoicesPage extends Component<Props, State> {
                     />}
                     {activeInvoice && <InvoiceDeleteForm
                         isVisible={isVisibleDeleteForm}
+                        handleClose={this.toggleInvoiceDeleteForm}
                         isLoading={invoicesRequests.invoicesDelete.loading}
                         errors={invoicesRequests.invoicesDelete.errors}
                         id={activeInvoice.id}
@@ -164,7 +156,9 @@ const mapDispatchToProps = (
         submitDeleteForm: (id) => {
             dispatch(Actions.submitInvoiceDeleteForm(id));
         },
-
+        destroyForm: (form) => {
+            dispatch(destroy(form));
+        },
     }
 );
 

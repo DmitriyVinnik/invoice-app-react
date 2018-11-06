@@ -64,7 +64,7 @@ class ProductChangeForm extends React.Component<Props> {
                         onSubmit={handleSubmit}
                         autoComplete="off"
                     >
-                        {errors && (<span className='error'>Error: {errors}</span>)}
+                        {errors && (<span className='errors'>Error: {errors}</span>)}
                         <Field
                             name='name'
                             component={FormField}

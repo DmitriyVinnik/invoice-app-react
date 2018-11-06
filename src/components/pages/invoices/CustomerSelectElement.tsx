@@ -78,6 +78,7 @@ const styles = (theme: Theme): StyleRules => createStyles({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: '20px',
     },
     formControl: {
         margin: theme.spacing.unit,

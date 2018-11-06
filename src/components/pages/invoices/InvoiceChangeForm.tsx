@@ -9,6 +9,12 @@ import {
 import FormField from '../../../shared/components/FormField';
 import InvoiceItemFieldsArray from './invoiceItems/InvoiceItemFieldsArray';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+
 import {Invoice, InvoiceDataForServer} from '../../../redux/invoices/states';
 import {InvoiceItem, InvoiceItemDataForServer, InvoiceItemsState} from '../../../redux/invoiceItems/states';
 import {Product, ProductsState} from "../../../redux/products/states";
@@ -16,7 +22,6 @@ import {RootState} from "../../../redux/store";
 
 import {Actions} from "../../../redux/invoices/AC";
 import {Actions as invoiceItemsActions} from "../../../redux/invoiceItems/AC";
-
 
 interface FormData extends InvoiceDataForServer {
     invoiceItems: InvoiceItem[]
@@ -28,6 +33,8 @@ export interface OwnProps {
     errors: string | null,
     activeInvoice: Invoice,
     activeCustomerId: number,
+
+    handleClose(): void,
 }
 
 interface StateProps {
@@ -73,12 +80,12 @@ class InvoiceChangeForm extends React.Component<Props> {
         } = this.props;
         const forPostInvoiceItems = values.invoiceItems.filter((formElem) => !formElem.id);
         const forDeleteInvoiceItems = data
+            .filter((stateElem) => stateElem.invoice_id === activeInvoice.id)
             .filter(
-                (stateElem) => {
+                (activeInvoiceItem) => {
                     const isInFormData = values.invoiceItems.find(
-                        (formElem) => formElem.id === stateElem.id
+                        (formElem) => formElem.id === activeInvoiceItem.id
                     );
-
                     return !isInFormData
                 }
             )
@@ -107,47 +114,72 @@ class InvoiceChangeForm extends React.Component<Props> {
         if (forDeleteInvoiceItems) {
             submitDeleteInvoiceItem(forDeleteInvoiceItems, activeInvoice.id)
         }
+
+        this.props.handleClose();
     };
 
     public render() {
-        const {isVisible, handleSubmit, isLoading, errors, products, activeCustomerId} = this.props;
+        const {
+            isVisible, handleSubmit, isLoading, errors, products, activeCustomerId, pristine,
+            handleClose,
+        } = this.props;
 
         return (
-            <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
-                <form onSubmit={handleSubmit(this.handleSubmitForm)}>
-                    <section>
-                        <h2>
-                            Change invoice.
-                            <span>{`Invoice's customer ID: ${activeCustomerId}`}</span>
-                        </h2>
-                        <strong>{`Invoice's total: ${this.getTotalPrice()}`}</strong>
-                        <Field
-                            name='discount'
-                            component={FormField}
-                            type='number'
-                            step='0.01'
-                            min='0'
-                            id='add-invoice-discount'
-                            labelText="Invoice's discount: "
-                            placeholder='From 0 to 1'
+            <Dialog
+                open={isVisible}
+                onClose={handleClose}
+                aria-labelledby="customer-change-dialog-title"
+            >
+                <DialogTitle
+                    id="customer-change-dialog-title"
+                    className='form__title'
+                >
+                    <span className='form__title'>Change invoice.</span>
+                    <span>{`Invoice's customer ID: ${activeCustomerId}`}</span>
+                </DialogTitle>
+                <DialogContent>
+                    <form onSubmit={handleSubmit(this.handleSubmitForm)}>
+                        {errors && (<span className='error error--field'>Error: {errors}</span>)}
+                        <section>
+                            <strong>{`Invoice's total: ${this.getTotalPrice()}`}</strong>
+                            <Field
+                                name='discount'
+                                component={FormField}
+                                type='number'
+                                step='0.01'
+                                min='0'
+                                id='add-invoice-discount'
+                                labelText="Invoice's discount: "
+                                placeholder='From 0 to 1'
+                            />
+                        </section>
+                        <FieldArray
+                            name='invoiceItems'
+                            component={InvoiceItemFieldsArray}
+                            products={products}
                         />
-                    </section>
-                    <FieldArray
-                        name='invoiceItems'
-                        component={InvoiceItemFieldsArray}
-                        products={products}
-                    />
-                    <div>
-                        {errors && (<span>Error: {errors}</span>)}
-                        <button
-                            type='submit'
-                            disabled={isLoading}
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
+                        <DialogActions>
+                            <div className='form__btn-wraper'>
+                                <Button
+                                    onClick={handleClose}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type='submit'
+                                    disabled={pristine || isLoading}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Submit
+                                </Button>
+                            </div>
+                        </DialogActions>
+                    </form>
+                </DialogContent>
+            </Dialog>
         );
     }
 

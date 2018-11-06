@@ -7,10 +7,19 @@
 }
 
 .invoice-list__item {
-  font-size: 18px;
   width: 250px;
+
+  font-size: 18px;
 }
 
 .invoice-list__title {
   font-weight: 600;
+}
+
+.invoice-list__heading {
+  display: block;
+  margin-bottom: 10px;
+
+  font-size: 20px;
+  font-weight: 700;
 }

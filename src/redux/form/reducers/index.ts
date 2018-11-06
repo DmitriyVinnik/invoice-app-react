@@ -1,6 +1,7 @@
 import {reducer, FormState, actionTypes, FormAction} from 'redux-form';
 import {customersRequestAC} from '../../request/nested-states/customers/AC';
 import {productsRequestAC} from '../../request/nested-states/products/AC';
+import {invoiceItemsRequestAC} from '../../request/nested-states/invoiceItems/AC';
 import * as customersAC from '../../customers/AC';
 import * as productsAC from '../../products/AC';
 import * as invoicesAC from '../../invoices/AC';
@@ -79,6 +80,9 @@ const formReducer = reducer.plugin({
     invoiceAdd: (state, action: FormAction): FormState | undefined => {
 
         switch (action.type) {
+
+            case invoiceItemsRequestAC.invoiceItemsPost.ActionTypes.INVOICE_ITEMS_POST_SUCCESS:
+                return undefined;
 
             case actionTypes.INITIALIZE: {
                 return {

@@ -29,6 +29,11 @@
       inset 0 0 3px 0 #a61b9e,
       0 0 5px 0 #44133c;
   }
+
+  &--number {
+    width: 90px;
+    padding-left: 10px;
+  }
 }
 
 .input__label {
@@ -37,6 +42,10 @@
   padding-bottom: 8px;
 
   font-size: 18px;
+
+  &--number {
+    padding-left: 13px;
+  }
 }
 
 .input__wraper {

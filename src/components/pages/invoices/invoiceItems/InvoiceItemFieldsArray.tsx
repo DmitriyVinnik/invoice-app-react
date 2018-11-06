@@ -4,6 +4,11 @@ import FormField from '../../../../shared/components/FormField';
 import ProductSelectElement from './ProductSelectElement';
 import {ProductsState} from "../../../../redux/products/states";
 
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 export interface OwnProps {
     products: ProductsState
 }
@@ -16,32 +21,27 @@ const InvoiceItemFieldsArray: React.SFC<Props> = (props: Props) => {
 
     return (
         <section>
-            <h3>InvoiceItems: </h3>
-            <button type="button" onClick={handleAddButtonClick}>
-                Add new invoice item
-            </button>
-            <ul>
+            <h3 className='form__title'>Invoice Items (II): </h3>
+            <div className='form__btn-wraper form__btn-wraper--one-btn'>
+                <Button
+                    onClick={handleAddButtonClick}
+                    variant="contained"
+                    color="primary"
+                >
+                    <AddIcon/>
+                    Add new invoice item
+                </Button>
+            </div>
+            <ul className='form__invoice-item-list'>
                 {fields.map((productItem, index) => {
                     const handleRemoveButtonClick = () => fields.remove(index);
 
                     return (
-                        <li key={index}>
-                            <h4>{`Invoice item #${index + 1}: `}</h4>
-                            <button
-                                type="button"
-                                title="Remove invoice item"
-                                onClick={handleRemoveButtonClick}
-                            >
-                                Remove invoice item
-                            </button>
-                            <Field
-                                name={`${productItem}.quantity`}
-                                component={FormField}
-                                type='number'
-                                min='1'
-                                id='add-invoiceItem-quantity'
-                                labelText="InvoiceItem's quantity: "
-                            />
+                        <li
+                            className='form__invoice-item'
+                            key={index}
+                        >
+                            <h4>{`II #${index + 1}: `}</h4>
                             <Field
                                 name={`${productItem}.product_id`}
                                 component={ProductSelectElement}
@@ -49,6 +49,23 @@ const InvoiceItemFieldsArray: React.SFC<Props> = (props: Props) => {
                                 id='add-invoiceItem-product'
                                 label='Product: '
                             />
+                            <div className='form__invoice-item-quantity'>
+                                <Field
+                                    name={`${productItem}.quantity`}
+                                    component={FormField}
+                                    type='number'
+                                    min='1'
+                                    id='add-invoiceItem-quantity'
+                                    labelText="Quantity: "
+                                />
+                            </div>
+                            <IconButton
+                                aria-label="Delete"
+                                title="Remove invoice item"
+                                onClick={handleRemoveButtonClick}
+                            >
+                                <DeleteIcon/>
+                            </IconButton>
                         </li>
                     );
                 })}

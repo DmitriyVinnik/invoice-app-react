@@ -8,6 +8,12 @@ import {
 import FormField from '../../../shared/components/FormField';
 import InvoiceItemFieldsArray from './invoiceItems/InvoiceItemFieldsArray';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+
 import {InvoiceDataForServer} from '../../../redux/invoices/states';
 import {InvoiceItemDataForServer} from '../../../redux/invoiceItems/states';
 import {Product, ProductsState} from "../../../redux/products/states";
@@ -24,6 +30,8 @@ export interface OwnProps {
     isLoading: boolean,
     errors: string | null,
     activeCustomerId?: number,
+
+    handleClose(): void,
 }
 
 interface StateProps {
@@ -33,6 +41,7 @@ interface StateProps {
 
 interface DispatchProps {
     initializeForm(values: FormData): void
+
     submitForm(data: FormData, total: number): void
 }
 
@@ -55,44 +64,74 @@ class InvoiceAddForm extends React.Component<Props> {
     };
 
     public render() {
-        const {isVisible, handleSubmit, isLoading, errors, products, activeCustomerId} = this.props;
+        const {
+            isVisible, handleSubmit, isLoading, errors, products, activeCustomerId, pristine,
+            handleClose
+        } = this.props;
 
         return (
-            <div style={isVisible ? {display: 'block'} : {display: 'none'}}>
-                <form onSubmit={handleSubmit(this.handleSubmitForm)}>
-                    <section>
-                        <h2>
-                            Addition new invoice.
-                            <span>{`Invoice's customer ID: ${activeCustomerId}`}</span>
-                        </h2>
-                        <strong>{`Invoice's total: ${this.getTotalPrice()}`}</strong>
-                        <Field
-                            name='discount'
-                            component={FormField}
-                            type='number'
-                            step='0.01'
-                            min='0'
-                            id='add-invoice-discount'
-                            labelText="Invoice's discount: "
-                            placeholder='From 0 to 1'
-                        />
-                    </section>
-                    <FieldArray
-                        name='invoiceItems'
-                        component={InvoiceItemFieldsArray}
-                        products={products}
-                    />
-                    <div>
+            <Dialog
+                open={isVisible}
+                onClose={handleClose}
+                aria-labelledby="invoice-add-dialog-title"
+            >
+                <DialogTitle
+                    id="invoice-add-dialog-title"
+                    className='form__title'
+                >
+                    <span className='form__title'>Addition new invoice.</span>
+                    <span>{`Invoice's customer ID: ${activeCustomerId}`}</span>
+                </DialogTitle>
+                <DialogContent>
+                    <form
+                        onSubmit={handleSubmit(this.handleSubmitForm)}
+                        autoComplete='off'
+                    >
                         {errors && (<span>Error: {errors}</span>)}
-                        <button
-                            type='submit'
-                            disabled={isLoading}
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
+                        <section className='form__invoice'>
+                            <strong
+                                className='form__invoice-total'
+                            >
+                                {`Invoice's total: ${this.getTotalPrice()}`}
+                            </strong>
+                            <Field
+                                name='discount'
+                                component={FormField}
+                                type='number'
+                                step='0.01'
+                                min='0'
+                                id='add-invoice-discount'
+                                labelText="Discount: "
+                                placeholder='0 to 1'
+                            />
+                        </section>
+                        <FieldArray
+                            name='invoiceItems'
+                            component={InvoiceItemFieldsArray}
+                            products={products}
+                        />
+                        <DialogActions>
+                            <div className='form__btn-wraper'>
+                                <Button
+                                    onClick={handleClose}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type='submit'
+                                    disabled={pristine || isLoading}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Submit
+                                </Button>
+                            </div>
+                        </DialogActions>
+                    </form>
+                </DialogContent>
+            </Dialog>
         );
     }
 

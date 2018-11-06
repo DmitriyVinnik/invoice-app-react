@@ -37,7 +37,7 @@ const ProductDeleteForm: React.SFC<Props> = (props: Props) => {
             </DialogTitle>
             <DialogContent>
                 <form onSubmit={handleSubmit}>
-                    {errors && (<span className='error'>Error: {errors}</span>)}
+                    {errors && (<span className='errors'>Error: {errors}</span>)}
                     {name &&
                     <DialogContentText>
                         You really want to delete the product:
@@ -59,7 +59,7 @@ const ProductDeleteForm: React.SFC<Props> = (props: Props) => {
                                     variant="contained"
                                     color="primary"
                                 >
-                                    {name === null ? 'Close' : 'Delete'}
+                                    Delete
                                 </Button>
                             </div>
                         </DialogActions>

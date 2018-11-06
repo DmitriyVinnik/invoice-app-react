@@ -62,8 +62,6 @@ class CustomersPage extends Component<Props, State> {
         if (activeCustomerId) {
             submitDeleteForm(activeCustomerId);
             this.setState({isVisibleDeleteForm: false})
-        } else {
-            this.toggleCustomerDeleteForm();
         }
     };
     public toggleCustomerAddForm = (): void => {
@@ -101,11 +99,6 @@ class CustomersPage extends Component<Props, State> {
                     onChangeButtonClick={this.toggleCustomerChangeform}
                     onDeleteButtonClick={this.toggleCustomerDeleteForm}
                     activeId={activeCustomerId}
-                    formsState={{
-                        isVisibleAddForm,
-                        isVisibleChangeForm,
-                        isVisibleDeleteForm,
-                    }}
                 />
                 <CustomerAddForm
                     isVisible={isVisibleAddForm}

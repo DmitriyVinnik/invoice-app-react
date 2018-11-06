@@ -67,14 +67,14 @@ const Invoice: React.SFC<Props> = (props: Props) => {
                 </li>
                 <li className='invoice-list__item'>
                     Total:
-                    <span className='invoice-list__title'>{total}</span>
+                    <span className='invoice-list__title'> {total}</span>
                 </li>
             </ul>
-            {activeInvoiceId &&
-            <span className='invoice-list__title'>
+            {isInvoiceActive &&
+            <span className='invoice-list__heading'>
                 Invoice items:
             </span>}
-            {activeInvoiceId &&
+            {isInvoiceActive &&
             <InvoiceItemsList
                 invoiceItemsRequest={invoiceItemsRequests.invoiceItemsGet}
                 invoiceItemsData={invoiceItems.data}

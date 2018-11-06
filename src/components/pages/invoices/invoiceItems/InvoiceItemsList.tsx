@@ -42,7 +42,7 @@ export default class InvoiceItemsList extends Component<OwnProps> {
 
         if (errors) {
             return (
-                <p className='error'>Error: {errors}</p>
+                <p className='errors'>Error: {errors}</p>
             );
         } else if (loading) {
             return (
@@ -50,7 +50,7 @@ export default class InvoiceItemsList extends Component<OwnProps> {
             );
         } else if (!loaded) {
             return (
-                <p className='error'>Something went wrong! InvoiceItems have not loaded, try reloading the page</p>
+                <p className='errors'>Something went wrong! InvoiceItems have not loaded, try reloading the page</p>
             )
         }
 

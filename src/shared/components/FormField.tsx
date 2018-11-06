@@ -22,12 +22,12 @@ export const FormField: React.SFC<Props> = (props: Props) => {
         <div className='input__wraper'>
             <label
                 htmlFor={id}
-                className='input__label'
+                className={type==='number' ? 'input__label input__label--number' : 'input__label'}
             >
                 {labelText}
             </label>
             <input
-                className='input'
+                className={type==='number' ? 'input input--number' : 'input'}
                 {...input}
                 type={type}
                 step={step}

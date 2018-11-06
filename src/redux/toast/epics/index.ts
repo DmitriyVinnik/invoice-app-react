@@ -111,94 +111,22 @@ const showProductErrorRequestToastEpic = (action$: Observable<Action>) => action
 );
 
 const showInvoiceSuccessRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
-    ofType<invoices.RequestActionsSuccess>(
-        invoices.invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_SUCCESS,
-        invoices.invoicesRequestAC.invoicesPut.ActionTypes.INVOICES_PUT_SUCCESS,
-        invoices.invoicesRequestAC.invoicesDelete.ActionTypes.INVOICES_DELETE_SUCCESS,
-    ),
-    map((action) => {
-
-        switch (action.type) {
-            case invoices.invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_SUCCESS: {
-                const id = action.payload.data.id;
-                const message = `Invoice - id: ${id} created successfully`;
-
-                return fromActions.Actions.showToast(message)
-            }
-
-            case invoices.invoicesRequestAC.invoicesPut.ActionTypes.INVOICES_PUT_SUCCESS: {
-                const id = action.payload.data.id;
-                const message = `Invoice: ${id} updated successfully`;
-
-                return fromActions.Actions.showToast(message)
-            }
-
-            case invoices.invoicesRequestAC.invoicesDelete.ActionTypes.INVOICES_DELETE_SUCCESS: {
-                const id = action.payload.data.id;
-                const message = `Invoice: ${id} deleted successfully`;
-
-                return fromActions.Actions.showToast(message)
-            }
-
-            default:
-                return null;
-        }
-    })
-);
-
-const showInvoiceErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
-    ofType<invoices.RequestActionsFail>(
-        invoices.invoicesRequestAC.invoicesGet.ActionTypes.INVOICES_GET_FAIL,
-        invoices.invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_FAIL,
-        invoices.invoicesRequestAC.invoicesPut.ActionTypes.INVOICES_PUT_FAIL,
-        invoices.invoicesRequestAC.invoicesDelete.ActionTypes.INVOICES_DELETE_FAIL,
-    ),
-    map((action) => {
-        const requestError = action.payload.errors;
-        const error = `something went wrong while processing invoices request! Error: ${requestError}`;
-
-        return fromActions.Actions.showToast(null, error)
-    })
-);
-
-const showInvoiceItemSuccessRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
     ofType<invoiceItems.RequestActionsSuccess>(
         invoiceItems.invoiceItemsRequestAC.invoiceItemsPost.ActionTypes.INVOICE_ITEMS_POST_SUCCESS,
         invoiceItems.invoiceItemsRequestAC.invoiceItemsPut.ActionTypes.INVOICE_ITEMS_PUT_SUCCESS,
         invoiceItems.invoiceItemsRequestAC.invoiceItemsDelete.ActionTypes.INVOICE_ITEMS_DELETE_SUCCESS,
     ),
-    map((action) => {
-
-        switch (action.type) {
-            case invoiceItems.invoiceItemsRequestAC.invoiceItemsPost.ActionTypes.INVOICE_ITEMS_POST_SUCCESS: {
-                const arrayId = action.payload.data.map<number>((invoiceItem) => invoiceItem.id);
-                const message = `InvoiceItems - id: ${arrayId.join(', id: ')} created successfully`;
-
-                return fromActions.Actions.showToast(message)
-            }
-
-            case invoiceItems.invoiceItemsRequestAC.invoiceItemsPut.ActionTypes.INVOICE_ITEMS_PUT_SUCCESS: {
-                const arrayId = action.payload.data.map<number>((invoiceItem) => invoiceItem.id);
-                const message = `InvoiceItem: ${arrayId.join(', id: ')} updated successfully`;
-
-                return fromActions.Actions.showToast(message)
-            }
-
-            case invoiceItems.invoiceItemsRequestAC.invoiceItemsDelete.ActionTypes.INVOICE_ITEMS_DELETE_SUCCESS: {
-                const arrayId = action.payload.data.map<number>((invoiceItem) => invoiceItem.id);
-                const message = `InvoiceItem: ${arrayId.join(', id: ')} deleted successfully`;
-
-                return fromActions.Actions.showToast(message)
-            }
-
-            default:
-                return null;
-        }
+    map(() => {
+        return fromActions.Actions.showToast('Invoice request was successful')
     })
 );
 
-const showInvoiceItemErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
-    ofType<invoiceItems.RequestActionsFail>(
+const showInvoiceErrorRequestToastEpic = (action$: Observable<Action>) => action$.pipe(
+    ofType<invoiceItems.RequestActionsFail | invoices.RequestActionsFail>(
+        invoices.invoicesRequestAC.invoicesGet.ActionTypes.INVOICES_GET_FAIL,
+        invoices.invoicesRequestAC.invoicesPost.ActionTypes.INVOICES_POST_FAIL,
+        invoices.invoicesRequestAC.invoicesPut.ActionTypes.INVOICES_PUT_FAIL,
+        invoices.invoicesRequestAC.invoicesDelete.ActionTypes.INVOICES_DELETE_FAIL,
         invoiceItems.invoiceItemsRequestAC.invoiceItemsGet.ActionTypes.INVOICE_ITEMS_GET_FAIL,
         invoiceItems.invoiceItemsRequestAC.invoiceItemsPost.ActionTypes.INVOICE_ITEMS_POST_FAIL,
         invoiceItems.invoiceItemsRequestAC.invoiceItemsPut.ActionTypes.INVOICE_ITEMS_PUT_FAIL,
@@ -220,6 +148,4 @@ export const toastEpics = [
     showProductErrorRequestToastEpic,
     showInvoiceSuccessRequestToastEpic,
     showInvoiceErrorRequestToastEpic,
-    showInvoiceItemSuccessRequestToastEpic,
-    showInvoiceItemErrorRequestToastEpic,
 ];

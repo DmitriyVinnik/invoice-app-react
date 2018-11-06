@@ -62,8 +62,6 @@ class Index extends Component<Props, State> {
         if (activeProductId) {
             submitDeleteForm(activeProductId);
             this.setState({isVisibleDeleteForm: false})
-        } else {
-            this.toggleProductDeleteForm();
         }
     };
     public toggleProductAddForm = (): void => {
@@ -101,11 +99,6 @@ class Index extends Component<Props, State> {
                     onChangeButtonClick={this.toggleProductChangeForm}
                     onDeleteButtonClick={this.toggleProductDeleteForm}
                     activeId={activeProductId}
-                    formsState={{
-                        isVisibleAddForm,
-                        isVisibleChangeForm,
-                        isVisibleDeleteForm,
-                    }}
                 />
                 <ProductAddForm
                     isVisible={isVisibleAddForm}
