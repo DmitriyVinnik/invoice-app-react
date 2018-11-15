@@ -1,6 +1,5 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch, NavLink, Redirect} from "react-router-dom";
-import '../../styles/style.scss';
 
 import Toast from '../Toast';
 import CustomersPage from '../pages/customers/CustomersPage/index';
